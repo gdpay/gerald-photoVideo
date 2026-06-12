@@ -56,6 +56,7 @@ export default async function EngagementsPage() {
       <PageHero
         title={data?.heroHeading || 'Engagement Portraits'}
         subtitle={data?.heroSubheading || "Your love story deserves a beautiful beginning. Let's create portraits that capture the excitement of this chapter."}
+        typewriterWords={['Engagement Portraits', 'Your Love Story', 'Couple Photos', 'Romantic Sessions']}
       />
 
       <SectionWrapper>

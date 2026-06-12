@@ -75,6 +75,7 @@ export default async function VideographyPage() {
       <PageHero
         title={data?.heroHeading || 'Cinematic Videography'}
         subtitle={data?.heroSubheading || 'Wedding films that let you relive every laugh, every tear, and every dance.'}
+        typewriterWords={['Cinematic Videography', 'Wedding Films', 'Highlight Reels', 'Your Story in Motion']}
       />
 
       <SectionWrapper>

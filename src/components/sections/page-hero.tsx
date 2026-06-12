@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
-import { heroText, heroTextSecondary } from '@/lib/animations';
 import { SanityImage } from '@/components/shared/sanity-image';
+import { TypewriterText } from '@/components/shared/typewriter-text';
 
 interface PageHeroProps {
   title: string;
@@ -11,9 +11,10 @@ interface PageHeroProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   imageSource?: any;
   imageUrl?: string;
+  typewriterWords?: string[];
 }
 
-export function PageHero({ title, subtitle, imageSource, imageUrl }: PageHeroProps) {
+export function PageHero({ title, subtitle, imageSource, imageUrl, typewriterWords }: PageHeroProps) {
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
       {/* Background */}
@@ -47,18 +48,28 @@ export function PageHero({ title, subtitle, imageSource, imageUrl }: PageHeroPro
 
       <Container className="relative z-10">
         <motion.h1
-          variants={heroText}
-          initial="hidden"
-          animate="visible"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
           className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-cream font-light max-w-3xl"
         >
-          {title}
+          {typewriterWords ? (
+            <TypewriterText
+              words={typewriterWords}
+              delay={500}
+              typingSpeed={70}
+              deletingSpeed={35}
+              pauseDuration={2500}
+            />
+          ) : (
+            title
+          )}
         </motion.h1>
         {subtitle && (
           <motion.p
-            variants={heroTextSecondary}
-            initial="hidden"
-            animate="visible"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             className="mt-4 text-lg text-cream/60 max-w-xl"
           >
             {subtitle}

@@ -7,55 +7,71 @@ import { Button } from '@/components/ui/button';
 import { SITE } from '@/lib/constants';
 import { urlFor } from '../../../sanity/lib/client';
 import Image from 'next/image';
+import { TypewriterText } from '@/components/shared/typewriter-text';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface Slide {
+interface HeroSlide {
   _id: string;
-  image: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  image?: any;
+  imageUrl?: string;
   category: string;
   alt?: string;
 }
 
 interface HeroSectionProps {
-  slides?: Slide[];
+  slides?: HeroSlide[];
   title?: string;
   subtitle?: string;
+  typewriterWords?: string[];
 }
 
-const SLIDE_INTERVAL = 6000;
+const SLIDE_INTERVAL = 3000;
 const TRANSITION_DURATION = 1500;
 const KEN_BURNS_DURATION = 8000;
+
+const FALLBACK_SLIDES: HeroSlide[] = [
+  { _id: 'fallback-1', imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90', category: 'WEDDINGS', alt: 'Beautiful wedding ceremony' },
+  { _id: 'fallback-2', imageUrl: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=90', category: 'WEDDINGS', alt: 'Wedding reception celebration' },
+  { _id: 'fallback-3', imageUrl: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1920&q=90', category: 'QUINCEAÑERAS', alt: 'Quinceañera celebration' },
+  { _id: 'fallback-4', imageUrl: 'https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=1920&q=90', category: 'ENGAGEMENTS', alt: 'Couple engagement portrait' },
+  { _id: 'fallback-5', imageUrl: 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1920&q=90', category: 'WEDDINGS', alt: 'Wedding couple golden hour' },
+];
+
+const DEFAULT_TYPEWRITER_WORDS = [
+  'Timeless Storytelling',
+  'Beautiful Moments',
+  'Your Love Story',
+  'Forever Captured',
+];
 
 export function HeroSection({
   slides = [],
   title = SITE.tagline,
   subtitle = `Luxury wedding, quinceañera & engagement photography serving ${SITE.address.region}`,
+  typewriterWords,
 }: HeroSectionProps) {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const hasSlides = slides.length > 0;
+  const allSlides = slides.length > 0 ? slides : FALLBACK_SLIDES;
+  const hasSlides = allSlides.length > 0;
 
   const goTo = useCallback((index: number) => {
-    setDirection(index > current ? 1 : -1);
     setCurrent(index);
     setProgressKey((k) => k + 1);
-  }, [current]);
+  }, []);
 
   const next = useCallback(() => {
-    setDirection(1);
-    setCurrent((c) => (c + 1) % slides.length);
+    setCurrent((c) => (c + 1) % allSlides.length);
     setProgressKey((k) => k + 1);
-  }, [slides.length]);
+  }, [allSlides.length]);
 
   const prev = useCallback(() => {
-    setDirection(-1);
-    setCurrent((c) => (c - 1 + slides.length) % slides.length);
+    setCurrent((c) => (c - 1 + allSlides.length) % allSlides.length);
     setProgressKey((k) => k + 1);
-  }, [slides.length]);
+  }, [allSlides.length]);
 
   // Auto-rotate
   useEffect(() => {
@@ -90,7 +106,13 @@ export function HeroSection({
   };
 
   const slideNumber = String(current + 1).padStart(2, '0');
-  const totalSlides = String(slides.length).padStart(2, '0');
+  const totalSlides = String(allSlides.length).padStart(2, '0');
+
+  const getSlideUrl = (slide: HeroSlide) => {
+    if (slide.imageUrl) return slide.imageUrl;
+    if (slide.image) return urlFor(slide.image).width(1920).quality(90).url();
+    return '';
+  };
 
   return (
     <section
@@ -102,32 +124,32 @@ export function HeroSection({
       onTouchEnd={handleTouchEnd}
     >
       {/* Background Slideshow */}
-      {hasSlides ? (
-        <div className="absolute inset-0">
-          {slides.map((slide, i) => {
-            const isActive = i === current;
-            const isPast = i === ((current - 1 + slides.length) % slides.length);
-            const imageUrl = urlFor(slide.image).width(1920).quality(90).url();
+      <div className="absolute inset-0">
+        {allSlides.map((slide, i) => {
+          const isActive = i === current;
+          const isPast = i === ((current - 1 + allSlides.length) % allSlides.length);
+          const imageUrl = getSlideUrl(slide);
 
-            return (
+          return (
+            <div
+              key={slide._id}
+              className="absolute inset-0"
+              style={{
+                opacity: isActive ? 1 : 0,
+                transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
+                zIndex: isActive ? 1 : 0,
+              }}
+            >
               <div
-                key={slide._id}
-                className="absolute inset-0"
+                className="h-full w-full"
                 style={{
-                  opacity: isActive ? 1 : 0,
-                  transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
-                  zIndex: isActive ? 1 : 0,
+                  animation: isActive
+                    ? `kenBurns ${KEN_BURNS_DURATION}s ease-out forwards`
+                    : 'none',
+                  transformOrigin: isPast ? '100% 100%' : '0% 0%',
                 }}
               >
-                <div
-                  className="h-full w-full"
-                  style={{
-                    animation: isActive
-                      ? `kenBurns ${KEN_BURNS_DURATION}s ease-out forwards`
-                      : 'none',
-                    transformOrigin: isPast ? '100% 100%' : '0% 0%',
-                  }}
-                >
+                {imageUrl && (
                   <Image
                     src={imageUrl}
                     alt={slide.alt || slide.category}
@@ -137,21 +159,16 @@ export function HeroSection({
                     priority={i === 0}
                     quality={90}
                   />
-                </div>
+                )}
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
 
-          {/* Overlays */}
-          <div className="absolute inset-0 z-[2] bg-gradient-to-t from-warm-black/80 via-warm-black/40 to-warm-black/30" />
-          <div className="absolute inset-0 z-[2] bg-gradient-to-r from-warm-black/30 to-transparent" />
-        </div>
-      ) : (
-        <div className="absolute inset-0">
-          <div className="h-full w-full bg-gradient-to-br from-warm-black via-dark to-charcoal" />
-          <div className="absolute inset-0 bg-gradient-to-t from-warm-black/80 via-warm-black/40 to-warm-black/30" />
-        </div>
-      )}
+        {/* Overlays */}
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-warm-black/80 via-warm-black/40 to-warm-black/30" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-warm-black/30 to-transparent" />
+      </div>
 
       {/* Hero Content */}
       <Container className="relative z-10">
@@ -162,7 +179,13 @@ export function HeroSection({
             transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream font-light leading-[1.05] tracking-tight"
           >
-            {title}
+            <TypewriterText
+              words={typewriterWords || (title ? [title] : DEFAULT_TYPEWRITER_WORDS)}
+              delay={1500}
+              typingSpeed={80}
+              deletingSpeed={40}
+              pauseDuration={2500}
+            />
           </motion.h1>
 
           <motion.p
@@ -224,7 +247,7 @@ export function HeroSection({
           transition={{ delay: 1.5, duration: 0.8 }}
           className="absolute bottom-10 right-8 z-10 flex items-center gap-2"
         >
-          {slides.map((_, i) => (
+          {allSlides.map((_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
@@ -270,7 +293,7 @@ export function HeroSection({
               className="font-accent text-[10px] tracking-[0.3em] uppercase text-cream/40"
               style={{ writingMode: 'vertical-rl' }}
             >
-              {slides[current]?.category}
+              {allSlides[current]?.category}
             </motion.span>
           </AnimatePresence>
         </motion.div>

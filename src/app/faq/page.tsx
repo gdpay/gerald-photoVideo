@@ -90,6 +90,7 @@ export default function FAQPage() {
       <PageHero
         title="Frequently Asked Questions"
         subtitle="Everything you need to know about working with us."
+        typewriterWords={['FAQ', 'Your Questions', 'Answers Here', 'Need to Know']}
       />
 
       <SectionWrapper>

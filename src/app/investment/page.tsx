@@ -89,6 +89,7 @@ export default async function InvestmentPage() {
       <PageHero
         title={data?.heroHeading || 'Investment'}
         subtitle={data?.heroSubheading || 'Every collection is as unique as your story. We create custom experiences tailored to your vision.'}
+        typewriterWords={['Investment', 'Your Collections', 'Pricing', 'Custom Packages']}
       />
 
       <SectionWrapper>

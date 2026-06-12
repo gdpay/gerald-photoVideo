@@ -31,6 +31,7 @@ export default function ContactPage() {
       <PageHero
         title="Let's Create Together"
         subtitle="Tell us about your vision and we'll make it happen."
+        typewriterWords={['Get in Touch', "Let's Talk", 'Book Now', 'Your Vision']}
       />
 
       <SectionWrapper>

@@ -70,6 +70,7 @@ export default async function AboutPage() {
       <PageHero
         title={data?.heroHeading || 'Our Story'}
         subtitle={data?.heroSubheading || "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans."}
+        typewriterWords={['Our Story', 'Who We Are', 'Our Passion', 'Our Journey']}
       />
 
       <SectionWrapper>

@@ -66,6 +66,7 @@ export default async function QuinceanerasPage() {
         title="Quinceañera Photography & Video"
         subtitle="Celebrating her journey into womanhood with the elegance and artistry it deserves."
         imageSource={heroSection?.backgroundImage}
+        typewriterWords={['Quinceañera Photography', 'Her Special Day', 'Celebrating Tradition', 'Beautiful Moments']}
       />
 
       <SectionWrapper>

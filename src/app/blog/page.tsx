@@ -59,6 +59,7 @@ export default async function BlogPage() {
       <PageHero
         title="Our Blog"
         subtitle="Real weddings, planning tips, and stories from Nebraska & Iowa."
+        typewriterWords={['Our Blog', 'Stories', 'Wedding Tips', 'Inspiration']}
       />
 
       <SectionWrapper>

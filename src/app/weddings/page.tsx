@@ -67,6 +67,7 @@ export default async function WeddingsPage() {
         title="Wedding Photography & Videography"
         subtitle="Every love story deserves to be told beautifully. We capture the emotion, the details, and the moments that make your wedding uniquely yours."
         imageSource={heroSection?.backgroundImage}
+        typewriterWords={['Wedding Photography', 'Your Big Day', 'Love Captured', 'Forever Begins']}
       />
 
       {/* Intro */}

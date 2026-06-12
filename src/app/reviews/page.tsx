@@ -69,6 +69,7 @@ export default async function ReviewsPage() {
       <PageHero
         title="Kind Words"
         subtitle="We're honored to be part of your celebrations. Here's what our clients say."
+        typewriterWords={['Kind Words', 'Client Love', 'Real Reviews', 'Happy Couples']}
       />
 
       <SectionWrapper className="-mt-8">
