@@ -1,5 +1,7 @@
-jnode_modules/
+node_modules/
 .next/
 dist/
+.sanity/
 .env*
 *.log
+tsconfig.tsbuildinfo
