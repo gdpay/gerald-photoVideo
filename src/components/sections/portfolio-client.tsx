@@ -1,0 +1,163 @@
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PageHero } from '@/components/sections/page-hero';
+import { SectionWrapper } from '@/components/shared/section-wrapper';
+import { Container } from '@/components/shared/container';
+import { CTASection } from '@/components/sections/cta-section';
+import { SanityImage } from '@/components/shared/sanity-image';
+import { staggerContainer, staggerItem } from '@/lib/animations';
+import { cn } from '@/lib/utils';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Videography'] as const;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface GalleryImage {
+  source: any;
+  alt: string;
+  category: string;
+}
+
+interface PortfolioClientProps {
+  galleryImages: GalleryImage[];
+}
+
+export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const filtered = activeCategory === 'All'
+    ? galleryImages
+    : galleryImages.filter((img) => img.category === activeCategory);
+
+  return (
+    <>
+      <PageHero
+        title="Our Portfolio"
+        subtitle="A curated collection of our favorite moments."
+      />
+
+      <SectionWrapper className="-mt-8">
+        <Container>
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={cn(
+                  'px-5 py-2 text-sm font-accent uppercase tracking-wider transition-all duration-300 rounded-sm',
+                  activeCategory === cat
+                    ? 'bg-gold text-warm-black'
+                    : 'text-cream/50 border border-cream/10 hover:border-gold/30 hover:text-gold'
+                )}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Gallery Grid */}
+          {galleryImages.length === 0 ? (
+            <div className="text-center py-20 text-cream/40">No gallery images yet.</div>
+          ) : (
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              key={activeCategory}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"
+            >
+              <AnimatePresence mode="wait">
+                {filtered.map((image, index) => (
+                  <motion.div
+                    key={`${image.category}-${index}`}
+                    variants={staggerItem}
+                    layout
+                    className="aspect-[3/4] overflow-hidden rounded-sm cursor-pointer group relative"
+                    onClick={() => setLightboxIndex(filtered.indexOf(image))}
+                  >
+                    <SanityImage
+                      source={image.source}
+                      alt={image.alt}
+                      fill
+                      className="transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-warm-black/0 group-hover:bg-warm-black/40 transition-all duration-500 flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 text-white text-xs font-accent uppercase tracking-wider transition-opacity duration-300">
+                        {image.category}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </Container>
+      </SectionWrapper>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && filtered[lightboxIndex] && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            onClick={() => setLightboxIndex(null)}
+          >
+            <button
+              onClick={() => setLightboxIndex(null)}
+              className="absolute top-6 right-6 text-cream/50 hover:text-cream transition-colors z-10"
+              aria-label="Close lightbox"
+            >
+              <X className="h-8 w-8" />
+            </button>
+
+            {lightboxIndex > 0 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-10 w-10" />
+              </button>
+            )}
+
+            <div className="relative max-h-[90vh] max-w-[90vw] aspect-[3/4]" onClick={(e) => e.stopPropagation()}>
+              <SanityImage
+                source={filtered[lightboxIndex].source}
+                alt={filtered[lightboxIndex].alt}
+                fill
+                priority
+                className="rounded-sm"
+              />
+            </div>
+
+            {lightboxIndex < filtered.length - 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-10 w-10" />
+              </button>
+            )}
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cream/40 text-sm">
+              {lightboxIndex + 1} / {filtered.length}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <CTASection
+        title="Ready to Create Your Own Gallery?"
+        subtitle="Let's work together to create images you'll love."
+        primaryCTA={{ label: 'Get Started', href: '/contact' }}
+      />
+    </>
+  );
+}

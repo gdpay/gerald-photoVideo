@@ -1,0 +1,164 @@
+// Services
+export const servicesQuery = `*[_type == "service"] | order(title asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  shortDescription,
+  heroImage,
+  features,
+  seo
+}`;
+
+export const serviceBySlugQuery = (slug: string) =>
+  `*[_type == "service" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    heroImage,
+    gallery[] {
+      asset->,
+      alt,
+      caption
+    },
+    features,
+    seo
+  }`;
+
+// Testimonials
+export const testimonialsQuery = `*[_type == "testimonial"] | order(order asc) {
+  _id,
+  quote,
+  author,
+  serviceType,
+  location,
+  rating,
+  photo,
+  featured
+}`;
+
+export const featuredTestimonialsQuery = `*[_type == "testimonial" && featured == true] | order(order asc) {
+  _id,
+  quote,
+  author,
+  serviceType,
+  location,
+  rating,
+  photo
+}`;
+
+// Gallery
+export const galleriesQuery = `*[_type == "gallery"] | order(title asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  serviceType,
+  featured,
+  coverImage,
+  images[] {
+    asset->,
+    alt,
+    caption
+  }
+}`;
+
+export const featuredGalleriesQuery = `*[_type == "gallery" && featured == true] {
+  _id,
+  title,
+  "slug": slug.current,
+  serviceType,
+  coverImage,
+}`;
+
+export const galleryByServiceTypeQuery = (serviceType: string) =>
+  `*[_type == "gallery" && serviceType == "${serviceType}"][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    serviceType,
+    images[] {
+      asset->,
+      alt,
+      caption
+    }
+  }`;
+
+// Blog
+export const blogPostsQuery = `*[_type == "blog"] | order(publishedAt desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  author,
+  publishedAt,
+  category,
+  coverImage,
+  excerpt,
+}`;
+
+export const blogPostBySlugQuery = (slug: string) =>
+  `*[_type == "blog" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    author,
+    publishedAt,
+    category,
+    coverImage,
+    excerpt,
+    content,
+    seo
+  }`;
+
+// Settings / Site Config
+export const settingsQuery = `*[_type == "settings"][0] {
+  title,
+  tagline,
+  description,
+  phone,
+  email,
+  socialLinks,
+  logo,
+  favicon
+}`;
+
+// Pages
+export const pageBySlugQuery = (slug: string) =>
+  `*[_type == "page" && slug.current == "${slug}"][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    seo,
+    sections
+  }`;
+
+// Home page hero
+export const homeHeroQuery = `*[_type == "page" && slug.current == "home"][0] {
+  sections[_type == "hero"][0] {
+    heading,
+    subheading,
+    backgroundImage,
+    ctaText,
+    ctaLink
+  }
+}`;
+
+// Featured services for homepage
+export const featuredServicesQuery = `*[_type == "service"] | order(title asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  shortDescription,
+  heroImage,
+  features
+}`;
+
+// Home page CTA section
+export const homeCtaQuery = `*[_type == "page" && slug.current == "home"][0] {
+  sections[_type == "cta"][0] {
+    heading,
+    subheading,
+    backgroundImage,
+    buttonText,
+    buttonLink
+  }
+}`;

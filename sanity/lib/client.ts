@@ -1,0 +1,31 @@
+import { createClient } from '@sanity/client';
+import { createImageUrlBuilder } from '@sanity/image-url';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SanityImageSource = any;
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+
+// Server-side client (has access to SANITY_API_TOKEN)
+export const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: '2024-01-01',
+  useCdn: process.env.NODE_ENV === 'production',
+  token: process.env.SANITY_API_TOKEN,
+});
+
+// Client-side safe client (no secret token, uses CDN for reads)
+export const clientReadOnly = createClient({
+  projectId,
+  dataset,
+  apiVersion: '2024-01-01',
+  useCdn: true,
+});
+
+const builder = createImageUrlBuilder(client);
+
+export function urlFor(source: SanityImageSource) {
+  return builder.image(source);
+}
