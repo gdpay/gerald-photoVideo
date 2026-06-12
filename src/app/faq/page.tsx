@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
@@ -10,21 +10,31 @@ import { BreadcrumbSchema, FAQSchema } from '@/components/seo/schema-scripts';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const faqData = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface FAQCategory {
+  category: string;
+  questions: FAQItem[];
+}
+
+const fallbackData: FAQCategory[] = [
   {
     category: 'Booking & Timing',
     questions: [
-      { question: 'How far in advance should we book?', answer: 'We recommend booking 6–12 months in advance, especially for peak wedding season (May–October). However, we occasionally have last-minute availability — don\'t hesitate to ask!' },
-      { question: 'Do you travel for weddings?', answer: 'Absolutely! We\'re based in Omaha but proudly serve all of Nebraska, Iowa, and beyond. Travel within 100 miles is included. Additional travel fees may apply for farther destinations.' },
-      { question: 'What\'s the booking process?', answer: 'Simple! Reach out through our contact form, we\'ll schedule a consultation to discuss your vision, then we\'ll create a custom proposal. A 30% deposit secures your date.' },
+      { question: 'How far in advance should we book?', answer: "We recommend booking 6–12 months in advance, especially for peak wedding season (May–October). However, we occasionally have last-minute availability — don't hesitate to ask!" },
+      { question: 'Do you travel for weddings?', answer: "Absolutely! We're based in Omaha but proudly serve all of Nebraska, Iowa, and beyond. Travel within 100 miles is included. Additional travel fees may apply for farther destinations." },
+      { question: "What's the booking process?", answer: "Simple! Reach out through our contact form, we'll schedule a consultation to discuss your vision, then we'll create a custom proposal. A 30% deposit secures your date." },
     ],
   },
   {
     category: 'Photography',
     questions: [
       { question: 'How many photos do we receive?', answer: 'It depends on your collection, but typically 400–1,200+ fully edited, high-resolution images. We focus on quality over quantity, delivering only the best shots.' },
-      { question: 'What\'s your editing style?', answer: 'Our style is a blend of documentary and fine-art editorial. We enhance natural light and colors to create timeless, cinematic images that never feel dated.' },
-      { question: 'How long does it take to receive our photos?', answer: 'You\'ll receive a sneak peek within 48 hours. Full galleries are typically delivered within 4–6 weeks during peak season, 2–3 weeks otherwise.' },
+      { question: "What's your editing style?", answer: 'Our style is a blend of documentary and fine-art editorial. We enhance natural light and colors to create timeless, cinematic images that never feel dated.' },
+      { question: 'How long does it take to receive our photos?', answer: "You'll receive a sneak peek within 48 hours. Full galleries are typically delivered within 4–6 weeks during peak season, 2–3 weeks otherwise." },
     ],
   },
   {
@@ -32,7 +42,7 @@ const faqData = [
     questions: [
       { question: 'Do you offer drone footage?', answer: 'Yes! Drone footage is available as an add-on to any of our videography collections. It adds a stunning cinematic perspective to your film.' },
       { question: 'How long are the wedding films?', answer: 'Highlight films are typically 3–5 minutes. Full ceremony and reception edits are delivered as separate films. We also offer same-day edits for your reception.' },
-      { question: 'Can we get the raw footage?', answer: 'Raw footage is available as an add-on. However, we highly recommend our edited films — we carefully select the best moments and color-grade everything for a cohesive, cinematic look.' },
+      { question: 'Can we get the raw footage?', answer: "Raw footage is available as an add-on. However, we highly recommend our edited films — we carefully select the best moments and color-grade everything for a cohesive, cinematic look." },
     ],
   },
   {
@@ -40,7 +50,7 @@ const faqData = [
     questions: [
       { question: 'Do you offer payment plans?', answer: 'Yes! We offer flexible payment plans. A 30% deposit secures your date, and the remaining balance can be paid in installments leading up to your event.' },
       { question: 'Is there a deposit required?', answer: 'Yes, a 30% non-refundable deposit is required to reserve your date. This goes toward your total investment.' },
-      { question: 'Can we customize a collection?', answer: 'Absolutely! Every collection is fully customizable. We\'ll work with you to create the perfect package for your needs and budget.' },
+      { question: 'Can we customize a collection?', answer: "Absolutely! Every collection is fully customizable. We'll work with you to create the perfect package for your needs and budget." },
     ],
   },
   {
@@ -55,6 +65,18 @@ const faqData = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [faqData, setFaqData] = useState<FAQCategory[]>(fallbackData);
+
+  useEffect(() => {
+    fetch('/api/faq')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.categories?.length) {
+          setFaqData(data.categories);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const flatFaqs = faqData.flatMap((cat) => cat.questions);
 

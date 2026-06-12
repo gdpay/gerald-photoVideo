@@ -162,3 +162,70 @@ export const homeCtaQuery = `*[_type == "page" && slug.current == "home"][0] {
     buttonLink
   }
 }`;
+
+// About Page
+export const aboutPageQuery = `*[_type == "aboutPage"][0] {
+  heroHeading,
+  heroSubheading,
+  storyParagraphs,
+  values,
+  communityHeading,
+  communityText,
+  ctaHeading,
+  ctaSubheading
+}`;
+
+// Investment Page
+export const investmentPageQuery = `*[_type == "investmentPage"][0] {
+  heroHeading,
+  heroSubheading,
+  philosophyText,
+  philosophyNote,
+  collections,
+  addOnsHeading,
+  addOns,
+  paymentHeading,
+  paymentText
+}`;
+
+// FAQ Page
+export const faqPageQuery = `*[_type == "faqPage"][0] {
+  heroHeading,
+  heroSubheading,
+  categories
+}`;
+
+// Engagements Page
+export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
+  heroHeading,
+  heroSubheading,
+  introText,
+  locationsHeading,
+  locationsSubheading,
+  locations,
+  bundleHeading,
+  bundleText
+}`;
+
+// Videography Page
+export const videographyPageQuery = `*[_type == "videographyPage"][0] {
+  heroHeading,
+  heroSubheading,
+  introText,
+  featuresHeading,
+  features,
+  comboHeading,
+  comboText
+}`;
+
+// Reviews Page (testimonials with ordering)
+export const allTestimonialsQuery = `*[_type == "testimonial"] | order(order asc) {
+  _id,
+  quote,
+  author,
+  serviceType,
+  location,
+  rating,
+  photo,
+  featured
+}`;

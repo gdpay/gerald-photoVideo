@@ -10,6 +10,11 @@ import textBlock from './textBlock';
 import servicesSection from './servicesSection';
 import testimonialsSection from './testimonialsSection';
 import cta from './cta';
+import aboutPage from './aboutPage';
+import investmentPage from './investmentPage';
+import faqPage from './faqPage';
+import engagementsPage from './engagementsPage';
+import videographyPage from './videographyPage';
 
 export const schemaTypes = [
   page,
@@ -24,4 +29,9 @@ export const schemaTypes = [
   servicesSection,
   testimonialsSection,
   cta,
+  aboutPage,
+  investmentPage,
+  faqPage,
+  engagementsPage,
+  videographyPage,
 ];
