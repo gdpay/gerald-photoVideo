@@ -5,6 +5,7 @@ import { StickyCTA } from '@/components/layout/sticky-cta';
 import { LocalBusinessSchema, WebSiteSchema, OrganizationSchema, ProfessionalServiceSchema } from '@/components/seo/schema-scripts';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
+import { CursorGlow } from '@/components/shared/cursor-glow';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
 import { settingsQuery } from '../../sanity/lib/queries';
@@ -127,6 +128,7 @@ export default async function RootLayout({
         <StickyCTA />
         <GoogleAnalytics />
         <MetaPixel />
+        <CursorGlow />
       </body>
     </html>
   );

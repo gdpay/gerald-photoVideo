@@ -130,6 +130,15 @@
   }
 }
 
+@keyframes kenBurns {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 @utility animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out;
 }
@@ -144,6 +153,10 @@
 
 @utility animate-gold-pulse {
   animation: gold-pulse 3s ease-in-out infinite;
+}
+
+@utility animate-ken-burns {
+  animation: kenBurns 8s ease-out forwards;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────── */

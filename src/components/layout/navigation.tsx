@@ -24,7 +24,7 @@ export function Navigation({ logoUrl }: NavigationProps) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -40,14 +40,18 @@ export function Navigation({ logoUrl }: NavigationProps) {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+        'fixed top-0 left-0 right-0 z-50',
         isScrolled
-          ? 'bg-warm-black/95 backdrop-blur-lg shadow-lg'
+          ? 'bg-warm-black/90 backdrop-blur-xl shadow-lg'
           : 'bg-transparent'
       )}
+      style={{
+        transition: 'padding 0.4s ease, background 0.4s ease',
+        padding: isScrolled ? '14px 0' : '20px 0',
+      }}
     >
       <Container>
-        <nav className="flex items-center justify-between h-20">
+        <nav className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-10">
             {logoUrl ? (
@@ -56,11 +60,17 @@ export function Navigation({ logoUrl }: NavigationProps) {
                 alt={SITE.name}
                 width={180}
                 height={40}
-                className="h-10 w-auto"
+                className={cn(
+                  'w-auto transition-all duration-400',
+                  isScrolled ? 'h-8' : 'h-10'
+                )}
                 priority
               />
             ) : (
-              <span className="font-heading text-2xl text-cream tracking-wider">
+              <span className={cn(
+                'font-heading text-cream tracking-wider transition-all duration-400',
+                isScrolled ? 'text-xl' : 'text-2xl'
+              )}>
                 Gerald<span className="text-gold">.</span>Photo
               </span>
             )}

@@ -8,20 +8,20 @@ import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-accent font-semibold uppercase tracking-[0.1em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50',
+  'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-accent font-semibold uppercase tracking-[0.1em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden',
   {
     variants: {
       variant: {
         primary:
-          'bg-gold text-warm-black hover:bg-gold-dark hover:text-white shadow-lg hover:shadow-gold/25',
+          'bg-gold text-warm-black hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] shadow-lg',
         secondary:
-          'border border-gold text-gold hover:bg-gold/10 hover:text-gold-light',
+          'border border-gold text-gold hover:bg-gold/10 hover:text-gold-light hover:-translate-y-0.5',
         ghost: 'text-cream/70 hover:text-gold hover:bg-white/5',
         dark: 'bg-warm-black text-cream border border-cream/20 hover:bg-charcoal hover:border-gold/50',
         accent:
-          'bg-accent text-white hover:bg-accent-hover shadow-lg hover:shadow-accent/25',
+          'bg-accent text-white hover:bg-accent-hover hover:-translate-y-0.5 shadow-lg hover:shadow-accent/25',
         outline:
-          'border border-cream/20 text-cream hover:border-gold hover:text-gold',
+          'border border-cream/20 text-cream hover:border-gold hover:text-gold hover:-translate-y-0.5',
       },
       size: {
         sm: 'h-9 px-4 text-xs',

@@ -6,14 +6,13 @@ import { TestimonialCarousel } from '@/components/sections/testimonial-carousel'
 import { ProcessSection } from '@/components/sections/process-section';
 import { CTASection } from '@/components/sections/cta-section';
 import { client } from '../../sanity/lib/client';
-import { galleriesQuery, homeHeroQuery, featuredServicesQuery, featuredTestimonialsQuery } from '../../sanity/lib/queries';
+import { galleriesQuery, homeHeroQuery, featuredServicesQuery, featuredTestimonialsQuery, heroSlidesQuery } from '../../sanity/lib/queries';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function preparePreviewImages(galleries: any[]) {
   const images: { source: any; alt: string; span?: 'wide' | 'tall' | 'large' }[] = [];
   const spans = ['large', 'tall', 'wide', undefined, undefined, undefined] as const;
 
-  // Pick up to 7 featured images across all galleries
   let count = 0;
   for (const gallery of galleries) {
     if (!gallery.images) continue;
@@ -32,20 +31,21 @@ function preparePreviewImages(galleries: any[]) {
 }
 
 export default async function HomePage() {
-  const [galleries, heroData, services, testimonials] = await Promise.all([
+  const [galleries, heroData, services, testimonials, heroSlides] = await Promise.all([
     client.fetch(galleriesQuery),
     client.fetch(homeHeroQuery),
     client.fetch(featuredServicesQuery),
     client.fetch(featuredTestimonialsQuery),
+    client.fetch(heroSlidesQuery).catch(() => []),
   ]);
   const previewImages = preparePreviewImages(galleries);
 
   return (
     <>
       <HeroSection
+        slides={heroSlides}
         title={heroData?.sections?.heading}
         subtitle={heroData?.sections?.subheading}
-        imageSource={heroData?.sections?.backgroundImage}
       />
       <TrustBar />
       <ServicesGrid services={services} />

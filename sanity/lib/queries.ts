@@ -163,6 +163,14 @@ export const homeCtaQuery = `*[_type == "page" && slug.current == "home"][0] {
   }
 }`;
 
+// Hero Slides
+export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
+  _id,
+  image,
+  category,
+  alt
+}`;
+
 // About Page
 export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   heroHeading,
