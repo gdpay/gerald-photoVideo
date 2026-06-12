@@ -110,7 +110,11 @@ export function HeroSection({
 
   const getSlideUrl = (slide: HeroSlide) => {
     if (slide.imageUrl) return slide.imageUrl;
-    if (slide.image) return urlFor(slide.image).width(1920).quality(90).url();
+    try {
+      if (slide.image) return urlFor(slide.image).width(1920).quality(90).url();
+    } catch {
+      // urlFor failed
+    }
     return '';
   };
 
