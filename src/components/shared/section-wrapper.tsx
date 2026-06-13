@@ -10,7 +10,8 @@ interface SectionWrapperProps {
   className?: string;
   id?: string;
   dark?: boolean;
-  gold?: boolean;
+  champagne?: boolean;
+  navy?: boolean;
   noPadding?: boolean;
 }
 
@@ -19,7 +20,8 @@ export function SectionWrapper({
   className,
   id,
   dark,
-  gold,
+  champagne,
+  navy,
   noPadding,
 }: SectionWrapperProps) {
   return (
@@ -32,8 +34,10 @@ export function SectionWrapper({
       className={cn(
         'relative',
         !noPadding && 'py-20 md:py-24 lg:py-32',
-        dark && 'bg-warm-black',
-        gold && 'bg-gradient-to-b from-warm-black via-warm-black/95 to-warm-black',
+        dark && 'bg-[#0A1F44] text-[#FAF7F2]',
+        champagne && 'bg-[#F8E8D0]',
+        navy && 'bg-[#0A1F44] text-[#FAF7F2]',
+        !dark && !champagne && !navy && 'bg-[#FAF7F2]',
         className
       )}
     >

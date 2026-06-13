@@ -16,7 +16,7 @@ export const SITE = {
   },
   url: 'https://www.geraldphotovideo.com',
   description:
-    'Luxury wedding, quinceañera, and engagement photography & videography serving Nebraska and Iowa.',
+    'Luxury wedding, quinceañera, engagement and portrait photography & videography serving Nebraska and Iowa.',
   foundingYear: 2015,
   reviews: {
     facebook: { rating: 4.3, count: 40 },
@@ -30,8 +30,8 @@ export const NAV_ITEMS = [
   { label: 'Weddings', href: '/weddings' },
   { label: 'Quinceañeras', href: '/quinceaneras' },
   { label: 'Engagements', href: '/engagements' },
+  { label: 'Portraits', href: '/portraits' },
   { label: 'Videography', href: '/videography' },
-  { label: 'Portfolio', href: '/portfolio' },
   { label: 'Investment', href: '/investment' },
   { label: 'About', href: '/about' },
   { label: 'Reviews', href: '/reviews' },
@@ -45,28 +45,30 @@ export const SERVICES = [
     title: 'Weddings',
     description: 'Cinematic wedding photography and videography that tells your unique love story.',
     href: '/weddings',
-    icon: 'Heart',
   },
   {
     id: 'quinceaneras',
     title: 'Quinceañeras',
     description: 'Celebrate her journey with stunning portraits and films that honor this milestone.',
     href: '/quinceaneras',
-    icon: 'Crown',
   },
   {
     id: 'engagements',
     title: 'Engagements',
     description: 'Romantic engagement sessions that capture the excitement of your new chapter.',
     href: '/engagements',
-    icon: 'Sparkles',
+  },
+  {
+    id: 'portraits',
+    title: 'Portraits',
+    description: 'Timeless portraits that celebrate your unique beauty and personality.',
+    href: '/portraits',
   },
   {
     id: 'videography',
     title: 'Videography',
     description: 'Cinematic wedding films and highlight reels that let you relive every moment.',
     href: '/videography',
-    icon: 'Film',
   },
 ] as const;
 

@@ -56,35 +56,34 @@ export default async function EngagementsPage() {
       <PageHero
         title={data?.heroHeading || 'Engagement Portraits'}
         subtitle={data?.heroSubheading || "Your love story deserves a beautiful beginning. Let's create portraits that capture the excitement of this chapter."}
-        typewriterWords={['Engagement Portraits', 'Your Love Story', 'Couple Photos', 'Romantic Sessions']}
       />
 
       <SectionWrapper>
         <Container narrow>
-          <p className="text-lg text-cream/70 leading-relaxed">
+          <p className="text-lg text-[#736D63] leading-relaxed">
             {data?.introText || "Engagement sessions are about celebrating your love and getting comfortable in front of the camera before your wedding day. Whether you want urban edge, natural beauty, or something entirely unique, we'll find the perfect setting. These portraits become your save-the-dates, wedding decor, and treasured keepsakes for years to come."}
           </p>
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-cream text-center mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-4">
             {data?.locationsHeading || 'Popular Locations'}
           </h2>
-          <p className="text-cream/50 text-center mb-12 max-w-lg mx-auto">
+          <p className="text-[#736D63] text-center mb-12 max-w-lg mx-auto">
             {data?.locationsSubheading || 'We know the most photogenic spots across Nebraska and Iowa. Here are a few favorites.'}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {locations.map((loc: { name: string; area?: string; location?: string; description: string }) => (
               <div
                 key={loc.name}
-                className="p-6 border border-cream/5 rounded-sm hover:border-gold/20 transition-colors"
+                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors"
               >
-                <MapPin className="h-5 w-5 text-gold mb-3" />
-                <h3 className="font-heading text-xl text-cream mb-1">{loc.name}</h3>
-                <p className="text-sm text-cream/40 mb-2">{loc.area || loc.location}</p>
-                <p className="text-sm text-cream/50">{loc.description}</p>
+                <MapPin className="h-5 w-5 text-[#C8A23D] mb-3" />
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">{loc.name}</h3>
+                <p className="text-sm text-[#A39D93] mb-2">{loc.area || loc.location}</p>
+                <p className="text-sm text-[#736D63]">{loc.description}</p>
               </div>
             ))}
           </div>
@@ -93,16 +92,16 @@ export default async function EngagementsPage() {
 
       <SectionWrapper>
         <Container narrow className="text-center">
-          <Heart className="h-8 w-8 text-gold/50 mx-auto mb-4" />
-          <h2 className="font-heading text-3xl md:text-4xl text-cream mb-4">
+          <Heart className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.bundleHeading || 'Book Your Engagement + Wedding Together'}
           </h2>
-          <p className="text-cream/60 mb-8 max-w-lg mx-auto">
+          <p className="text-[#736D63] mb-8 max-w-lg mx-auto">
             {data?.bundleText || "Save when you bundle your engagement session with your wedding coverage. It's the perfect way to start your journey with us."}
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors font-accent text-sm uppercase tracking-wider"
+            className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
             Inquire About Bundles →
           </a>

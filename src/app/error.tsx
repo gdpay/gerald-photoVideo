@@ -16,11 +16,11 @@ export default function Error({
   return (
     <SectionWrapper className="min-h-[80vh] flex items-center">
       <Container narrow className="text-center">
-        <div className="font-heading text-6xl md:text-7xl text-accent/30 mb-4">Oops!</div>
-        <h1 className="font-heading text-3xl md:text-4xl text-cream mb-4">
+        <div className="font-heading text-6xl md:text-7xl text-[#8A1C3E]/30 mb-4">Oops!</div>
+        <h1 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
           Something Went Wrong
         </h1>
-        <p className="text-cream/60 mb-8 max-w-md mx-auto">
+        <p className="text-[#736D63] mb-8 max-w-md mx-auto">
           An unexpected error occurred. Please try again or contact us if the problem persists.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -6,16 +6,8 @@ import { Container } from '@/components/shared/container';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { SERVICES } from '@/lib/constants';
 import { staggerContainer, staggerItem } from '@/lib/animations';
-import { Heart, Crown, Sparkles, Film, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { SanityImage } from '@/components/shared/sanity-image';
-import type { ReactNode } from 'react';
-
-const iconMap: Record<string, ReactNode> = {
-  Heart: <Heart className="h-6 w-6" />,
-  Crown: <Crown className="h-6 w-6" />,
-  Sparkles: <Sparkles className="h-6 w-6" />,
-  Film: <Film className="h-6 w-6" />,
-};
 
 interface ServiceItem {
   _id: string;
@@ -41,14 +33,14 @@ export function ServicesGrid({ services }: ServicesGridProps) {
   });
 
   return (
-    <SectionWrapper gold>
+    <SectionWrapper>
       <Container>
         <div className="text-center mb-16">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-accent text-xs uppercase tracking-[0.15em] text-gold"
+            className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]"
           >
             Our Services
           </motion.span>
@@ -57,7 +49,7 @@ export function ServicesGrid({ services }: ServicesGridProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-4xl md:text-5xl lg:text-6xl text-cream"
+            className="mt-4 font-heading text-4xl md:text-5xl lg:text-6xl text-[#0A1F44]"
           >
             What We Capture
           </motion.h2>
@@ -68,37 +60,35 @@ export function ServicesGrid({ services }: ServicesGridProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {displayServices.map((service) => (
             <motion.div key={service.id} variants={staggerItem}>
               <Link href={service.href} className="group block">
-                <div className="relative h-80 overflow-hidden rounded-sm bg-gradient-to-b from-charcoal to-dark border border-cream/5 group-hover:border-gold/30 transition-all duration-500">
+                <div className="relative h-80 overflow-hidden bg-[#FAF7F2] border border-[#E5E0D8] group-hover:border-[#C8A23D]/40 transition-all duration-500">
                   {/* Hero Image */}
                   {service.heroImage ? (
                     <SanityImage
                       source={service.heroImage}
                       alt={service.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
                     />
                   ) : (
-                    /* Icon fallback */
-                    <div className="absolute top-6 left-6 text-gold/60 group-hover:text-gold transition-colors duration-500">
-                      {iconMap[service.icon]}
-                    </div>
+                    /* Gradient fallback */
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#F0EDE6] to-[#E5E0D8]" />
                   )}
 
                   {/* Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-warm-black/90 via-warm-black/30 to-transparent">
-                    <h3 className="font-heading text-2xl text-cream group-hover:text-gold transition-colors duration-300">
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-[#FAF7F2]/95 via-[#FAF7F2]/30 to-transparent">
+                    <h3 className="font-heading text-2xl text-[#0A1F44] group-hover:text-[#C8A23D] transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <p className="mt-2 text-sm text-cream/60 leading-relaxed">
+                    <p className="mt-2 text-sm text-[#736D63] leading-relaxed">
                       {service.sanityDescription || service.description}
                     </p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-xs font-accent uppercase tracking-wider text-gold group-hover:gap-3 transition-all duration-300">
+                    <span className="mt-4 inline-flex items-center gap-2 text-[12px] font-body uppercase tracking-wider text-[#C8A23D] group-hover:gap-3 transition-all duration-300">
                       Explore <ArrowRight className="h-3 w-3" />
                     </span>
                   </div>

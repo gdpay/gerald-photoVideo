@@ -1,31 +1,32 @@
 import Link from 'next/link';
-import { SITE, NAV_ITEMS, SERVICES, LOCAL_CITIES } from '@/lib/constants';
+import { SITE, SERVICES, LOCAL_CITIES } from '@/lib/constants';
 import { Container } from '@/components/shared/container';
-import { Heart, Music, Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin, Music } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black border-t border-cream/5">
+    <footer className="bg-[#0A1F44] border-t border-[#C8A23D]/10">
       <Container className="py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-4">
-              <span className="font-heading text-2xl text-cream tracking-wider">
-                Gerald<span className="text-gold">.</span>Photo
+              <span className="font-heading text-2xl text-[#FAF7F2] tracking-wider">
+                Gerald<span className="text-[#C8A23D]"> </span>Photo Video
               </span>
             </Link>
-            <p className="text-cream/50 text-sm leading-relaxed mb-6 max-w-xs">
-              {SITE.description}
+            <p className="text-[#FAF7F2]/50 text-sm leading-relaxed mb-6 max-w-xs">
+              Luxury wedding, quinceañera, engagement and portrait photography & videography. 
+              Timeless storytelling for life&apos;s most beautiful moments.
             </p>
             <div className="flex items-center gap-4">
               <a
                 href={SITE.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cream/40 hover:text-gold transition-colors"
+                className="text-[#FAF7F2]/30 hover:text-[#C8A23D] transition-colors"
                 aria-label="Facebook"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -36,7 +37,7 @@ export function Footer() {
                 href={SITE.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cream/40 hover:text-gold transition-colors"
+                className="text-[#FAF7F2]/30 hover:text-[#C8A23D] transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -47,7 +48,7 @@ export function Footer() {
                 href={SITE.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cream/40 hover:text-gold transition-colors"
+                className="text-[#FAF7F2]/30 hover:text-[#C8A23D] transition-colors"
                 aria-label="TikTok"
               >
                 <Music className="h-5 w-5" />
@@ -57,7 +58,7 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-accent text-xs uppercase tracking-[0.15em] text-gold mb-6">
+            <h4 className="font-body text-[12px] uppercase tracking-[0.15em] text-[#C8A23D] font-medium mb-6">
               Services
             </h4>
             <ul className="space-y-3">
@@ -65,7 +66,7 @@ export function Footer() {
                 <li key={service.id}>
                   <Link
                     href={service.href}
-                    className="text-cream/50 hover:text-gold transition-colors text-sm"
+                    className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
                   >
                     {service.title}
                   </Link>
@@ -74,73 +75,86 @@ export function Footer() {
               <li>
                 <Link
                   href="/portfolio"
-                  className="text-cream/50 hover:text-gold transition-colors text-sm"
+                  className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
                 >
                   Portfolio
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/investment"
-                  className="text-cream/50 hover:text-gold transition-colors text-sm"
-                >
-                  Investment
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Service Areas */}
           <div>
-            <h4 className="font-accent text-xs uppercase tracking-[0.15em] text-gold mb-6">
-              Explore
+            <h4 className="font-body text-[12px] uppercase tracking-[0.15em] text-[#C8A23D] font-medium mb-6">
+              Service Areas
             </h4>
             <ul className="space-y-3">
-              {['About', 'Reviews', 'FAQ', 'Blog', 'Contact'].map((label) => {
-                const href = `/${label.toLowerCase()}`;
-                return (
-                  <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-cream/50 hover:text-gold transition-colors text-sm"
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                );
-              })}
+              {LOCAL_CITIES.map((city) => (
+                <li key={city.slug}>
+                  <Link
+                    href={`/${city.slug}-wedding-photographer`}
+                    className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
+                  >
+                    {city.name}, {city.state}
+                  </Link>
+                </li>
+              ))}
+              <li className="pt-2">
+                <Link
+                  href="/about"
+                  className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
+                >
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-accent text-xs uppercase tracking-[0.15em] text-gold mb-6">
+            <h4 className="font-body text-[12px] uppercase tracking-[0.15em] text-[#C8A23D] font-medium mb-6">
               Contact
             </h4>
             <ul className="space-y-4">
               <li>
                 <a
                   href={`tel:${SITE.phoneRaw}`}
-                  className="flex items-center gap-3 text-cream/50 hover:text-gold transition-colors text-sm"
+                  className="flex items-center gap-3 text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
                 >
-                  <Phone className="h-4 w-4 text-gold shrink-0" />
+                  <Phone className="h-4 w-4 text-[#C8A23D] shrink-0" />
                   {SITE.phone}
                 </a>
               </li>
               <li>
                 <a
                   href={`mailto:${SITE.email}`}
-                  className="flex items-center gap-3 text-cream/50 hover:text-gold transition-colors text-sm"
+                  className="flex items-center gap-3 text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors text-sm"
                 >
-                  <Mail className="h-4 w-4 text-gold shrink-0" />
+                  <Mail className="h-4 w-4 text-[#C8A23D] shrink-0" />
                   {SITE.email}
                 </a>
               </li>
               <li>
-                <div className="flex items-start gap-3 text-cream/50 text-sm">
-                  <MapPin className="h-4 w-4 text-gold shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 text-[#FAF7F2]/50 text-sm">
+                  <MapPin className="h-4 w-4 text-[#C8A23D] shrink-0 mt-0.5" />
                   <span>
-                    Serving {SITE.address.region}
+                    {SITE.address.city}, {SITE.address.state} &bull; Serving {SITE.address.region}
                   </span>
                 </div>
               </li>
@@ -148,21 +162,21 @@ export function Footer() {
             <div className="mt-6">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 text-sm font-accent uppercase tracking-wider text-gold hover:text-gold-light transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-body uppercase tracking-wider text-[#C8A23D] hover:text-[#C8A23D]/80 transition-colors"
               >
-                Book a Consultation →
+                Check Availability →
               </Link>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-cream/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-cream/30 text-xs">
+        <div className="mt-16 pt-8 border-t border-[#FAF7F2]/5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[#FAF7F2]/30 text-xs">
             &copy; {currentYear} {SITE.name}. All rights reserved.
           </p>
-          <p className="text-cream/20 text-xs flex items-center gap-1">
-            Crafted with <Heart className="h-3 w-3 text-accent" /> in Nebraska
+          <p className="text-[#FAF7F2]/20 text-xs">
+            Proudly serving Nebraska &amp; Iowa
           </p>
         </div>
       </Container>

@@ -5,7 +5,6 @@ import { StickyCTA } from '@/components/layout/sticky-cta';
 import { LocalBusinessSchema, WebSiteSchema, OrganizationSchema, ProfessionalServiceSchema } from '@/components/seo/schema-scripts';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
-import { CursorGlow } from '@/components/shared/cursor-glow';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
 import { settingsQuery } from '../../sanity/lib/queries';
@@ -23,7 +22,7 @@ async function getSettings(): Promise<any> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
-  
+
   const faviconUrl = settings?.favicon
     ? urlFor(settings.favicon).width(64).url()
     : null;
@@ -39,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       'wedding photographer',
       'quinceañera photographer',
       'engagement photographer',
+      'portrait photographer',
       'wedding videographer',
       'Nebraska photographer',
       'Iowa photographer',
@@ -102,18 +102,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const settings = await getSettings();
-  
+
   const logoUrl = settings?.logo
     ? urlFor(settings.logo).width(200).url()
     : null;
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <LocalBusinessSchema />
@@ -121,14 +121,13 @@ export default async function RootLayout({
         <WebSiteSchema />
         <OrganizationSchema />
       </head>
-      <body className="min-h-screen bg-warm-black text-cream antialiased">
+      <body className="min-h-screen bg-[#FAF7F2] text-[#0A1F44] antialiased">
         <Navigation logoUrl={logoUrl} />
         <main className="min-h-screen">{children}</main>
         <Footer />
         <StickyCTA />
         <GoogleAnalytics />
         <MetaPixel />
-        <CursorGlow />
       </body>
     </html>
   );

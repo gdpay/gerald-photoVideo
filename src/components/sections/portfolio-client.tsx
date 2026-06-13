@@ -48,10 +48,10 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={cn(
-                  'px-5 py-2 text-sm font-accent uppercase tracking-wider transition-all duration-300 rounded-sm',
+                  'px-5 py-2 text-sm font-body uppercase tracking-wider transition-all duration-300',
                   activeCategory === cat
-                    ? 'bg-gold text-warm-black'
-                    : 'text-cream/50 border border-cream/10 hover:border-gold/30 hover:text-gold'
+                    ? 'bg-[#0A1F44] text-[#FAF7F2]'
+                    : 'text-[#736D63] border border-[#D4CEC4] hover:border-[#C8A23D]/50 hover:text-[#C8A23D]'
                 )}
               >
                 {cat}
@@ -61,7 +61,7 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
 
           {/* Gallery Grid */}
           {galleryImages.length === 0 ? (
-            <div className="text-center py-20 text-cream/40">No gallery images yet.</div>
+            <div className="text-center py-20 text-[#A39D93]">No gallery images yet.</div>
           ) : (
             <motion.div
               variants={staggerContainer}
@@ -76,7 +76,7 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
                     key={`${image.category}-${index}`}
                     variants={staggerItem}
                     layout
-                    className="aspect-[3/4] overflow-hidden rounded-sm cursor-pointer group relative"
+                    className="aspect-[3/4] overflow-hidden cursor-pointer group relative"
                     onClick={() => setLightboxIndex(filtered.indexOf(image))}
                   >
                     <SanityImage
@@ -85,8 +85,8 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
                       fill
                       className="transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-warm-black/0 group-hover:bg-warm-black/40 transition-all duration-500 flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 text-white text-xs font-accent uppercase tracking-wider transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-[#0A1F44]/0 group-hover:bg-[#0A1F44]/30 transition-all duration-500 flex items-center justify-center">
+                      <span className="opacity-0 group-hover:opacity-100 text-[#FAF7F2] text-xs font-body uppercase tracking-wider transition-opacity duration-300">
                         {image.category}
                       </span>
                     </div>
@@ -105,12 +105,12 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 bg-[#0A1F44]/95 flex items-center justify-center p-4"
             onClick={() => setLightboxIndex(null)}
           >
             <button
               onClick={() => setLightboxIndex(null)}
-              className="absolute top-6 right-6 text-cream/50 hover:text-cream transition-colors z-10"
+              className="absolute top-6 right-6 text-[#FAF7F2]/50 hover:text-[#FAF7F2] transition-colors z-10"
               aria-label="Close lightbox"
             >
               <X className="h-8 w-8" />
@@ -119,7 +119,7 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
             {lightboxIndex > 0 && (
               <button
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex - 1); }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#FAF7F2]/50 hover:text-[#FAF7F2] transition-colors"
                 aria-label="Previous image"
               >
                 <ChevronLeft className="h-10 w-10" />
@@ -132,21 +132,20 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
                 alt={filtered[lightboxIndex].alt}
                 fill
                 priority
-                className="rounded-sm"
               />
             </div>
 
             {lightboxIndex < filtered.length - 1 && (
               <button
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex(lightboxIndex + 1); }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-cream/50 hover:text-cream transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#FAF7F2]/50 hover:text-[#FAF7F2] transition-colors"
                 aria-label="Next image"
               >
                 <ChevronRight className="h-10 w-10" />
               </button>
             )}
 
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-cream/40 text-sm">
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[#FAF7F2]/40 text-sm">
               {lightboxIndex + 1} / {filtered.length}
             </div>
           </motion.div>

@@ -27,13 +27,13 @@ function renderContent(content: any[]) {
     if (block._type === 'block') {
       // Render text blocks
       const text = block.children?.map((child: any) => child.text).join('') || '';
-      return <p key={index} className="text-cream/70 leading-relaxed mb-4">{text}</p>;
+      return <p key={index} className="text-[#736D63] leading-relaxed mb-4">{text}</p>;
     }
     if (block._type === 'image') {
       // Render inline images
       return (
         <figure key={index} className="my-8">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-sm">
+          <div className="relative aspect-[16/9] overflow-hidden">
             <SanityImage
               source={block}
               alt={block.alt || 'Blog image'}
@@ -43,7 +43,7 @@ function renderContent(content: any[]) {
             />
           </div>
           {block.alt && (
-            <figcaption className="mt-2 text-sm text-cream/40 text-center">
+            <figcaption className="mt-2 text-sm text-[#A39D93] text-center">
               {block.alt}
             </figcaption>
           )}
@@ -116,7 +116,7 @@ export default async function BlogPostPage({ params }: Props) {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-warm-black via-warm-black/60 to-warm-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A1F44]/70 via-[#0A1F44]/30 to-[#0A1F44]/10" />
         </section>
       )}
 
@@ -124,60 +124,62 @@ export default async function BlogPostPage({ params }: Props) {
         <Container narrow>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-cream/40 hover:text-gold transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm text-[#A39D93] hover:text-[#C8A23D] transition-colors mb-8"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Blog
           </Link>
 
           <div className="flex items-center gap-4 mb-4">
             {post.category && (
-              <span className="text-xs font-accent uppercase tracking-wider text-gold">
+              <span className="text-xs font-body uppercase tracking-wider text-[#C8A23D]">
                 {post.category}
               </span>
             )}
             {post.publishedAt && (
-              <span className="text-xs text-cream/30 flex items-center gap-1">
+              <span className="text-xs text-[#A39D93] flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {formatDate(post.publishedAt)}
               </span>
             )}
           </div>
 
-          <h1 className="font-heading text-4xl md:text-5xl text-cream mb-6">
+          <h1 className="font-heading text-4xl md:text-5xl text-[#0A1F44] mb-6">
             {post.title}
           </h1>
 
           {post.author && (
-            <div className="flex items-center gap-2 text-sm text-cream/30 mb-8">
+            <div className="flex items-center gap-2 text-sm text-[#A39D93] mb-8">
               <User className="h-3 w-3" />
               {post.author}
             </div>
           )}
 
           {post.excerpt && (
-            <p className="text-lg text-cream/60 mb-8 font-light italic">
+            <p className="text-lg text-[#736D63] mb-8 font-light italic">
               {post.excerpt}
             </p>
           )}
 
-          <div className="prose prose-invert prose-cream max-w-none 
-            prose-headings:font-heading prose-headings:text-cream 
-            prose-p:text-cream/70 prose-p:leading-relaxed
-            prose-a:text-gold prose-a:no-underline hover:prose-a:text-gold-light
-            prose-strong:text-cream/90
-            prose-ul:text-cream/70
-            prose-li:text-cream/70">
+          <div className="max-w-none 
+            [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:text-[#0A1F44] [&_h2]:mt-10 [&_h2]:mb-4
+            [&_h3]:font-heading [&_h3]:text-xl [&_h3]:text-[#0A1F44] [&_h3]:mt-8 [&_h3]:mb-3
+            [&_p]:text-[#736D63] [&_p]:leading-relaxed [&_p]:mb-4
+            [&_a]:text-[#C8A23D] [&_a]:no-underline hover:[&_a]:text-[#A8842E]
+            [&_strong]:text-[#0A1F44]
+            [&_ul]:text-[#736D63]
+            [&_li]:text-[#736D63]
+            [&_blockquote]:font-heading [&_blockquote]:italic [&_blockquote]:text-lg [&_blockquote]:text-[#0A1F44]/80 [&_blockquote]:border-l-2 [&_blockquote]:border-[#C8A23D] [&_blockquote]:pl-4 [&_blockquote]:my-8">
             {post.content ? renderContent(post.content) : (
-              <p className="text-cream/50">No content available.</p>
+              <p className="text-[#A39D93]">No content available.</p>
             )}
           </div>
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper>
+      <SectionWrapper navy>
         <Container narrow className="text-center">
-          <h2 className="font-heading text-3xl text-cream mb-4">Want Your Story Featured?</h2>
-          <p className="text-cream/60 mb-8 max-w-md mx-auto">
+          <h2 className="font-heading text-3xl text-[#FAF7F2] mb-4">Want Your Story Featured?</h2>
+          <p className="text-[#FAF7F2]/60 mb-8 max-w-md mx-auto">
             Every love story is unique. Let us capture yours.
           </p>
           <Button variant="primary" size="lg" href="/contact">

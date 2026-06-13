@@ -7,12 +7,11 @@ import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight, Check, Camera, Film, Heart, Calendar, Users, MapPin, Mail, Phone, MessageSquare } from 'lucide-react';
-import { SITE } from '@/lib/constants';
+import { ArrowLeft, ArrowRight, Check, Camera, Film, Heart, Calendar, Users, Mail, Phone, MessageSquare } from 'lucide-react';
 
 const formSchema = z.object({
   serviceType: z.enum(['photography', 'videography', 'both']),
-  eventType: z.enum(['wedding', 'quinceanera', 'engagement', 'other']),
+  eventType: z.enum(['wedding', 'quinceanera', 'engagement', 'portrait', 'other']),
   eventDate: z.string().min(1, 'Event date is required'),
   guestCount: z.string().optional(),
   venue: z.string().optional(),
@@ -44,6 +43,7 @@ const eventTypes = [
   { value: 'wedding', label: 'Wedding' },
   { value: 'quinceanera', label: 'Quinceañera' },
   { value: 'engagement', label: 'Engagement' },
+  { value: 'portrait', label: 'Portrait' },
   { value: 'other', label: 'Other Event' },
 ];
 
@@ -114,16 +114,16 @@ export function MultiStepInquiryForm() {
         animate={{ opacity: 1, scale: 1 }}
         className="text-center py-16"
       >
-        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-gold/10 border border-gold/20">
-          <Check className="h-8 w-8 text-gold" />
+        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-[#C8A23D]/10 border border-[#C8A23D]/20">
+          <Check className="h-8 w-8 text-[#C8A23D]" />
         </div>
-        <h3 className="font-heading text-2xl text-cream mb-2">Thank You!</h3>
-        <p className="text-cream/60 mb-6 max-w-sm mx-auto">
+        <h3 className="font-heading text-2xl text-[#0A1F44] mb-2">Thank You!</h3>
+        <p className="text-[#736D63] mb-6 max-w-sm mx-auto">
           We&apos;ve received your inquiry and will get back to you within 24 hours.
         </p>
         <a
           href="/portfolio"
-          className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors font-accent text-sm uppercase tracking-wider"
+          className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
         >
           Browse Our Portfolio →
         </a>
@@ -139,22 +139,22 @@ export function MultiStepInquiryForm() {
           <div key={s.id} className="flex items-center">
             <div className={cn(
               'flex items-center gap-2',
-              s.id <= step ? 'text-gold' : 'text-cream/20'
+              s.id <= step ? 'text-[#C8A23D]' : 'text-[#D4CEC4]'
             )}>
               <div className={cn(
-                'flex items-center justify-center w-8 h-8 rounded-full border text-xs font-accent transition-all duration-300',
-                s.id < step ? 'bg-gold border-gold text-warm-black' :
-                s.id === step ? 'border-gold text-gold' :
-                'border-cream/20 text-cream/20'
+                'flex items-center justify-center w-8 h-8 rounded-full border text-xs font-body transition-all duration-300',
+                s.id < step ? 'bg-[#C8A23D] border-[#C8A23D] text-[#FAF7F2]' :
+                s.id === step ? 'border-[#C8A23D] text-[#C8A23D]' :
+                'border-[#D4CEC4] text-[#D4CEC4]'
               )}>
                 {s.id < step ? <Check className="h-4 w-4" /> : s.id}
               </div>
-              <span className="hidden sm:block text-xs font-accent uppercase tracking-wider">{s.title}</span>
+              <span className="hidden sm:block text-xs font-body uppercase tracking-wider">{s.title}</span>
             </div>
             {i < steps.length - 1 && (
               <div className={cn(
                 'w-8 sm:w-12 h-px mx-2 transition-colors duration-300',
-                s.id < step ? 'bg-gold/50' : 'bg-cream/10'
+                s.id < step ? 'bg-[#C8A23D]/50' : 'bg-[#E5E0D8]'
               )} />
             )}
           </div>
@@ -173,8 +173,8 @@ export function MultiStepInquiryForm() {
             {/* Step 1: Service Selection */}
             {step === 1 && (
               <div>
-                <h3 className="font-heading text-2xl text-cream mb-2">What service are you looking for?</h3>
-                <p className="text-cream/50 text-sm mb-6">Choose one or select both.</p>
+                <h3 className="font-heading text-2xl text-[#0A1F44] mb-2">What service are you looking for?</h3>
+                <p className="text-[#736D63] text-sm mb-6">Choose one or select both.</p>
                 <div className="grid grid-cols-3 gap-3">
                   {serviceOptions.map((opt) => (
                     <button
@@ -182,20 +182,20 @@ export function MultiStepInquiryForm() {
                       type="button"
                       onClick={() => setValue('serviceType', opt.value as 'photography' | 'videography' | 'both')}
                       className={cn(
-                        'flex flex-col items-center gap-2 p-4 border rounded-sm transition-all duration-300',
+                        'flex flex-col items-center gap-2 p-4 border transition-all duration-300',
                         serviceType === opt.value
-                          ? 'border-gold bg-gold/5 text-gold'
-                          : 'border-cream/10 text-cream/40 hover:border-cream/30'
+                          ? 'border-[#C8A23D] bg-[#C8A23D]/5 text-[#C8A23D]'
+                          : 'border-[#E5E0D8] text-[#A39D93] hover:border-[#D4CEC4]'
                       )}
                     >
                       <opt.icon className="h-6 w-6" />
-                      <span className="text-xs font-accent uppercase tracking-wider">{opt.label}</span>
+                      <span className="text-xs font-body uppercase tracking-wider">{opt.label}</span>
                       <span className="text-[10px] text-center opacity-60">{opt.desc}</span>
                     </button>
                   ))}
                 </div>
                 {errors.serviceType && (
-                  <p className="text-accent text-sm mt-2">Please select a service type.</p>
+                  <p className="text-[#8A1C3E] text-sm mt-2">Please select a service type.</p>
                 )}
               </div>
             )}
@@ -203,58 +203,58 @@ export function MultiStepInquiryForm() {
             {/* Step 2: Event Details */}
             {step === 2 && (
               <div>
-                <h3 className="font-heading text-2xl text-cream mb-2">Tell us about your event</h3>
-                <p className="text-cream/50 text-sm mb-6">Help us understand your needs.</p>
+                <h3 className="font-heading text-2xl text-[#0A1F44] mb-2">Tell us about your event</h3>
+                <p className="text-[#736D63] text-sm mb-6">Help us understand your needs.</p>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">Event Type</label>
+                    <label className="block text-sm text-[#736D63] mb-2">Event Type</label>
                     <div className="grid grid-cols-2 gap-2">
                       {eventTypes.map((opt) => (
                         <button
                           key={opt.value}
                           type="button"
-                          onClick={() => setValue('eventType', opt.value as 'wedding' | 'quinceanera' | 'engagement' | 'other')}
+                          onClick={() => setValue('eventType', opt.value as 'wedding' | 'quinceanera' | 'engagement' | 'portrait' | 'other')}
                           className={cn(
-                            'py-3 px-4 border rounded-sm text-sm transition-all duration-300',
+                            'py-3 px-4 border text-sm transition-all duration-300',
                             eventType === opt.value
-                              ? 'border-gold bg-gold/5 text-gold'
-                              : 'border-cream/10 text-cream/40 hover:border-cream/30'
+                              ? 'border-[#C8A23D] bg-[#C8A23D]/5 text-[#C8A23D]'
+                              : 'border-[#E5E0D8] text-[#A39D93] hover:border-[#D4CEC4]'
                           )}
                         >
                           {opt.label}
                         </button>
                       ))}
                     </div>
-                    {errors.eventType && <p className="text-accent text-sm mt-1">Please select event type.</p>}
+                    {errors.eventType && <p className="text-[#8A1C3E] text-sm mt-1">Please select event type.</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">Event Date</label>
+                    <label className="block text-sm text-[#736D63] mb-2">Event Date</label>
                     <input
                       type="date"
                       {...register('eventDate')}
-                      className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                      className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                     />
-                    {errors.eventDate && <p className="text-accent text-sm mt-1">{errors.eventDate.message}</p>}
+                    {errors.eventDate && <p className="text-[#8A1C3E] text-sm mt-1">{errors.eventDate.message}</p>}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-cream/60 mb-2">Expected Guests</label>
+                      <label className="block text-sm text-[#736D63] mb-2">Expected Guests</label>
                       <input
                         type="number"
                         placeholder="e.g. 150"
                         {...register('guestCount')}
-                        className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                        className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-cream/60 mb-2">Venue (optional)</label>
+                      <label className="block text-sm text-[#736D63] mb-2">Venue (optional)</label>
                       <input
                         type="text"
                         placeholder="Venue name"
                         {...register('venue')}
-                        className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                        className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -265,58 +265,58 @@ export function MultiStepInquiryForm() {
             {/* Step 3: Contact Info */}
             {step === 3 && (
               <div>
-                <h3 className="font-heading text-2xl text-cream mb-2">Your Contact Information</h3>
-                <p className="text-cream/50 text-sm mb-6">We'll get back to you within 24 hours.</p>
+                <h3 className="font-heading text-2xl text-[#0A1F44] mb-2">Your Contact Information</h3>
+                <p className="text-[#736D63] text-sm mb-6">We&apos;ll get back to you within 24 hours.</p>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-cream/60 mb-2">Your Name *</label>
+                      <label className="block text-sm text-[#736D63] mb-2">Your Name *</label>
                       <input
                         type="text"
                         placeholder="John"
                         {...register('name')}
-                        className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                        className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                       />
-                      {errors.name && <p className="text-accent text-sm mt-1">{errors.name.message}</p>}
+                      {errors.name && <p className="text-[#8A1C3E] text-sm mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
-                      <label className="block text-sm text-cream/60 mb-2">Partner Name</label>
+                      <label className="block text-sm text-[#736D63] mb-2">Partner Name</label>
                       <input
                         type="text"
                         placeholder="Jane"
                         {...register('partnerName')}
-                        className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                        className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">Email Address *</label>
+                    <label className="block text-sm text-[#736D63] mb-2">Email Address *</label>
                     <input
                       type="email"
                       placeholder="you@email.com"
                       {...register('email')}
-                      className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                      className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                     />
-                    {errors.email && <p className="text-accent text-sm mt-1">{errors.email.message}</p>}
+                    {errors.email && <p className="text-[#8A1C3E] text-sm mt-1">{errors.email.message}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">Phone Number *</label>
+                    <label className="block text-sm text-[#736D63] mb-2">Phone Number *</label>
                     <input
                       type="tel"
                       placeholder="(402) 555-0123"
                       {...register('phone')}
-                      className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                      className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                     />
-                    {errors.phone && <p className="text-accent text-sm mt-1">{errors.phone.message}</p>}
+                    {errors.phone && <p className="text-[#8A1C3E] text-sm mt-1">{errors.phone.message}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">How did you hear about us?</label>
+                    <label className="block text-sm text-[#736D63] mb-2">How did you hear about us?</label>
                     <select
                       {...register('hearAbout')}
-                      className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors"
+                      className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors"
                     >
                       <option value="">Select an option</option>
                       <option value="google">Google Search</option>
@@ -332,12 +332,12 @@ export function MultiStepInquiryForm() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-cream/60 mb-2">Message (optional)</label>
+                    <label className="block text-sm text-[#736D63] mb-2">Message (optional)</label>
                     <textarea
                       rows={3}
                       placeholder="Share any details about your vision..."
                       {...register('message')}
-                      className="w-full bg-transparent border border-cream/10 rounded-sm px-4 py-3 text-cream text-sm focus:border-gold focus:outline-none transition-colors resize-none"
+                      className="w-full bg-transparent border border-[#E5E0D8] px-4 py-3 text-[#0A1F44] text-sm focus:border-[#C8A23D] focus:outline-none transition-colors resize-none"
                     />
                   </div>
 
@@ -356,33 +356,33 @@ export function MultiStepInquiryForm() {
             {/* Step 4: Confirmation */}
             {step === 4 && (
               <div>
-                <h3 className="font-heading text-2xl text-cream mb-2">Almost Done!</h3>
-                <p className="text-cream/50 text-sm mb-6">Please review your information before submitting.</p>
-                <div className="space-y-3 p-6 border border-cream/5 rounded-sm">
+                <h3 className="font-heading text-2xl text-[#0A1F44] mb-2">Almost Done!</h3>
+                <p className="text-[#736D63] text-sm mb-6">Please review your information before submitting.</p>
+                <div className="space-y-3 p-6 border border-[#E5E0D8] bg-[#FAF7F2]">
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-cream/40">Service:</span>
-                      <p className="text-cream capitalize">{watch('serviceType')}</p>
+                      <span className="text-[#A39D93]">Service:</span>
+                      <p className="text-[#0A1F44] capitalize">{watch('serviceType')}</p>
                     </div>
                     <div>
-                      <span className="text-cream/40">Event Type:</span>
-                      <p className="text-cream capitalize">{watch('eventType')}</p>
+                      <span className="text-[#A39D93]">Event Type:</span>
+                      <p className="text-[#0A1F44] capitalize">{watch('eventType')}</p>
                     </div>
                     <div>
-                      <span className="text-cream/40">Event Date:</span>
-                      <p className="text-cream">{watch('eventDate')}</p>
+                      <span className="text-[#A39D93]">Event Date:</span>
+                      <p className="text-[#0A1F44]">{watch('eventDate')}</p>
                     </div>
                     <div>
-                      <span className="text-cream/40">Name:</span>
-                      <p className="text-cream">{watch('name')}</p>
+                      <span className="text-[#A39D93]">Name:</span>
+                      <p className="text-[#0A1F44]">{watch('name')}</p>
                     </div>
                     <div>
-                      <span className="text-cream/40">Email:</span>
-                      <p className="text-cream">{watch('email')}</p>
+                      <span className="text-[#A39D93]">Email:</span>
+                      <p className="text-[#0A1F44]">{watch('email')}</p>
                     </div>
                     <div>
-                      <span className="text-cream/40">Phone:</span>
-                      <p className="text-cream">{watch('phone')}</p>
+                      <span className="text-[#A39D93]">Phone:</span>
+                      <p className="text-[#0A1F44]">{watch('phone')}</p>
                     </div>
                   </div>
                 </div>
@@ -397,7 +397,7 @@ export function MultiStepInquiryForm() {
             <button
               type="button"
               onClick={prevStep}
-              className="flex items-center gap-2 text-sm text-cream/40 hover:text-gold transition-colors"
+              className="flex items-center gap-2 text-sm text-[#A39D93] hover:text-[#C8A23D] transition-colors"
             >
               <ArrowLeft className="h-4 w-4" /> Back
             </button>
@@ -409,7 +409,7 @@ export function MultiStepInquiryForm() {
             <button
               type="button"
               onClick={nextStep}
-              className="flex items-center gap-2 px-6 py-3 bg-gold text-warm-black text-sm font-accent uppercase tracking-wider hover:bg-gold-dark transition-colors rounded-sm"
+              className="flex items-center gap-2 px-6 py-3 bg-[#0A1F44] text-[#FAF7F2] text-sm font-body uppercase tracking-wider hover:bg-[#122D5A] transition-colors"
             >
               Next <ArrowRight className="h-4 w-4" />
             </button>

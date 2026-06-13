@@ -7,6 +7,7 @@ const staticPages = [
   { path: '/weddings', priority: 0.9 },
   { path: '/quinceaneras', priority: 0.9 },
   { path: '/engagements', priority: 0.8 },
+  { path: '/portraits', priority: 0.8 },
   { path: '/videography', priority: 0.9 },
   { path: '/portfolio', priority: 0.8 },
   { path: '/investment', priority: 0.7 },
@@ -28,10 +29,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: page.priority >= 0.9 ? 'weekly' as const : 'monthly' as const,
     priority: page.priority,
   }));
-
-  // Dynamic blog posts would be fetched from Sanity CMS here
-  // const posts = await getBlogPosts();
-  // const blogUrls = posts.map(post => ({ ... }));
 
   return [...staticUrls];
 }

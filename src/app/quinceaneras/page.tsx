@@ -66,12 +66,11 @@ export default async function QuinceanerasPage() {
         title="Quinceañera Photography & Video"
         subtitle="Celebrating her journey into womanhood with the elegance and artistry it deserves."
         imageSource={heroSection?.backgroundImage}
-        typewriterWords={['Quinceañera Photography', 'Her Special Day', 'Celebrating Tradition', 'Beautiful Moments']}
       />
 
       <SectionWrapper>
         <Container narrow>
-          <p className="text-lg text-cream/70 leading-relaxed">
+          <p className="text-lg text-[#736D63] leading-relaxed">
             A quinceañera is a once-in-a-lifetime celebration — a beautiful blend of tradition, family, and
             joy. We understand the cultural significance and work closely with families to ensure every
             moment is captured with respect and artistry. From the religious ceremony to the waltz, from
@@ -80,20 +79,20 @@ export default async function QuinceanerasPage() {
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-cream text-center mb-12">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
             What&apos;s Included
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="p-6 border border-cream/5 rounded-sm hover:border-gold/20 transition-colors group"
+                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
               >
-                <item.icon className="h-6 w-6 text-gold mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="font-heading text-xl text-cream mb-2">{item.label}</h3>
-                <p className="text-sm text-cream/50">{item.desc}</p>
+                <item.icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                <p className="text-sm text-[#736D63]">{item.desc}</p>
               </div>
             ))}
           </div>

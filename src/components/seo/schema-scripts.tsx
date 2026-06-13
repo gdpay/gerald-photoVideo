@@ -36,6 +36,7 @@ export function LocalBusinessSchema() {
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Wedding Photography' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Quinceañera Photography' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Engagement Photography' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Portrait Photography' } },
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Wedding Videography' } },
       ],
     },
@@ -106,6 +107,15 @@ export function ProfessionalServiceSchema() {
             '@type': 'Service',
             name: 'Engagement Photography',
             description: 'Romantic engagement sessions capturing the excitement of your new chapter.',
+            provider: { '@type': 'LocalBusiness', name: SITE.name },
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Portrait Photography',
+            description: 'Timeless portraits that celebrate your unique beauty and personality.',
             provider: { '@type': 'LocalBusiness', name: SITE.name },
           },
         },

@@ -47,41 +47,41 @@ export function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
       <SectionWrapper>
         <Container narrow>
           <div className="flex items-start gap-4 mb-8">
-            <MapPin className="h-6 w-6 text-gold shrink-0 mt-1" />
+            <MapPin className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
-              <h2 className="font-heading text-2xl text-cream mb-2">
+              <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
                 Proudly Serving {city}, {state}
               </h2>
-              <p className="text-cream/60 leading-relaxed">
-                {city} holds a special place in our hearts. We've had the privilege of documenting countless 
+              <p className="text-[#736D63] leading-relaxed">
+                {city} holds a special place in our hearts. We&apos;ve had the privilege of documenting countless 
                 beautiful weddings, quinceañeras, and engagement sessions in this wonderful community. 
-                From {city}'s most beautiful venues to its hidden gems, we know exactly where to 
+                From {city}&apos;s most beautiful venues to its hidden gems, we know exactly where to 
                 create stunning images for your celebration.
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-4">
-            <Camera className="h-6 w-6 text-gold shrink-0 mt-1" />
+            <Camera className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
-              <h2 className="font-heading text-2xl text-cream mb-2">
+              <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
                 Our {city} Photography Services
               </h2>
-              <ul className="space-y-2 text-cream/60">
+              <ul className="space-y-2 text-[#736D63]">
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gold/50 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
                   Wedding Photography & Videography in {city}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gold/50 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
                   Quinceañera Photography & Video in {city}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gold/50 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
                   Engagement & Couple Portraits in {city}
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-gold/50 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
                   Cinematic Wedding Films in {city}
                 </li>
               </ul>

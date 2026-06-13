@@ -1,43 +1,53 @@
 @import "tailwindcss";
 
 /* ─── Design System ─────────────────────────────────────────── */
+/* Brand: Gerald Photo Video — Luxury Editorial Wedding & Quinceañera */
+/* Color Distribution: 75% Warm Ivory | 20% Deep Navy | 4% Royal Gold | 1% Burgundy */
 
 @theme {
-  /* Colors */
-  --color-black: #0a0a0a;
-  --color-dark: #1a1a1a;
-  --color-charcoal: #2d2d2d;
-  --color-warm-black: #1c1b1a;
-  --color-gold: #c9a96e;
-  --color-gold-light: #e8d5a3;
-  --color-gold-dark: #a8884e;
-  --color-cream: #f5f0e8;
-  --color-warm-white: #faf8f5;
-  --color-gray-100: #f3f3f3;
-  --color-gray-200: #e5e5e5;
-  --color-gray-300: #d4d4d4;
-  --color-gray-400: #a3a3a3;
-  --color-gray-500: #737373;
-  --color-gray-600: #525252;
-  --color-gray-700: #404040;
-  --color-gray-800: #262626;
-  --color-accent: #e94560;
-  --color-accent-hover: #d63851;
+  /* ── Brand Colors ────────────────────────────────────────── */
+  --color-ivory: #FAF7F2;
+  --color-ivory-light: #FFFDF9;
+  --color-champagne: #F8E8D0;
+  --color-champagne-light: #FCF3E4;
+  --color-navy: #0A1F44;
+  --color-navy-light: #122D5A;
+  --color-navy-dark: #06112A;
+  --color-gold: #C8A23D;
+  --color-gold-light: #D9B95E;
+  --color-gold-dark: #A8842E;
+  --color-gold-subtle: rgba(200, 162, 61, 0.08);
+  --color-burgundy: #8A1C3E;
+  --color-burgundy-dark: #6E1532;
 
-  /* Typography */
-  --font-heading: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  /* ── Neutral / Surface ───────────────────────────────────── */
+  --color-white: #FFFFFF;
+  --color-cream: #FAF7F2;
+  --color-cream-dark: #F0EBE0;
+  --color-stone-50: #F8F6F2;
+  --color-stone-100: #F0EDE6;
+  --color-stone-200: #E5E0D8;
+  --color-stone-300: #D4CEC4;
+  --color-stone-400: #A39D93;
+  --color-stone-500: #736D63;
+  --color-stone-600: #524C43;
+  --color-stone-700: #3D382F;
+  --color-stone-800: #2A2620;
+  --color-stone-900: #1A1713;
+
+  /* ── Typography ──────────────────────────────────────────── */
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  --font-accent: 'Montserrat', 'Helvetica Neue', sans-serif;
 
-  /* Container */
+  /* ── Container ───────────────────────────────────────────── */
   --container-max: 1280px;
   --container-narrow: 960px;
 
-  /* Shadows */
-  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-elevated: 0 10px 40px rgba(0, 0, 0, 0.15);
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 30px rgba(201, 169, 110, 0.15);
+  /* ── Shadows ──────────────────────────────────────────────── */
+  --shadow-subtle: 0 1px 3px rgba(10, 31, 68, 0.06);
+  --shadow-elevated: 0 10px 40px rgba(10, 31, 68, 0.08);
+  --shadow-card: 0 4px 20px rgba(10, 31, 68, 0.05);
+  --shadow-warm: 0 8px 30px rgba(200, 162, 61, 0.08);
 }
 
 /* ─── Base Styles ───────────────────────────────────────────── */
@@ -49,8 +59,8 @@
 
   body {
     font-family: var(--font-body);
-    background-color: var(--color-warm-black);
-    color: var(--color-cream);
+    background-color: var(--color-ivory);
+    color: var(--color-navy);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -59,11 +69,13 @@
     font-family: var(--font-heading);
     font-weight: 300;
     line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-navy);
   }
 
   ::selection {
     background-color: var(--color-gold);
-    color: var(--color-warm-black);
+    color: var(--color-ivory);
   }
 }
 
@@ -77,19 +89,45 @@
   text-wrap: pretty;
 }
 
-@utility gold-gradient {
-  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold), var(--color-gold-dark));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@utility eyebrow {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+@utility nav-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ivory);
+  transition: color 0.2s ease;
+}
+
+@utility nav-link:hover {
+  color: var(--color-gold);
+}
+
+@utility gold-divider {
+  width: 60px;
+  height: 1px;
+  background-color: var(--color-gold);
 }
 
 @utility dark-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%);
+  background: linear-gradient(to top, rgba(10, 31, 68, 0.6) 0%, rgba(10, 31, 68, 0) 60%);
 }
 
 @utility dark-overlay-hero {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+  background: linear-gradient(to top, rgba(10, 31, 68, 0.6) 0%, rgba(10, 31, 68, 0.2) 50%, rgba(10, 31, 68, 0.05) 100%);
+}
+
+@utility light-overlay {
+  background: linear-gradient(to top, rgba(250, 247, 242, 0.8) 0%, rgba(250, 247, 242, 0) 60%);
 }
 
 /* ─── Animations ────────────────────────────────────────────── */
@@ -121,13 +159,9 @@
   }
 }
 
-@keyframes gold-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(201, 169, 110, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(201, 169, 110, 0.4);
-  }
+@keyframes gold-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
 @keyframes kenBurns {
@@ -156,10 +190,6 @@
   animation: scale-in 0.3s ease-out;
 }
 
-@utility animate-gold-pulse {
-  animation: gold-pulse 3s ease-in-out infinite;
-}
-
 @utility animate-ken-burns {
   animation: kenBurns 8s ease-out forwards;
 }
@@ -171,16 +201,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-warm-black);
+  background: var(--color-ivory);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-charcoal);
+  background: var(--color-stone-200);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold-dark);
+  background: var(--color-gold);
 }
 
 /* ─── Framer Motion Overrides ───────────────────────────────── */

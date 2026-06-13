@@ -12,7 +12,7 @@ export default async function Image() {
     (
       <div
         style={{
-          background: 'linear-gradient(135deg, #1c1b1a 0%, #0a0a0a 100%)',
+          background: '#FAF7F2',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -32,7 +32,7 @@ export default async function Image() {
             right: 0,
             height: 4,
             display: 'flex',
-            background: 'linear-gradient(90deg, transparent, #c9a96e, transparent)',
+            background: 'linear-gradient(90deg, transparent, #C8A23D, transparent)',
           }}
         />
         {/* Bottom decorative line */}
@@ -44,7 +44,7 @@ export default async function Image() {
             right: 0,
             height: 4,
             display: 'flex',
-            background: 'linear-gradient(90deg, transparent, #c9a96e, transparent)',
+            background: 'linear-gradient(90deg, transparent, #C8A23D, transparent)',
           }}
         />
         {/* Brand name */}
@@ -52,7 +52,7 @@ export default async function Image() {
           style={{
             fontSize: 72,
             fontWeight: 300,
-            color: '#f5f0e8',
+            color: '#0A1F44',
             letterSpacing: '0.05em',
             display: 'flex',
             alignItems: 'center',
@@ -60,7 +60,7 @@ export default async function Image() {
           }}
         >
           <span>Gerald</span>
-          <span style={{ color: '#c9a96e' }}>.</span>
+          <span style={{ color: '#C8A23D' }}> </span>
           <span>Photo</span>
           <span> </span>
           <span>Video</span>
@@ -69,7 +69,7 @@ export default async function Image() {
         <div
           style={{
             fontSize: 22,
-            color: 'rgba(245, 240, 232, 0.6)',
+            color: '#736D63',
             letterSpacing: '0.15em',
             fontWeight: 300,
             fontFamily: 'sans-serif',
@@ -86,7 +86,7 @@ export default async function Image() {
             width: 200,
             height: 1,
             display: 'flex',
-            background: 'linear-gradient(90deg, transparent, #c9a96e, transparent)',
+            background: 'linear-gradient(90deg, transparent, #C8A23D, transparent)',
             marginTop: 32,
             marginBottom: 32,
           }}
@@ -95,7 +95,7 @@ export default async function Image() {
         <div
           style={{
             fontSize: 18,
-            color: 'rgba(245, 240, 232, 0.4)',
+            color: '#A39D93',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             fontFamily: 'sans-serif',
@@ -111,7 +111,7 @@ export default async function Image() {
             bottom: 24,
             right: 40,
             fontSize: 12,
-            color: 'rgba(245, 240, 232, 0.2)',
+            color: '#D4CEC4',
             letterSpacing: '0.1em',
             fontFamily: 'sans-serif',
             display: 'flex',

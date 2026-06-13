@@ -90,14 +90,13 @@ export default function FAQPage() {
       <PageHero
         title="Frequently Asked Questions"
         subtitle="Everything you need to know about working with us."
-        typewriterWords={['FAQ', 'Your Questions', 'Answers Here', 'Need to Know']}
       />
 
       <SectionWrapper>
         <Container narrow>
           {faqData.map((category) => (
             <div key={category.category} className="mb-12 last:mb-0">
-              <h2 className="font-heading text-2xl text-gold mb-6">{category.category}</h2>
+              <h2 className="font-heading text-2xl text-[#C8A23D] mb-6">{category.category}</h2>
               <div className="space-y-2">
                 {category.questions.map((item, idx) => {
                   const globalIndex = flatFaqs.indexOf(item);
@@ -105,16 +104,16 @@ export default function FAQPage() {
                   return (
                     <div
                       key={idx}
-                      className="border border-cream/5 rounded-sm overflow-hidden"
+                      className="border border-[#E5E0D8] overflow-hidden"
                     >
                       <button
                         onClick={() => setOpenIndex(isOpen ? null : globalIndex)}
-                        className="w-full flex items-center justify-between p-5 text-left text-cream/80 hover:text-gold transition-colors"
+                        className="w-full flex items-center justify-between p-5 text-left text-[#0A1F44]/80 hover:text-[#C8A23D] transition-colors"
                       >
                         <span className="font-body font-medium">{item.question}</span>
                         <ChevronDown
                           className={cn(
-                            'h-4 w-4 shrink-0 transition-transform duration-300',
+                            'h-4 w-4 shrink-0 text-[#A39D93] transition-transform duration-300',
                             isOpen && 'rotate-180'
                           )}
                         />
@@ -128,7 +127,7 @@ export default function FAQPage() {
                             transition={{ duration: 0.3 }}
                             className="overflow-hidden"
                           >
-                            <p className="px-5 pb-5 text-sm text-cream/50 leading-relaxed">
+                            <p className="px-5 pb-5 text-sm text-[#736D63] leading-relaxed">
                               {item.answer}
                             </p>
                           </motion.div>

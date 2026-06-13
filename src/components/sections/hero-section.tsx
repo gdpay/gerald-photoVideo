@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { SITE } from '@/lib/constants';
 import { urlFor } from '../../../sanity/lib/client';
 import Image from 'next/image';
-import { TypewriterText } from '@/components/shared/typewriter-text';
 
 interface HeroSlide {
   _id: string;
@@ -22,10 +21,9 @@ interface HeroSectionProps {
   slides?: HeroSlide[];
   title?: string;
   subtitle?: string;
-  typewriterWords?: string[];
 }
 
-const SLIDE_INTERVAL = 3000;
+const SLIDE_INTERVAL = 4000;
 const TRANSITION_DURATION = 1500;
 const KEN_BURNS_DURATION = 8000;
 
@@ -37,18 +35,10 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   { _id: 'fallback-5', imageUrl: 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1920&q=90', category: 'WEDDINGS', alt: 'Wedding couple golden hour' },
 ];
 
-const DEFAULT_TYPEWRITER_WORDS = [
-  'Timeless Storytelling',
-  'Beautiful Moments',
-  'Your Love Story',
-  'Forever Captured',
-];
-
 export function HeroSection({
   slides = [],
-  title = SITE.tagline,
+  title = 'Timeless Storytelling',
   subtitle = `Luxury wedding, quinceañera & engagement photography serving ${SITE.address.region}`,
-  typewriterWords,
 }: HeroSectionProps) {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -120,7 +110,7 @@ export function HeroSection({
 
   return (
     <section
-      className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden"
+      className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-[#FAF7F2]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -131,7 +121,6 @@ export function HeroSection({
       <div className="absolute inset-0">
         {allSlides.map((slide, i) => {
           const isActive = i === current;
-          const isPast = i === ((current - 1 + allSlides.length) % allSlides.length);
           const imageUrl = getSlideUrl(slide);
 
           return (
@@ -150,7 +139,6 @@ export function HeroSection({
                   animation: isActive
                     ? `kenBurns ${KEN_BURNS_DURATION}s ease-out forwards`
                     : 'none',
-                  transformOrigin: isPast ? '100% 100%' : '0% 0%',
                 }}
               >
                 {imageUrl && (
@@ -169,34 +157,36 @@ export function HeroSection({
           );
         })}
 
-        {/* Overlays */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-warm-black/80 via-warm-black/40 to-warm-black/30" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-warm-black/30 to-transparent" />
+        {/* Editorial overlays - subtle navy gradient */}
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#0A1F44]/70 via-[#0A1F44]/20 to-[#0A1F44]/05" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-[#0A1F44]/30 to-transparent" />
       </div>
 
       {/* Hero Content */}
       <Container className="relative z-10">
         <div className="max-w-3xl">
+          {/* Gold divider */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="h-[1px] w-16 bg-[#C8A23D] mb-8 origin-left"
+          />
+
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream font-light leading-[1.05] tracking-tight"
+            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#FAF7F2] font-light leading-[1.05] tracking-tight"
           >
-            <TypewriterText
-              words={typewriterWords || (title ? [title] : DEFAULT_TYPEWRITER_WORDS)}
-              delay={1500}
-              typingSpeed={80}
-              deletingSpeed={40}
-              pauseDuration={2500}
-            />
+            {title}
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-6 text-lg sm:text-xl text-cream/70 font-body font-light max-w-xl leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-[#FAF7F2]/70 font-body font-light max-w-xl leading-relaxed"
           >
             {subtitle}
           </motion.p>
@@ -208,7 +198,7 @@ export function HeroSection({
             className="mt-10 flex flex-col sm:flex-row items-start gap-4"
           >
             <Button variant="primary" size="lg" href="/contact">
-              Inquire Now
+              Check Availability
             </Button>
             <Button variant="outline" size="lg" href="/portfolio">
               View Portfolio
@@ -219,10 +209,10 @@ export function HeroSection({
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-4 text-sm text-cream/40"
+            className="mt-4 text-sm text-[#FAF7F2]/40"
           >
             or call{' '}
-            <a href={`tel:${SITE.phoneRaw}`} className="text-gold hover:text-gold-light transition-colors">
+            <a href={`tel:${SITE.phoneRaw}`} className="text-[#C8A23D] hover:text-[#C8A23D]/80 transition-colors">
               {SITE.phone}
             </a>
           </motion.p>
@@ -237,9 +227,9 @@ export function HeroSection({
           transition={{ delay: 1.5, duration: 0.8 }}
           className="absolute bottom-10 left-8 z-10 hidden sm:flex items-center gap-2"
         >
-          <span className="font-accent text-sm tracking-widest text-gold">{slideNumber}</span>
-          <span className="font-accent text-sm tracking-widest text-cream/30">/</span>
-          <span className="font-accent text-sm tracking-widest text-cream/30">{totalSlides}</span>
+          <span className="font-body text-sm tracking-widest text-[#C8A23D]">{slideNumber}</span>
+          <span className="font-body text-sm tracking-widest text-[#FAF7F2]/30">/</span>
+          <span className="font-body text-sm tracking-widest text-[#FAF7F2]/30">{totalSlides}</span>
         </motion.div>
       )}
 
@@ -265,14 +255,14 @@ export function HeroSection({
               {i === current && (
                 <motion.div
                   key={progressKey}
-                  className="absolute inset-0 bg-gold rounded-full"
+                  className="absolute inset-0 bg-[#C8A23D] rounded-full"
                   initial={{ scaleX: 0, transformOrigin: 'left' }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: SLIDE_INTERVAL / 1000, ease: 'linear' }}
                 />
               )}
               {i !== current && (
-                <div className="absolute inset-0 bg-cream/20 group-hover:bg-cream/40 transition-colors" />
+                <div className="absolute inset-0 bg-[#FAF7F2]/20 group-hover:bg-[#FAF7F2]/40 transition-colors" />
               )}
             </button>
           ))}
@@ -294,7 +284,7 @@ export function HeroSection({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="font-accent text-[10px] tracking-[0.3em] uppercase text-cream/40"
+              className="font-body text-[10px] tracking-[0.3em] uppercase text-[#FAF7F2]/40"
               style={{ writingMode: 'vertical-rl' }}
             >
               {allSlides[current]?.category}
@@ -310,12 +300,12 @@ export function HeroSection({
         transition={{ delay: 2, duration: 0.8 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
       >
-        <span className="font-accent text-[10px] tracking-[0.3em] uppercase text-cream/30">
+        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-[#FAF7F2]/30">
           Scroll
         </span>
-        <div className="relative w-[1px] h-10 bg-cream/10 overflow-hidden">
+        <div className="relative w-[1px] h-10 bg-[#FAF7F2]/10 overflow-hidden">
           <motion.div
-            className="absolute top-0 left-0 w-full bg-gold"
+            className="absolute top-0 left-0 w-full bg-[#C8A23D]"
             style={{ height: '30%' }}
             animate={{ y: ['0%', '250%', '0%'] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}

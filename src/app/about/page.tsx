@@ -70,12 +70,11 @@ export default async function AboutPage() {
       <PageHero
         title={data?.heroHeading || 'Our Story'}
         subtitle={data?.heroSubheading || "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans."}
-        typewriterWords={['Our Story', 'Who We Are', 'Our Passion', 'Our Journey']}
       />
 
       <SectionWrapper>
         <Container narrow>
-          <div className="space-y-6 text-lg text-cream/70 leading-relaxed">
+          <div className="space-y-6 text-lg text-[#736D63] leading-relaxed">
             {paragraphs.map((p: string, i: number) => (
               <p key={i}>{p}</p>
             ))}
@@ -83,18 +82,18 @@ export default async function AboutPage() {
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value: { icon?: string; title: string; description: string }) => {
               const Icon = iconMap[value.icon || 'Heart'] || Heart;
               return (
                 <div key={value.title} className="text-center">
-                  <div className="flex items-center justify-center w-14 h-14 mx-auto mb-4 rounded-full bg-gold/10 border border-gold/20">
-                    <Icon className="h-6 w-6 text-gold" />
+                  <div className="flex items-center justify-center w-14 h-14 mx-auto mb-4 rounded-full bg-[#C8A23D]/10 border border-[#C8A23D]/20">
+                    <Icon className="h-6 w-6 text-[#C8A23D]" />
                   </div>
-                  <h3 className="font-heading text-xl text-cream mb-2">{value.title}</h3>
-                  <p className="text-sm text-cream/50">{value.description}</p>
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{value.title}</h3>
+                  <p className="text-sm text-[#736D63]">{value.description}</p>
                 </div>
               );
             })}
@@ -104,10 +103,10 @@ export default async function AboutPage() {
 
       <SectionWrapper>
         <Container narrow className="text-center">
-          <h2 className="font-heading text-3xl md:text-4xl text-cream mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.communityHeading || 'Proudly Serving Nebraska & Iowa'}
           </h2>
-          <p className="text-cream/60 max-w-lg mx-auto">
+          <p className="text-[#736D63] max-w-lg mx-auto">
             {data?.communityText || "We're deeply connected to our community. From Omaha to Des Moines, Lincoln to Council Bluffs, we're honored to document the love stories of the Midwest."}
           </p>
         </Container>
@@ -116,7 +115,7 @@ export default async function AboutPage() {
       <CTASection
         title={data?.ctaHeading || "We'd Love to Hear Your Story"}
         subtitle={data?.ctaSubheading || 'Get to know us better over a cup of coffee (or a video call).'}
-        primaryCTA={{ label: 'Meet the Team', href: '/contact' }}
+        primaryCTA={{ label: 'Read Our Story', href: '/contact' }}
       />
     </>
   );

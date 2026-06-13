@@ -29,14 +29,14 @@ const steps = [
 
 export function ProcessSection() {
   return (
-    <SectionWrapper className="bg-black/20">
+    <SectionWrapper className="bg-[#FAF7F2]">
       <Container>
         <div className="text-center mb-16">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-accent text-xs uppercase tracking-[0.15em] text-gold"
+            className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]"
           >
             How It Works
           </motion.span>
@@ -45,7 +45,7 @@ export function ProcessSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl text-cream"
+            className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl text-[#0A1F44]"
           >
             The Experience
           </motion.h2>
@@ -61,23 +61,23 @@ export function ProcessSection() {
           {steps.map((step, index) => (
             <motion.div key={step.number} variants={staggerItem} className="relative text-center">
               {/* Step number */}
-              <div className="font-heading text-6xl md:text-7xl text-gold/10 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 select-none">
+              <div className="font-heading text-6xl md:text-7xl text-[#C8A23D]/10 absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/4 select-none">
                 {step.number}
               </div>
 
               {/* Icon */}
-              <div className="relative z-10 flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-gold/10 border border-gold/20">
-                <step.icon className="h-7 w-7 text-gold" />
+              <div className="relative z-10 flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-[#C8A23D]/5 border border-[#C8A23D]/20">
+                <step.icon className="h-7 w-7 text-[#C8A23D]" />
               </div>
 
-              <h3 className="font-heading text-2xl text-cream mb-3">{step.title}</h3>
-              <p className="text-cream/60 text-sm leading-relaxed max-w-xs mx-auto">
+              <h3 className="font-heading text-2xl text-[#0A1F44] mb-3">{step.title}</h3>
+              <p className="text-[#736D63] text-sm leading-relaxed max-w-xs mx-auto">
                 {step.description}
               </p>
 
               {/* Arrow connector (desktop) */}
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-8 -right-6 text-gold/20">
+                <div className="hidden md:block absolute top-8 -right-6 text-[#C8A23D]/20">
                   <ArrowRight className="h-6 w-6" />
                 </div>
               )}

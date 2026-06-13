@@ -20,17 +20,17 @@ export function StickyCTA() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden animate-fade-in-up">
-      <div className="flex items-stretch bg-warm-black/98 backdrop-blur-xl border-t border-cream/10">
+      <div className="flex items-stretch bg-[#0A1F44]/98 backdrop-blur-xl border-t border-[#C8A23D]/20">
         <a
           href={`tel:${SITE.phoneRaw}`}
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-accent uppercase tracking-wider text-white bg-accent hover:bg-accent-hover transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-body uppercase tracking-wider text-white bg-[#8A1C3E] hover:bg-[#6E1532] transition-colors"
         >
           <Phone className="h-4 w-4" />
           Call Now
         </a>
         <Link
           href="/contact"
-          className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-accent uppercase tracking-wider text-warm-black bg-gold hover:bg-gold-dark transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-body uppercase tracking-wider text-[#FAF7F2] bg-[#C8A23D] hover:bg-[#A8842E] transition-colors"
         >
           <MessageCircle className="h-4 w-4" />
           Inquire

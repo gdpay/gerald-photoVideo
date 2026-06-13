@@ -67,13 +67,12 @@ export default async function WeddingsPage() {
         title="Wedding Photography & Videography"
         subtitle="Every love story deserves to be told beautifully. We capture the emotion, the details, and the moments that make your wedding uniquely yours."
         imageSource={heroSection?.backgroundImage}
-        typewriterWords={['Wedding Photography', 'Your Big Day', 'Love Captured', 'Forever Begins']}
       />
 
       {/* Intro */}
       <SectionWrapper>
         <Container narrow>
-          <p className="text-lg text-cream/70 leading-relaxed">
+          <p className="text-lg text-[#736D63] leading-relaxed">
             Your wedding day is one of the most important days of your life. It&apos;s a celebration of love,
             family, and the beginning of a new chapter. Our approach is documentary meets editorial —
             we capture authentic moments with a cinematic, fine-art aesthetic. From the quiet anticipation
@@ -83,20 +82,20 @@ export default async function WeddingsPage() {
       </SectionWrapper>
 
       {/* What We Cover */}
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-cream text-center mb-12">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
             What&apos;s Included
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((item) => (
               <div
                 key={item.label}
-                className="p-6 border border-cream/5 rounded-sm hover:border-gold/20 transition-colors group"
+                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
               >
-                <item.icon className="h-6 w-6 text-gold mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="font-heading text-xl text-cream mb-2">{item.label}</h3>
-                <p className="text-sm text-cream/50">{item.desc}</p>
+                <item.icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                <p className="text-sm text-[#736D63]">{item.desc}</p>
               </div>
             ))}
           </div>

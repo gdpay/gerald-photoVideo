@@ -114,14 +114,14 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
   const t = testimonials[current];
 
   return (
-    <SectionWrapper className="bg-black/30">
+    <SectionWrapper champagne>
       <Container narrow>
         <div className="text-center mb-12">
-          <span className="font-accent text-xs uppercase tracking-[0.15em] text-gold">
+          <span className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]">
             Kind Words
           </span>
-          <h2 className="mt-4 font-heading text-3xl md:text-4xl text-cream">
-            Trusted by Couples & Families
+          <h2 className="mt-4 font-heading text-3xl md:text-4xl text-[#0A1F44]">
+            Client Stories
           </h2>
         </div>
 
@@ -139,7 +139,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
             >
               {/* Author Photo */}
               {t.photo && (
-                <div className="w-16 h-16 mx-auto mb-6 rounded-full overflow-hidden border-2 border-gold/30">
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full overflow-hidden border-2 border-[#C8A23D]/30">
                   <SanityImage
                     source={t.photo}
                     alt={t.author}
@@ -147,19 +147,19 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
                   />
                 </div>
               )}
-              {!t.photo && <Quote className="h-10 w-10 text-gold/30 mx-auto mb-6" />}
-              <blockquote className="font-heading text-xl md:text-2xl lg:text-3xl text-cream/90 font-light italic leading-relaxed">
+              {!t.photo && <Quote className="h-10 w-10 text-[#C8A23D]/30 mx-auto mb-6" />}
+              <blockquote className="font-heading font-light italic text-xl md:text-2xl lg:text-3xl text-[#0A1F44]/80 leading-relaxed">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <div className="mt-6 flex items-center justify-center gap-1">
                 {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-gold text-gold" />
+                  <Star key={i} className="h-4 w-4 fill-[#C8A23D] text-[#C8A23D]" />
                 ))}
               </div>
               <div className="mt-4">
-                <div className="font-body font-medium text-cream">{t.author}</div>
-                {t.date && <div className="text-sm text-cream/50">{t.date}</div>}
-                {t.location && <div className="text-xs text-cream/40">{t.location}</div>}
+                <div className="font-body font-medium text-[#0A1F44]">{t.author}</div>
+                {t.date && <div className="text-sm text-[#736D63]">{t.date}</div>}
+                {t.location && <div className="text-xs text-[#A39D93]">{t.location}</div>}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -169,7 +169,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
         <div className="flex items-center justify-center gap-4 mt-10">
           <button
             onClick={prev}
-            className="p-2 text-cream/40 hover:text-gold transition-colors"
+            className="p-2 text-[#A39D93] hover:text-[#C8A23D] transition-colors"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -180,7 +180,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
                 key={i}
                 onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
                 className={`h-1.5 rounded-full transition-all duration-500 ${
-                  i === current ? 'w-8 bg-gold' : 'w-1.5 bg-cream/20 hover:bg-cream/40'
+                  i === current ? 'w-8 bg-[#C8A23D]' : 'w-1.5 bg-[#D4CEC4] hover:bg-[#C8A23D]/50'
                 }`}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
@@ -188,7 +188,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
           </div>
           <button
             onClick={next}
-            className="p-2 text-cream/40 hover:text-gold transition-colors"
+            className="p-2 text-[#A39D93] hover:text-[#C8A23D] transition-colors"
             aria-label="Next testimonial"
           >
             <ChevronRight className="h-5 w-5" />

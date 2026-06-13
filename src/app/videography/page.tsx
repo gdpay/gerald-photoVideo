@@ -75,20 +75,19 @@ export default async function VideographyPage() {
       <PageHero
         title={data?.heroHeading || 'Cinematic Videography'}
         subtitle={data?.heroSubheading || 'Wedding films that let you relive every laugh, every tear, and every dance.'}
-        typewriterWords={['Cinematic Videography', 'Wedding Films', 'Highlight Reels', 'Your Story in Motion']}
       />
 
       <SectionWrapper>
         <Container narrow>
-          <p className="text-lg text-cream/70 leading-relaxed">
+          <p className="text-lg text-[#736D63] leading-relaxed">
             {data?.introText || "A photograph captures a moment. A film captures time itself. Our cinematic wedding films are crafted to transport you back to your wedding day — the sound of your heartbeat during the first look, the laughter during toasts, the energy of the dance floor. We combine documentary storytelling with cinematic artistry to create films you'll watch again and again."}
           </p>
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-cream text-center mb-12">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
             {data?.featuresHeading || 'Our Film Offerings'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -97,11 +96,11 @@ export default async function VideographyPage() {
               return (
                 <div
                   key={item.label}
-                  className="p-6 border border-cream/5 rounded-sm hover:border-gold/20 transition-colors group"
+                  className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
                 >
-                  <Icon className="h-6 w-6 text-gold mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="font-heading text-xl text-cream mb-2">{item.label}</h3>
-                  <p className="text-sm text-cream/50">{item.description}</p>
+                  <Icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                  <p className="text-sm text-[#736D63]">{item.description}</p>
                 </div>
               );
             })}
@@ -111,15 +110,15 @@ export default async function VideographyPage() {
 
       <SectionWrapper>
         <Container narrow className="text-center">
-          <h2 className="font-heading text-3xl md:text-4xl text-cream mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.comboHeading || 'Photo + Video Combo'}
           </h2>
-          <p className="text-cream/60 mb-8 max-w-lg mx-auto">
+          <p className="text-[#736D63] mb-8 max-w-lg mx-auto">
             {data?.comboText || 'Book both photography and videography together for a seamless experience and preferred pricing. One team, two perspectives, one unforgettable collection.'}
           </p>
           <a
             href="/contact"
-            className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors font-accent text-sm uppercase tracking-wider"
+            className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
             Inquire About Combos →
           </a>

@@ -17,10 +17,12 @@ export interface GalleryImage {
 
 interface GalleryPreviewProps {
   images?: GalleryImage[];
+  title?: string;
+  subtitle?: string;
 }
 
-export function GalleryPreview({ images }: GalleryPreviewProps) {
-  // If no images provided, show nothing (or could show a loading state)
+export function GalleryPreview({ images, title = 'Featured Collections', subtitle = 'Our Work' }: GalleryPreviewProps) {
+  // If no images provided, show nothing
   if (!images || images.length === 0) return null;
 
   return (
@@ -31,18 +33,18 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-accent text-xs uppercase tracking-[0.15em] text-gold"
+            className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]"
           >
-            Our Work
+            {subtitle}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl text-cream"
+            className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl text-[#0A1F44]"
           >
-            Featured Collections
+            {title}
           </motion.h2>
         </div>
 
@@ -58,7 +60,7 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
               key={index}
               variants={staggerItem}
               className={cn(
-                'relative overflow-hidden rounded-sm group cursor-pointer',
+                'relative overflow-hidden group cursor-pointer',
                 image.span === 'large' && 'col-span-2 row-span-2',
                 image.span === 'wide' && 'col-span-2',
                 image.span === 'tall' && 'row-span-2',
@@ -71,7 +73,7 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
                 fill
                 className="transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-warm-black/0 group-hover:bg-warm-black/30 transition-all duration-500" />
+              <div className="absolute inset-0 bg-[#0A1F44]/0 group-hover:bg-[#0A1F44]/20 transition-all duration-500" />
             </motion.div>
           ))}
         </motion.div>

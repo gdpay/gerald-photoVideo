@@ -8,26 +8,28 @@ import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
 const buttonVariants = cva(
-  'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-accent font-semibold uppercase tracking-[0.1em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden',
+  'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-[13px] font-body font-semibold uppercase tracking-[0.08em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden',
   {
     variants: {
       variant: {
         primary:
-          'bg-gold text-warm-black hover:bg-gold-light hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(201,169,110,0.3)] shadow-lg',
+          'bg-[#0A1F44] text-[#FAF7F2] hover:bg-[#122D5A] hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(10,31,68,0.15)] shadow-md',
         secondary:
-          'border border-gold text-gold hover:bg-gold/10 hover:text-gold-light hover:-translate-y-0.5',
-        ghost: 'text-cream/70 hover:text-gold hover:bg-white/5',
-        dark: 'bg-warm-black text-cream border border-cream/20 hover:bg-charcoal hover:border-gold/50',
-        accent:
-          'bg-accent text-white hover:bg-accent-hover hover:-translate-y-0.5 shadow-lg hover:shadow-accent/25',
+          'border border-[#C8A23D] text-[#C8A23D] hover:bg-[#C8A23D]/10 hover:text-[#A8842E] hover:-translate-y-0.5',
+        ghost:
+          'text-[#736D63] hover:text-[#0A1F44] hover:bg-[#F0EDE6]',
+        dark:
+          'bg-[#0A1F44] text-[#FAF7F2] border border-[#C8A23D]/30 hover:bg-[#122D5A] hover:border-[#C8A23D]',
         outline:
-          'border border-cream/20 text-cream hover:border-gold hover:text-gold hover:-translate-y-0.5',
+          'border border-[#D4CEC4] text-[#0A1F44] hover:border-[#C8A23D] hover:text-[#C8A23D] hover:-translate-y-0.5',
+        accent:
+          'bg-[#8A1C3E] text-white hover:bg-[#6E1532] hover:-translate-y-0.5 shadow-md',
       },
       size: {
-        sm: 'h-9 px-4 text-xs',
-        md: 'h-12 px-6 text-sm',
-        lg: 'h-14 px-8 text-sm',
-        xl: 'h-16 px-10 text-sm',
+        sm: 'h-9 px-4 text-[12px]',
+        md: 'h-12 px-6',
+        lg: 'h-14 px-8',
+        xl: 'h-16 px-10',
         icon: 'h-12 w-12',
       },
     },

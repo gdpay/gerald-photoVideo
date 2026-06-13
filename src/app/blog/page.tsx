@@ -59,7 +59,6 @@ export default async function BlogPage() {
       <PageHero
         title="Our Blog"
         subtitle="Real weddings, planning tips, and stories from Nebraska & Iowa."
-        typewriterWords={['Our Blog', 'Stories', 'Wedding Tips', 'Inspiration']}
       />
 
       <SectionWrapper>
@@ -72,7 +71,7 @@ export default async function BlogPage() {
                   href={`/blog/${post.slug}`}
                   className="group"
                 >
-                  <article className="border border-cream/5 rounded-sm overflow-hidden hover:border-gold/20 transition-all duration-300">
+                  <article className="border border-[#E5E0D8] overflow-hidden hover:border-[#C8A23D]/30 transition-all duration-300">
                     <div className="aspect-[16/10] overflow-hidden">
                       {post.coverImage ? (
                         <SanityImage
@@ -83,32 +82,32 @@ export default async function BlogPage() {
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-charcoal to-dark" />
+                        <div className="h-full w-full bg-gradient-to-br from-[#F0EDE6] to-[#E5E0D8]" />
                       )}
                     </div>
                     <div className="p-5">
                       <div className="flex items-center gap-3 mb-3">
                         {post.category && (
-                          <span className="text-xs font-accent uppercase tracking-wider text-gold">
+                          <span className="text-xs font-body uppercase tracking-wider text-[#C8A23D]">
                             {post.category}
                           </span>
                         )}
                         {post.publishedAt && (
-                          <span className="text-xs text-cream/30 flex items-center gap-1">
+                          <span className="text-xs text-[#A39D93] flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
                             {formatDate(post.publishedAt)}
                           </span>
                         )}
                       </div>
-                      <h3 className="font-heading text-xl text-cream group-hover:text-gold transition-colors mb-2">
+                      <h3 className="font-heading text-xl text-[#0A1F44] group-hover:text-[#C8A23D] transition-colors mb-2">
                         {post.title}
                       </h3>
                       {post.excerpt && (
-                        <p className="text-sm text-cream/50 leading-relaxed">
+                        <p className="text-sm text-[#736D63] leading-relaxed">
                           {post.excerpt}
                         </p>
                       )}
-                      <span className="inline-flex items-center gap-1 mt-4 text-xs font-accent uppercase tracking-wider text-gold/70 group-hover:text-gold transition-colors">
+                      <span className="inline-flex items-center gap-1 mt-4 text-xs font-body uppercase tracking-wider text-[#C8A23D]/70 group-hover:text-[#C8A23D] transition-colors">
                         Read More <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
@@ -118,7 +117,7 @@ export default async function BlogPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-cream/50">No blog posts yet. Check back soon!</p>
+              <p className="text-[#A39D93]">No blog posts yet. Check back soon!</p>
             </div>
           )}
         </Container>

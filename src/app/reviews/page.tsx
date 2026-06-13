@@ -52,6 +52,7 @@ const serviceLabels: Record<string, string> = {
   wedding: 'Wedding',
   quinceanera: 'Quinceañera',
   engagement: 'Engagement',
+  portrait: 'Portrait',
   videography: 'Videography',
   other: 'Other',
 };
@@ -69,7 +70,6 @@ export default async function ReviewsPage() {
       <PageHero
         title="Kind Words"
         subtitle="We're honored to be part of your celebrations. Here's what our clients say."
-        typewriterWords={['Kind Words', 'Client Love', 'Real Reviews', 'Happy Couples']}
       />
 
       <SectionWrapper className="-mt-8">
@@ -77,33 +77,33 @@ export default async function ReviewsPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-1 mb-4">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className={`h-6 w-6 ${i < Math.floor(SITE.reviews.aggregate.rating) ? 'fill-gold text-gold' : 'text-cream/20'}`} />
+                <Star key={i} className={`h-6 w-6 ${i < Math.floor(SITE.reviews.aggregate.rating) ? 'fill-[#C8A23D] text-[#C8A23D]' : 'text-[#D4CEC4]'}`} />
               ))}
             </div>
-            <div className="font-heading text-5xl text-cream">{SITE.reviews.aggregate.rating}</div>
-            <div className="text-cream/50 mt-1">Average Rating</div>
-            <div className="text-sm text-cream/40 mt-1">Based on {SITE.reviews.aggregate.count}+ reviews</div>
+            <div className="font-heading text-5xl text-[#0A1F44]">{SITE.reviews.aggregate.rating}</div>
+            <div className="text-[#736D63] mt-1">Average Rating</div>
+            <div className="text-sm text-[#A39D93] mt-1">Based on {SITE.reviews.aggregate.count}+ reviews</div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {reviewsList.map((review: { quote: string; author: string; serviceType?: string; location?: string; rating?: number }, index: number) => (
               <div
                 key={index}
-                className="p-6 border border-cream/5 rounded-sm hover:border-gold/20 transition-colors"
+                className="p-6 border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors"
               >
-                <Quote className="h-6 w-6 text-gold/30 mb-3" />
-                <p className="text-cream/70 text-sm leading-relaxed mb-4">
+                <Quote className="h-6 w-6 text-[#C8A23D]/30 mb-3" />
+                <p className="text-[#736D63] text-sm leading-relaxed mb-4">
                   &ldquo;{review.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-1 mb-3">
                   {Array.from({ length: review.rating || 5 }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-gold text-gold" />
+                    <Star key={i} className="h-3.5 w-3.5 fill-[#C8A23D] text-[#C8A23D]" />
                   ))}
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-body font-medium text-cream text-sm">{review.author}</div>
-                    <div className="text-xs text-cream/40">
+                    <div className="font-body font-medium text-[#0A1F44] text-sm">{review.author}</div>
+                    <div className="text-xs text-[#A39D93]">
                       {serviceLabels[review.serviceType || ''] || review.serviceType || 'Other'}{review.location ? ` · ${review.location}` : ''}
                     </div>
                   </div>

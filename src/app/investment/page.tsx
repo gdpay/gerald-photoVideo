@@ -89,53 +89,52 @@ export default async function InvestmentPage() {
       <PageHero
         title={data?.heroHeading || 'Investment'}
         subtitle={data?.heroSubheading || 'Every collection is as unique as your story. We create custom experiences tailored to your vision.'}
-        typewriterWords={['Investment', 'Your Collections', 'Pricing', 'Custom Packages']}
       />
 
       <SectionWrapper>
         <Container narrow className="text-center">
-          <p className="text-lg text-cream/70 leading-relaxed mb-4">
+          <p className="text-lg text-[#736D63] leading-relaxed mb-4">
             {data?.philosophyText || "Our investment reflects our commitment to quality, not quantity. We believe in creating meaningful, lasting work that you'll treasure for generations. Every collection is thoughtfully crafted to provide an exceptional experience from start to finish."}
           </p>
-          <p className="text-cream/50 text-sm">
+          <p className="text-[#A39D93] text-sm">
             {data?.philosophyNote || 'All collections are customizable. Contact us for a personalized quote.'}
           </p>
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {collections.map((collection: { name: string; subtitle?: string; priceLabel?: string; priceNote?: string; features?: string[]; popular?: boolean }) => (
               <div
                 key={collection.name}
-                className={`relative p-8 rounded-sm border transition-all duration-300 ${
+                className={`relative p-8 border transition-all duration-300 bg-[#FAF7F2] ${
                   collection.popular
-                    ? 'border-gold bg-gold/5 shadow-glow'
-                    : 'border-cream/10 bg-warm-black/50 hover:border-gold/30'
+                    ? 'border-[#C8A23D] shadow-warm'
+                    : 'border-[#E5E0D8] hover:border-[#C8A23D]/40'
                 }`}
               >
                 {collection.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold text-warm-black text-xs font-accent uppercase tracking-wider rounded-sm">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#C8A23D] text-[#FAF7F2] text-xs font-body uppercase tracking-wider">
                     Most Popular
                   </div>
                 )}
 
-                <h3 className="font-heading text-2xl text-cream mb-1">{collection.name}</h3>
-                <p className="text-sm text-cream/50 mb-6">{collection.subtitle}</p>
+                <h3 className="font-heading text-2xl text-[#0A1F44] mb-1">{collection.name}</h3>
+                <p className="text-sm text-[#736D63] mb-6">{collection.subtitle}</p>
 
                 <div className="text-center mb-8">
-                  <span className="font-accent text-xs uppercase tracking-wider text-cream/40">
+                  <span className="font-body text-xs uppercase tracking-wider text-[#A39D93]">
                     Starting At
                   </span>
-                  <p className="font-heading text-4xl text-gold mt-1">{collection.priceLabel || 'Upon Request'}</p>
-                  <p className="text-xs text-cream/40 mt-1">{collection.priceNote || 'Custom quote for your event'}</p>
+                  <p className="font-heading text-3xl text-[#C8A23D] mt-1">{collection.priceLabel || 'Upon Request'}</p>
+                  <p className="text-xs text-[#A39D93] mt-1">{collection.priceNote || 'Custom quote for your event'}</p>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   {(collection.features || []).map((feature: string) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm text-cream/60">
-                      <Check className="h-4 w-4 text-gold shrink-0 mt-0.5" />
+                    <li key={feature} className="flex items-start gap-3 text-sm text-[#736D63]">
+                      <Check className="h-4 w-4 text-[#C8A23D] shrink-0 mt-0.5" />
                       {feature}
                     </li>
                   ))}
@@ -157,34 +156,34 @@ export default async function InvestmentPage() {
 
       <SectionWrapper>
         <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-cream text-center mb-12">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
             {data?.addOnsHeading || 'A La Carte Add-Ons'}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
             {addOns.map((addon: string) => (
               <div
                 key={addon}
-                className="p-4 border border-cream/5 rounded-sm text-center hover:border-gold/20 transition-colors"
+                className="p-4 border border-[#E5E0D8] text-center hover:border-[#C8A23D]/30 transition-colors"
               >
-                <p className="text-sm text-cream/70">{addon}</p>
+                <p className="text-sm text-[#736D63]">{addon}</p>
               </div>
             ))}
           </div>
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="bg-black/20">
+      <SectionWrapper champagne>
         <Container narrow className="text-center">
-          <Heart className="h-8 w-8 text-gold/50 mx-auto mb-4" />
-          <h2 className="font-heading text-3xl md:text-4xl text-cream mb-4">
+          <Heart className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.paymentHeading || 'Flexible Payment Plans'}
           </h2>
-          <p className="text-cream/60 mb-8 max-w-lg mx-auto">
+          <p className="text-[#736D63] mb-8 max-w-lg mx-auto">
             {data?.paymentText || "We believe exceptional photography should be accessible. We offer flexible payment plans to make your investment manageable. A 30% deposit secures your date, with the balance due before your event."}
           </p>
           <a
             href="/faq"
-            className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors font-accent text-sm uppercase tracking-wider"
+            className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
             View FAQs About Payments →
           </a>
