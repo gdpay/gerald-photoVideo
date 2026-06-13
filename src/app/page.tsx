@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { client } from '../../sanity/lib/client';
 import { galleriesQuery, homeHeroQuery, featuredServicesQuery, featuredTestimonialsQuery, heroSlidesQuery } from '../../sanity/lib/queries';
 import { Camera, Film, Heart, Play, ArrowRight } from 'lucide-react';
+import { VideoEmbed } from '@/components/shared/video-embed';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function preparePreviewImages(galleries: any[]) {
@@ -92,18 +93,11 @@ export default async function HomePage() {
                 </Button>
               </div>
             </div>
-            <div className="relative aspect-video bg-[#06112A] overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-20 h-20 mx-auto rounded-full border-2 border-[#C8A23D]/50 flex items-center justify-center hover:bg-[#C8A23D]/10 transition-colors cursor-pointer group">
-                    <Play className="h-8 w-8 text-[#C8A23D] group-hover:scale-110 transition-transform ml-1" />
-                  </div>
-                  <p className="mt-4 text-sm text-[#FAF7F2]/40 font-body uppercase tracking-wider">
-                    Featured Film
-                  </p>
-                </div>
-              </div>
-            </div>
+            <VideoEmbed
+              src="https://player.vimeo.com/video/947865089"
+              title="Watch Featured Film"
+              posterUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"
+            />
           </div>
         </Container>
       </SectionWrapper>

@@ -60,11 +60,11 @@ export function ServicesGrid({ services }: ServicesGridProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="flex flex-wrap justify-center gap-6"
         >
           {displayServices.map((service) => (
-            <motion.div key={service.id} variants={staggerItem}>
-              <Link href={service.href} className="group block">
+            <motion.div key={service.id} variants={staggerItem} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
+              <Link href={service.href} className="group block h-full">
                 <div className="relative h-80 overflow-hidden bg-[#FAF7F2] border border-[#E5E0D8] group-hover:border-[#C8A23D]/40 transition-all duration-500">
                   {/* Hero Image */}
                   {service.heroImage ? (
