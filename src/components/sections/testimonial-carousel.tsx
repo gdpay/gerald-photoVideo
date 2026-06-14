@@ -98,7 +98,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
 
   const variants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 200 : -200,
+      x: dir > 0 ? 50 : -50,
       opacity: 0,
     }),
     center: {
@@ -106,7 +106,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
       opacity: 1,
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -200 : 200,
+      x: dir > 0 ? -50 : 50,
       opacity: 0,
     }),
   };
@@ -125,7 +125,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
           </h2>
         </div>
 
-        <div className="relative min-h-[300px] flex items-center justify-center">
+        <div className="relative min-h-[300px] flex items-center justify-center overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={current}

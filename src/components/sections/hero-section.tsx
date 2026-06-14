@@ -239,7 +239,7 @@ export function HeroSection({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-10 right-8 z-10 flex items-center gap-2"
+          className="absolute bottom-6 right-4 sm:bottom-10 sm:right-8 z-10 flex items-center gap-2"
         >
           {allSlides.map((_, i) => (
             <button
@@ -298,7 +298,7 @@ export function HeroSection({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 0.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-10 z-10 flex flex-col items-center gap-3"
       >
         <span className="font-body text-[10px] tracking-[0.3em] uppercase text-[#FAF7F2]/30">
           Scroll

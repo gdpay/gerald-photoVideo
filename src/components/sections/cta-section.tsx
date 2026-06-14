@@ -39,7 +39,7 @@ export function CTASection({
       )}
 
       {/* Gold accent line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-[#C8A23D]/50 to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] h-[1px] bg-gradient-to-r from-transparent via-[#C8A23D]/50 to-transparent" />
 
       <Container narrow className="relative z-10 text-center">
         <motion.h2
