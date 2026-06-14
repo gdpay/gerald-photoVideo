@@ -106,10 +106,10 @@
   text-transform: uppercase;
   color: var(--color-ivory);
   transition: color 0.2s ease;
-}
 
-@utility nav-link:hover {
-  color: var(--color-gold);
+  &:hover {
+    color: var(--color-gold);
+  }
 }
 
 @utility gold-divider {
