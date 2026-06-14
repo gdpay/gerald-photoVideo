@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
 const buttonVariants = cva(
-  'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-[13px] font-body font-semibold uppercase tracking-[0.08em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden',
+  'group relative inline-flex items-center justify-center gap-2 whitespace-nowrap text-[12px] sm:text-[13px] font-body font-semibold uppercase tracking-[0.08em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50 overflow-hidden',
   {
     variants: {
       variant: {
@@ -26,11 +26,11 @@ const buttonVariants = cva(
           'bg-[#8A1C3E] text-white hover:bg-[#6E1532] hover:-translate-y-0.5 shadow-md',
       },
       size: {
-        sm: 'h-9 px-4 text-[12px]',
-        md: 'h-12 px-6',
-        lg: 'h-14 px-8',
-        xl: 'h-16 px-10',
-        icon: 'h-12 w-12',
+        sm: 'h-8 sm:h-9 px-3 sm:px-4 text-[11px] sm:text-[12px]',
+        md: 'h-10 sm:h-12 px-5 sm:px-6',
+        lg: 'h-11 sm:h-14 px-6 sm:px-8',
+        xl: 'h-12 sm:h-16 px-8 sm:px-10',
+        icon: 'h-10 sm:h-12 w-10 sm:w-12',
       },
     },
     defaultVariants: {
