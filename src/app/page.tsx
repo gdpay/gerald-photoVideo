@@ -88,7 +88,7 @@ export default async function HomePage() {
                 <Button variant="primary" size="lg" href="/videography">
                   Watch Films
                 </Button>
-                <Button variant="outline" size="lg" href="/videography">
+                <Button variant="outline-light" size="lg" href="/videography">
                   Learn About Videography
                 </Button>
               </div>

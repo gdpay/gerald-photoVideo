@@ -22,6 +22,8 @@ const buttonVariants = cva(
           'bg-[#0A1F44] text-[#FAF7F2] border border-[#C8A23D]/30 hover:bg-[#122D5A] hover:border-[#C8A23D]',
         outline:
           'border border-[#D4CEC4] text-[#0A1F44] hover:border-[#C8A23D] hover:text-[#C8A23D] hover:-translate-y-0.5',
+        'outline-light':
+          'border border-[#FAF7F2]/30 text-[#FAF7F2] hover:border-[#C8A23D] hover:text-[#C8A23D] hover:-translate-y-0.5',
         accent:
           'bg-[#8A1C3E] text-white hover:bg-[#6E1532] hover:-translate-y-0.5 shadow-md',
       },

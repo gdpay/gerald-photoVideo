@@ -175,9 +175,7 @@ export function Footer() {
           <p className="text-[#FAF7F2]/30 text-xs">
             &copy; {currentYear} {SITE.name}. All rights reserved.
           </p>
-          <p className="text-[#FAF7F2]/20 text-xs">
-            Proudly serving Nebraska &amp; Iowa
-          </p>
+
         </div>
       </Container>
     </footer>

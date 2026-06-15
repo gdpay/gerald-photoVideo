@@ -110,7 +110,7 @@ export function HeroSection({
 
   return (
     <section
-      className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-[#FAF7F2]"
+      className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-ivory"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -158,8 +158,8 @@ export function HeroSection({
         })}
 
         {/* Editorial overlays - subtle navy gradient */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-[#0A1F44]/70 via-[#0A1F44]/20 to-[#0A1F44]/05" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-[#0A1F44]/30 to-transparent" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-navy/70 via-navy/20 to-navy/5" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-navy/30 to-transparent" />
       </div>
 
       {/* Hero Content */}
@@ -170,14 +170,14 @@ export function HeroSection({
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="h-[1px] w-16 bg-[#C8A23D] mb-8 origin-left"
+            className="h-[1px] w-16 bg-gold mb-8 origin-left"
           />
 
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#FAF7F2] font-light leading-[1.05] tracking-tight"
+            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-ivory font-light leading-[1.05] tracking-tight"
           >
             {title}
           </motion.h1>
@@ -186,7 +186,7 @@ export function HeroSection({
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-6 text-lg sm:text-xl text-[#FAF7F2]/70 font-body font-light max-w-xl leading-relaxed"
+            className="mt-6 text-lg sm:text-xl text-ivory/70 font-body font-light max-w-xl leading-relaxed"
           >
             {subtitle}
           </motion.p>
@@ -200,7 +200,7 @@ export function HeroSection({
             <Button variant="primary" size="lg" href="/contact">
               Check Availability
             </Button>
-            <Button variant="outline" size="lg" href="/portfolio">
+            <Button variant="outline-light" size="lg" href="/portfolio">
               View Portfolio
             </Button>
           </motion.div>
@@ -209,10 +209,10 @@ export function HeroSection({
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-4 text-sm text-[#FAF7F2]/40"
+            className="mt-4 text-sm text-ivory/40"
           >
             or call{' '}
-            <a href={`tel:${SITE.phoneRaw}`} className="text-[#C8A23D] hover:text-[#C8A23D]/80 transition-colors">
+            <a href={`tel:${SITE.phoneRaw}`} className="text-gold hover:text-gold/80 transition-colors">
               {SITE.phone}
             </a>
           </motion.p>
@@ -227,9 +227,9 @@ export function HeroSection({
           transition={{ delay: 1.5, duration: 0.8 }}
           className="absolute bottom-10 left-8 z-10 hidden sm:flex items-center gap-2"
         >
-          <span className="font-body text-sm tracking-widest text-[#C8A23D]">{slideNumber}</span>
-          <span className="font-body text-sm tracking-widest text-[#FAF7F2]/30">/</span>
-          <span className="font-body text-sm tracking-widest text-[#FAF7F2]/30">{totalSlides}</span>
+          <span className="font-body text-sm tracking-widest text-gold">{slideNumber}</span>
+          <span className="font-body text-sm tracking-widest text-ivory/30">/</span>
+          <span className="font-body text-sm tracking-widest text-ivory/30">{totalSlides}</span>
         </motion.div>
       )}
 
@@ -255,14 +255,14 @@ export function HeroSection({
               {i === current && (
                 <motion.div
                   key={progressKey}
-                  className="absolute inset-0 bg-[#C8A23D] rounded-full"
+                  className="absolute inset-0 bg-gold rounded-full"
                   initial={{ scaleX: 0, transformOrigin: 'left' }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: SLIDE_INTERVAL / 1000, ease: 'linear' }}
                 />
               )}
               {i !== current && (
-                <div className="absolute inset-0 bg-[#FAF7F2]/20 group-hover:bg-[#FAF7F2]/40 transition-colors" />
+                <div className="absolute inset-0 bg-ivory/20 group-hover:bg-ivory/40 transition-colors" />
               )}
             </button>
           ))}
@@ -284,7 +284,7 @@ export function HeroSection({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="font-body text-[10px] tracking-[0.3em] uppercase text-[#FAF7F2]/40"
+              className="font-body text-[10px] tracking-[0.3em] uppercase text-ivory/40"
               style={{ writingMode: 'vertical-rl' }}
             >
               {allSlides[current]?.category}
@@ -300,12 +300,12 @@ export function HeroSection({
         transition={{ delay: 2, duration: 0.8 }}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-10 z-10 flex flex-col items-center gap-3"
       >
-        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-[#FAF7F2]/30">
+        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-ivory/30">
           Scroll
         </span>
-        <div className="relative w-[1px] h-10 bg-[#FAF7F2]/10 overflow-hidden">
+        <div className="relative w-[1px] h-10 bg-ivory/10 overflow-hidden">
           <motion.div
-            className="absolute top-0 left-0 w-full bg-[#C8A23D]"
+            className="absolute top-0 left-0 w-full bg-gold"
             style={{ height: '30%' }}
             animate={{ y: ['0%', '250%', '0%'] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}

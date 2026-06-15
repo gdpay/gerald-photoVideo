@@ -70,7 +70,7 @@ export function CTASection({
             {primaryCTA.label}
           </Button>
           {secondaryCTA && (
-            <Button variant="outline" size="lg" href={secondaryCTA.href}>
+            <Button variant="outline-light" size="lg" href={secondaryCTA.href}>
               {secondaryCTA.label}
             </Button>
           )}
