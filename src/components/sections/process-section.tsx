@@ -9,7 +9,7 @@ import { MessageCircle, Calendar, Heart, ArrowRight } from 'lucide-react';
 const steps = [
   {
     icon: MessageCircle,
-    title: 'Inquire',
+    title: 'Check Availability',
     description: 'Reach out through our contact form or give us a call. We\'ll learn about your vision and check availability.',
     number: '01',
   },

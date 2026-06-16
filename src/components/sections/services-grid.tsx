@@ -6,7 +6,7 @@ import { Container } from '@/components/shared/container';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { SERVICES } from '@/lib/constants';
 import { staggerContainer, staggerItem } from '@/lib/animations';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { SanityImage } from '@/components/shared/sanity-image';
 
 interface ServiceItem {
@@ -18,40 +18,71 @@ interface ServiceItem {
   heroImage?: any;
 }
 
-interface ServicesGridProps {
-  services?: ServiceItem[];
+interface GalleryItem {
+  _id: string;
+  title: string;
+  serviceType?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  coverImage?: any;
+  images?: Array<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    asset?: any;
+    alt?: string;
+    caption?: string;
+  }>;
 }
 
-export function ServicesGrid({ services }: ServicesGridProps) {
-  const displayServices = SERVICES.map((s) => {
-    const sanityService = services?.find((ss) => ss.slug === s.id);
+interface ServicesGridProps {
+  services?: ServiceItem[];
+  galleries?: GalleryItem[];
+}
+
+const featuredServiceIds = ['weddings', 'quinceaneras', 'engagements', 'videography'] as const;
+
+const serviceTaglines: Record<(typeof featuredServiceIds)[number], string> = {
+  weddings: 'Timeless & Elegant',
+  quinceaneras: 'Celebrating Her Story',
+  engagements: 'Your Beginning',
+  videography: 'Cinematic Films',
+};
+
+export function ServicesGrid({ services, galleries }: ServicesGridProps) {
+  const displayServices = featuredServiceIds.map((serviceId) => {
+    const service = SERVICES.find((s) => s.id === serviceId);
+    if (!service) return null;
+
+    const sanityService = services?.find((ss) => ss.slug === service.id);
+    const sanityGallery = galleries?.find((gallery) => gallery.serviceType === service.id);
+    const galleryImage = sanityGallery?.coverImage || sanityGallery?.images?.[0];
+
     return {
-      ...s,
-      heroImage: sanityService?.heroImage,
-      sanityDescription: sanityService?.shortDescription,
+      ...service,
+      heroImage: galleryImage || sanityService?.heroImage,
+      imageAlt: sanityGallery?.coverImage?.alt || sanityGallery?.images?.[0]?.alt || service.title,
+      tagline: serviceTaglines[serviceId],
     };
-  });
+  }).filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
     <SectionWrapper>
       <Container>
-        <div className="text-center mb-16">
+        <div className="mb-10 text-center md:mb-12">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]"
+            className="font-body text-[12px] font-semibold uppercase tracking-[0.22em] text-[#A8842E]"
           >
-            Our Services
+            Explore
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-4xl md:text-5xl lg:text-6xl text-[#0A1F44]"
+            className="mt-2 font-heading text-4xl font-light leading-none text-[#0A1F44] md:text-5xl lg:text-6xl"
           >
-            What We Capture
+            Every Love Story is Unique
           </motion.h2>
         </div>
 
@@ -60,41 +91,46 @@ export function ServicesGrid({ services }: ServicesGridProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-6"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-6"
         >
           {displayServices.map((service) => (
-            <motion.div key={service.id} variants={staggerItem} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm">
-              <Link href={service.href} className="group block h-full">
-                <div className="relative h-80 overflow-hidden bg-[#FAF7F2] border border-[#E5E0D8] group-hover:border-[#C8A23D]/40 transition-all duration-500">
-                  {/* Hero Image */}
+            <motion.article key={service.id} variants={staggerItem}>
+              <Link href={service.href} className="group block">
+                <div className="relative aspect-[1.08/1] overflow-hidden border border-[#E5E0D8] bg-[#F0EDE6] shadow-sm transition duration-500 group-hover:border-[#C8A23D]/60">
                   {service.heroImage ? (
                     <SanityImage
                       source={service.heroImage}
-                      alt={service.title}
+                      alt={service.imageAlt}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : (
-                    /* Gradient fallback */
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#F0EDE6] to-[#E5E0D8]" />
+                    <div className="absolute inset-0 bg-[#E5E0D8]" />
                   )}
 
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-[#FAF7F2]/95 via-[#FAF7F2]/30 to-transparent">
-                    <h3 className="font-heading text-2xl text-[#0A1F44] group-hover:text-[#C8A23D] transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-[#736D63] leading-relaxed">
-                      {service.sanityDescription || service.description}
-                    </p>
-                    <span className="mt-4 inline-flex items-center gap-2 text-[12px] font-body uppercase tracking-wider text-[#C8A23D] group-hover:gap-3 transition-all duration-300">
-                      Explore <ArrowRight className="h-3 w-3" />
-                    </span>
-                  </div>
+                  {service.id === 'videography' && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/80 bg-[#0A1F44]/35 text-white shadow-[0_0_24px_rgba(10,31,68,0.24)] backdrop-blur-[2px] transition duration-300 group-hover:scale-110 group-hover:bg-[#0A1F44]/50">
+                        <Play className="ml-0.5 h-6 w-6 fill-current" aria-hidden="true" />
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-7 text-center">
+                  <h3 className="font-body text-[12px] font-semibold uppercase tracking-[0.16em] text-[#1A1713]">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 font-heading text-xl italic leading-none text-[#1A1713] md:text-2xl">
+                    {service.tagline}
+                  </p>
+                  <span className="mt-7 inline-flex items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A1713] transition-all duration-300 group-hover:gap-3 group-hover:text-[#A8842E]">
+                    View Gallery <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                 </div>
               </Link>
-            </motion.div>
+            </motion.article>
           ))}
         </motion.div>
       </Container>

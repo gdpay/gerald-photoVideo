@@ -1,150 +1,189 @@
+import Image from 'next/image';
 import { HeroSection } from '@/components/sections/hero-section';
 import { TrustBar } from '@/components/sections/trust-bar';
 import { ServicesGrid } from '@/components/sections/services-grid';
-import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
-import { ProcessSection } from '@/components/sections/process-section';
 import { CTASection } from '@/components/sections/cta-section';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { client } from '../../sanity/lib/client';
-import { galleriesQuery, homeHeroQuery, featuredServicesQuery, featuredTestimonialsQuery, heroSlidesQuery } from '../../sanity/lib/queries';
-import { Camera, Film, Heart, Play, ArrowRight } from 'lucide-react';
-import { VideoEmbed } from '@/components/shared/video-embed';
+import { featuredServicesQuery, featuredTestimonialsQuery, galleriesQuery, heroSlidesQuery, homeHeroQuery } from '../../sanity/lib/queries';
+import {
+  Album,
+  Camera,
+  Clock,
+  HeartHandshake,
+  Images,
+  MapPin,
+  Maximize,
+  Play,
+  Sparkles,
+  Users,
+  Volume2,
+} from 'lucide-react';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function preparePreviewImages(galleries: any[]) {
-  const images: { source: any; alt: string; span?: 'wide' | 'tall' | 'large' }[] = [];
-  const spans = ['large', 'tall', 'wide', undefined, undefined, undefined] as const;
+const experienceFeatures = [
+  { icon: Camera, label: 'Photography & Videography Under One Team' },
+  { icon: Sparkles, label: 'Thoughtful & Timeless Edits' },
+  { icon: HeartHandshake, label: 'Natural Poses & Guidance' },
+  { icon: Users, label: 'Trusted by 500+ Families' },
+  { icon: Images, label: 'Cinematic & True to Life' },
+  { icon: Album, label: 'Luxury Albums & Keepsakes' },
+  { icon: Clock, label: 'Fast & Clear Communication' },
+  { icon: MapPin, label: 'Nebraska & Iowa Expertise' },
+];
 
-  let count = 0;
-  for (const gallery of galleries) {
-    if (!gallery.images) continue;
-    for (const img of gallery.images) {
-      if (count >= 7) break;
-      images.push({
-        source: img,
-        alt: img.alt || gallery.title,
-        span: spans[count % spans.length],
-      });
-      count++;
-    }
-    if (count >= 7) break;
-  }
-  return images;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareCategoryImages(galleries: any[], serviceType: string) {
-  const gallery = galleries.find((g: any) => g.serviceType === serviceType);
-  if (!gallery?.images) return [];
-  return gallery.images.slice(0, 1).map((img: any) => ({
-    source: img,
-    alt: img.alt || gallery.title,
-  }));
+function FeaturedFilmFrame() {
+  return (
+    <div className="relative aspect-video overflow-hidden bg-[#06112A] shadow-2xl">
+      <Image
+        src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=90"
+        alt="Wedding sparkler exit film preview"
+        fill
+        sizes="(max-width: 1024px) 100vw, 760px"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06112A]/70 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 flex items-center gap-4 px-5 py-4 text-[#FAF7F2]">
+        <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+        <span className="font-body text-xs text-[#FAF7F2]/85">02:17</span>
+        <div className="h-1 flex-1 bg-[#FAF7F2]/35">
+          <div className="h-full w-[38%] bg-[#FAF7F2]" />
+        </div>
+        <Volume2 className="h-4 w-4" aria-hidden="true" />
+        <Maximize className="h-4 w-4" aria-hidden="true" />
+      </div>
+    </div>
+  );
 }
 
 export default async function HomePage() {
-  const [galleries, heroData, services, testimonials, heroSlides] = await Promise.all([
-    client.fetch(galleriesQuery),
-    client.fetch(homeHeroQuery),
+  const [services, galleries, testimonials, heroSlides, homeHero] = await Promise.all([
     client.fetch(featuredServicesQuery),
+    client.fetch(galleriesQuery),
     client.fetch(featuredTestimonialsQuery),
     client.fetch(heroSlidesQuery).catch(() => []),
+    client.fetch(homeHeroQuery).catch(() => null),
   ]);
-  const previewImages = preparePreviewImages(galleries);
+  const sanityHeroSlides = heroSlides.length > 0
+    ? heroSlides
+    : homeHero?.sections?.backgroundImage
+      ? [
+          {
+            _id: 'home-hero-background',
+            image: homeHero.sections.backgroundImage,
+            category: 'WEDDINGS',
+            alt: 'Gerald Photo Video hero background',
+          },
+        ]
+      : [];
 
   return (
     <>
-      {/* 1. Hero Section */}
       <HeroSection
-        slides={heroSlides}
-        title={heroData?.sections?.heading}
-        subtitle={heroData?.sections?.subheading}
+        slides={sanityHeroSlides}
+        title="for Life's Most Beautiful Moments"
+        subtitle="Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa."
       />
+      <TrustBar />
 
-      {/* 2. Featured Galleries - Wedding, Quinceañeras, Engagements, Videography, Portraits */}
-      <ServicesGrid services={services} />
-      <GalleryPreview images={previewImages} />
+      <ServicesGrid services={services} galleries={galleries} />
 
-      {/* 3. Featured Film Section */}
-      <SectionWrapper navy>
+      <SectionWrapper navy className="py-16 lg:py-20">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <span className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]">
-                Cinematic Films
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.33fr_0.67fr] lg:gap-16">
+            <div className="max-w-sm">
+              <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
+                Featured Wedding Film
               </span>
-              <h2 className="mt-4 font-heading text-4xl md:text-5xl text-[#FAF7F2]">
-                Experience Your Story in Motion
+              <h2 className="mt-4 font-heading text-4xl font-light leading-tight text-[#FAF7F2] md:text-5xl">
+                A Day to Remember Forever
               </h2>
-              <p className="mt-6 text-[#FAF7F2]/60 leading-relaxed max-w-md">
-                Our cinematic wedding films are crafted to transport you back to your wedding day — 
-                the sound of your heartbeat during the first look, the laughter during toasts, 
-                the energy of the dance floor.
+              <div className="mt-5 h-px w-14 bg-[#C8A23D]" />
+              <p className="mt-6 max-w-xs font-heading text-lg leading-relaxed text-[#FAF7F2]/78">
+                Cinematic storytelling that lets you relive every emotion, every time.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
-                <Button variant="primary" size="lg" href="/videography">
-                  Watch Films
-                </Button>
-                <Button variant="outline-light" size="lg" href="/videography">
-                  Learn About Videography
-                </Button>
-              </div>
+              <Button
+                variant="outline-light"
+                size="md"
+                href="/videography"
+                className="mt-8 border-[#C8A23D] text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
+              >
+                Watch Film <Play className="h-3.5 w-3.5 fill-current" />
+              </Button>
             </div>
-            <VideoEmbed
-              src="https://player.vimeo.com/video/947865089"
-              title="Watch Featured Film"
-              posterUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80"
-            />
+            <FeaturedFilmFrame />
           </div>
         </Container>
       </SectionWrapper>
 
-      {/* 4. Meet Gerald Section */}
-      <SectionWrapper>
+      <SectionWrapper className="py-16 lg:py-20">
         <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="aspect-[4/5] bg-[#F0EDE6] overflow-hidden">
-              <div className="w-full h-full bg-gradient-to-br from-[#F0EDE6] to-[#E5E0D8] flex items-center justify-center">
-                <Camera className="h-16 w-16 text-[#A39D93]/30" />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <span className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]">
-                About
-              </span>
-              <h2 className="mt-4 font-heading text-4xl md:text-5xl text-[#0A1F44]">
+              <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
                 Meet Gerald
+              </span>
+              <h2 className="mt-4 max-w-md font-heading text-4xl font-light leading-tight text-[#0A1F44] md:text-5xl">
+                More Than Photos. We Preserve Legacy.
               </h2>
-              <p className="mt-6 text-[#736D63] leading-relaxed">
-                With over a decade of experience capturing life&apos;s most beautiful moments, 
-                Gerald brings an editorial eye and a genuine heart to every celebration. 
-                What started as a passion for photography has grown into a full-service studio 
-                serving couples and families across Nebraska and Iowa.
-              </p>
-              <p className="mt-4 text-[#736D63] leading-relaxed">
-                Every image is crafted with intention — from composition to color to emotion. 
-                We don&apos;t just take pictures; we tell stories that families treasure for generations.
-              </p>
-              <div className="mt-8">
-                <Button variant="secondary" size="lg" href="/about">
-                  Read Our Story <ArrowRight className="h-4 w-4 ml-1" />
-                </Button>
+              <div className="mt-8 grid gap-8 sm:grid-cols-[0.9fr_1fr]">
+                <div className="relative aspect-[4/5] overflow-hidden bg-[#E5E0D8]">
+                  <Image
+                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=90"
+                    alt="Gerald portrait"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 320px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="font-heading text-lg leading-relaxed text-[#524C43]">
+                    My passion is capturing the emotion, connection, and love that make your story unique. I approach each wedding and quinceañera with heart, intention, and care.
+                  </p>
+                  <p className="mt-5 font-heading text-lg leading-relaxed text-[#524C43]">
+                    When you look back, you&apos;ll feel the moment all over again.
+                  </p>
+                  <div className="mt-6 font-heading text-4xl italic text-[#0A1F44]">Gerald</div>
+                  <Button variant="primary" size="md" href="/about" className="mt-6 w-fit">
+                    Read Our Story
+                  </Button>
+                </div>
               </div>
+            </div>
+
+            <div className="border-t border-[#D4CEC4] pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
+              <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
+                Why Couples Choose Us
+              </span>
+              <h2 className="mt-4 max-w-md font-heading text-4xl font-light leading-tight text-[#0A1F44] md:text-5xl">
+                The Gerald Photo Video Experience
+              </h2>
+              <div className="mt-9 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+                {experienceFeatures.map((feature) => (
+                  <div key={feature.label} className="flex items-start gap-4">
+                    <feature.icon className="mt-0.5 h-6 w-6 shrink-0 text-[#C8A23D]" strokeWidth={1.5} />
+                    <span className="font-heading text-lg leading-snug text-[#3D382F]">
+                      {feature.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <Button
+                variant="secondary"
+                size="lg"
+                href="/about"
+                className="mt-10 border-[#C8A23D] bg-[#C8A23D] text-[#FAF7F2] hover:bg-[#A8842E] hover:text-[#FAF7F2]"
+              >
+                Learn More About Our Process
+              </Button>
             </div>
           </div>
         </Container>
       </SectionWrapper>
 
-      {/* 5. The Experience Section */}
-      <ProcessSection />
-
-      {/* 6. Client Stories / Testimonials */}
       <TestimonialCarousel testimonials={testimonials} />
-
-      {/* 7. Contact / Check Availability */}
       <CTASection />
     </>
   );

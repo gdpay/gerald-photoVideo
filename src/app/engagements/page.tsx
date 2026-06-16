@@ -103,7 +103,7 @@ export default async function EngagementsPage() {
             href="/contact"
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            Inquire About Bundles →
+            Check Availability →
           </a>
         </Container>
       </SectionWrapper>

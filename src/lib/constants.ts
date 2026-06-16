@@ -32,10 +32,9 @@ export const NAV_ITEMS = [
   { label: 'Engagements', href: '/engagements' },
   { label: 'Portraits', href: '/portraits' },
   { label: 'Videography', href: '/videography' },
+  { label: 'Portfolio', href: '/portfolio' },
   { label: 'Investment', href: '/investment' },
   { label: 'About', href: '/about' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ] as const;
 

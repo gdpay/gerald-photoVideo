@@ -2,45 +2,40 @@
 
 import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
-import { SITE } from '@/lib/constants';
-import { Star, Award, Camera, Heart } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 
 const stats = [
   {
-    icon: Star,
-    value: `${SITE.reviews.aggregate.rating}`,
-    label: 'Average Rating',
-    sublabel: `${SITE.reviews.aggregate.count}+ Reviews`,
-    color: 'text-[#C8A23D]',
+    value: '20+',
+    label: 'Years Experience',
+    variant: 'laurel',
   },
   {
-    icon: Award,
+    value: '500+',
+    label: 'Families Captured',
+  },
+  {
     value: '5.0',
-    label: 'The Knot Rating',
-    sublabel: `${SITE.reviews.theKnot.count} Reviews`,
-    color: 'text-[#C8A23D]',
+    label: 'Client Reviews',
+    variant: 'stars',
   },
   {
-    icon: Camera,
-    value: '200+',
-    label: 'Weddings Captured',
-    sublabel: 'Since 2015',
-    color: 'text-[#0A1F44]',
+    value: 'the knot',
+    label: 'Hall of Fame',
+    variant: 'script',
   },
   {
-    icon: Heart,
-    value: SITE.address.region,
-    label: 'Proudly Serving',
-    sublabel: 'Your Stories Matter',
-    color: 'text-[#8A1C3E]',
+    value: '100%',
+    label: 'Passion',
+    variant: 'heart',
   },
 ];
 
 export function TrustBar() {
   return (
-    <section className="py-12 bg-[#F8E8D0] border-y border-[#C8A23D]/10">
+    <section className="border-y border-[#C8A23D]/30 bg-[#06112A] py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
       <Container>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -48,12 +43,53 @@ export function TrustBar() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="text-center"
+              className="relative flex min-h-20 items-center justify-center px-5 text-center lg:min-h-16 lg:[&:not(:last-child)]:after:absolute lg:[&:not(:last-child)]:after:right-0 lg:[&:not(:last-child)]:after:top-1/2 lg:[&:not(:last-child)]:after:h-14 lg:[&:not(:last-child)]:after:w-px lg:[&:not(:last-child)]:after:-translate-y-1/2 lg:[&:not(:last-child)]:after:bg-[#C8A23D]/60"
             >
-              <stat.icon className={`h-6 w-6 ${stat.color} mx-auto mb-3`} />
-              <div className="font-heading text-3xl text-[#0A1F44]">{stat.value}</div>
-              <div className="mt-1 text-sm text-[#736D63]">{stat.label}</div>
-              <div className="text-xs text-[#A39D93] mt-0.5">{stat.sublabel}</div>
+              <div className="flex items-center justify-center gap-3">
+                {stat.variant === 'laurel' && (
+                  <span
+                    className="h-12 w-4 rounded-l-full border-l-2 border-[#C8A23D]"
+                    aria-hidden="true"
+                  />
+                )}
+
+                {stat.variant === 'heart' && (
+                  <Heart className="h-10 w-10 text-[#C8A23D]" strokeWidth={1.6} aria-hidden="true" />
+                )}
+
+                <div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span
+                      className={
+                        stat.variant === 'script'
+                          ? 'font-heading text-3xl italic leading-none text-[#FAF7F2]'
+                          : 'font-heading text-4xl font-medium leading-none text-[#FAF7F2]'
+                      }
+                    >
+                      {stat.value}
+                    </span>
+
+                    {stat.variant === 'stars' && (
+                      <span className="flex items-center gap-0.5 text-[#C8A23D]" aria-label="5 stars">
+                        {Array.from({ length: 5 }).map((_, starIndex) => (
+                          <Star key={starIndex} className="h-4 w-4 fill-current" aria-hidden="true" />
+                        ))}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-2 font-body text-[11px] font-semibold uppercase tracking-[0.08em] text-[#FAF7F2]/80">
+                    {stat.label}
+                  </div>
+                </div>
+
+                {stat.variant === 'laurel' && (
+                  <span
+                    className="h-12 w-4 rounded-r-full border-r-2 border-[#C8A23D]"
+                    aria-hidden="true"
+                  />
+                )}
+              </div>
             </motion.div>
           ))}
         </div>

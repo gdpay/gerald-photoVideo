@@ -96,7 +96,7 @@ export function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
       <CTASection
         title={`Book Your ${city} Session`}
         subtitle={`Let's create something beautiful together in ${city}, ${state}.`}
-        primaryCTA={{ label: 'Inquire Now', href: '/contact' }}
+        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
       />
     </>
   );

@@ -8,12 +8,16 @@ import { cn } from '@/lib/utils';
 import { NAV_ITEMS, SITE } from '@/lib/constants';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 
 interface NavigationProps {
   logoUrl?: string | null;
 }
+
+const desktopNavItems = NAV_ITEMS.filter((item) =>
+  ['/', '/weddings', '/quinceaneras', '/engagements', '/portraits', '/investment', '/about', '/contact'].includes(item.href)
+);
 
 export function Navigation({ logoUrl }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,69 +44,58 @@ export function Navigation({ logoUrl }: NavigationProps) {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50',
+        'fixed top-0 left-0 right-0 z-50 border-b border-[#C8A23D]/25',
         isScrolled
-          ? 'bg-[#0A1F44]/95 backdrop-blur-xl shadow-lg'
-          : 'bg-[#0A1F44]'
+          ? 'bg-[#06112A]/96 backdrop-blur-xl shadow-lg'
+          : 'bg-[#06112A]'
       )}
       style={{
         transition: 'padding 0.4s ease, background 0.4s ease',
-        padding: isScrolled ? '12px 0' : '18px 0',
+        padding: isScrolled ? '10px 0' : '16px 0',
       }}
     >
       <Container>
         <nav className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-10">
-            {logoUrl ? (
-              <Image
-                src={logoUrl}
-                alt={SITE.name}
-                width={180}
-                height={40}
-                className={cn(
-                  'w-auto brightness-0 invert transition-all duration-400',
-                  isScrolled ? 'h-7' : 'h-9'
-                )}
-                priority
-              />
-            ) : (
-              <span className={cn(
-                'font-heading text-[#FAF7F2] tracking-wider transition-all duration-400',
-                isScrolled ? 'text-xl' : 'text-2xl'
-              )}>
-                Gerald<span className="text-[#C8A23D]"> </span>Photo Video
-              </span>
-            )}
+            <Image
+              src={logoUrl || '/Logo Gerald Photo Video-b.png'}
+              alt={SITE.name}
+              width={180}
+              height={40}
+              className={cn(
+                'w-auto transition-all duration-400',
+                logoUrl ? 'brightness-0 invert' : '',
+                isScrolled ? 'h-10' : 'h-12'
+              )}
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {NAV_ITEMS.slice(0, 7).map((item) => (
+          <div className="hidden lg:flex items-center gap-2">
+            {desktopNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'px-3 py-2 text-[13px] font-body font-medium uppercase tracking-[0.08em] transition-colors duration-200',
+                  'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
                   pathname === item.href
-                    ? 'text-[#C8A23D]'
-                    : 'text-[#FAF7F2]/70 hover:text-[#C8A23D]'
+                    ? 'text-[#C8A23D] after:w-8'
+                    : 'text-[#FAF7F2]/78 after:w-0 hover:text-[#C8A23D] hover:after:w-8'
                 )}
               >
                 {item.label}
               </Link>
             ))}
-            <div className="ml-4 flex items-center gap-3">
-              <a
-                href={`tel:${SITE.phoneRaw}`}
-                className="flex items-center gap-2 text-[13px] text-[#FAF7F2]/50 hover:text-[#C8A23D] transition-colors"
-                aria-label={`Call ${SITE.phone}`}
+            <div className="ml-4">
+              <Button
+                variant="outline-light"
+                size="md"
+                href="/contact"
+                className="h-11 border-[#C8A23D] px-6 text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
               >
-                <Phone className="h-3.5 w-3.5" />
-                <span className="hidden xl:inline">{SITE.phone}</span>
-              </a>
-              <Button variant="primary" size="sm" href="/contact">
-                Inquire
+                Check Availability
               </Button>
             </div>
           </div>
@@ -130,7 +123,7 @@ export function Navigation({ logoUrl }: NavigationProps) {
           >
             <div className="flex flex-col h-full p-6 pb-24 overflow-y-auto">
               <div className="flex-1 space-y-1">
-                {NAV_ITEMS.map((item, i) => (
+                {desktopNavItems.map((item, i) => (
                   <motion.div
                     key={item.href}
                     initial={{ opacity: 0, x: -20 }}
@@ -156,14 +149,13 @@ export function Navigation({ logoUrl }: NavigationProps) {
                   href={`tel:${SITE.phoneRaw}`}
                   className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#8A1C3E] text-white rounded-lg font-body text-sm uppercase tracking-wider"
                 >
-                  <Phone className="h-4 w-4" />
                   Call {SITE.phone}
                 </a>
                 <Link
                   href="/contact"
                   className="block w-full py-3 px-4 bg-[#C8A23D] text-[#FAF7F2] rounded-lg font-body text-sm uppercase tracking-wider text-center"
                 >
-                  Inquire Now
+                  Check Availability
                 </Link>
               </div>
             </div>

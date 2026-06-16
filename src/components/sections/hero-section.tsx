@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { SITE } from '@/lib/constants';
 import { urlFor } from '../../../sanity/lib/client';
-import Image from 'next/image';
 
 interface HeroSlide {
   _id: string;
@@ -23,295 +23,145 @@ interface HeroSectionProps {
   subtitle?: string;
 }
 
-const SLIDE_INTERVAL = 4000;
-const TRANSITION_DURATION = 1500;
-const KEN_BURNS_DURATION = 8000;
+const fallbackImage =
+  'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90';
 
-const FALLBACK_SLIDES: HeroSlide[] = [
-  { _id: 'fallback-1', imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90', category: 'WEDDINGS', alt: 'Beautiful wedding ceremony' },
-  { _id: 'fallback-2', imageUrl: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=90', category: 'WEDDINGS', alt: 'Wedding reception celebration' },
-  { _id: 'fallback-3', imageUrl: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1920&q=90', category: 'QUINCEAÑERAS', alt: 'Quinceañera celebration' },
-  { _id: 'fallback-4', imageUrl: 'https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=1920&q=90', category: 'ENGAGEMENTS', alt: 'Couple engagement portrait' },
-  { _id: 'fallback-5', imageUrl: 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1920&q=90', category: 'WEDDINGS', alt: 'Wedding couple golden hour' },
+const fallbackSlides: HeroSlide[] = [
+  {
+    _id: 'fallback-wedding-portrait',
+    imageUrl: fallbackImage,
+    category: 'WEDDINGS',
+    alt: 'Romantic wedding portrait',
+  },
+  {
+    _id: 'fallback-golden-hour',
+    imageUrl: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1920&q=90',
+    category: 'WEDDINGS',
+    alt: 'Wedding couple at golden hour',
+  },
+  {
+    _id: 'fallback-engagement',
+    imageUrl: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&q=90',
+    category: 'ENGAGEMENTS',
+    alt: 'Engagement portrait',
+  },
 ];
+
+const SLIDE_INTERVAL = 5500;
+
+function getSlideUrl(slide?: HeroSlide) {
+  if (slide?.imageUrl) return slide.imageUrl;
+
+  try {
+    if (slide?.image) return urlFor(slide.image).width(1920).quality(90).url();
+  } catch {
+    return fallbackImage;
+  }
+
+  return fallbackImage;
+}
 
 export function HeroSection({
   slides = [],
-  title = 'Timeless Storytelling',
-  subtitle = `Luxury wedding, quinceañera & engagement photography serving ${SITE.address.region}`,
+  title = "for Life's Most Beautiful Moments",
+  subtitle = 'Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa.',
 }: HeroSectionProps) {
-  const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [progressKey, setProgressKey] = useState(0);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-  const allSlides = slides.length > 0 ? slides : FALLBACK_SLIDES;
-  const hasSlides = allSlides.length > 0;
+  const heroSlides = useMemo(() => (slides.length > 0 ? slides : fallbackSlides), [slides]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const goTo = useCallback((index: number) => {
-    setCurrent(index);
-    setProgressKey((k) => k + 1);
-  }, []);
-
-  const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % allSlides.length);
-    setProgressKey((k) => k + 1);
-  }, [allSlides.length]);
-
-  const prev = useCallback(() => {
-    setCurrent((c) => (c - 1 + allSlides.length) % allSlides.length);
-    setProgressKey((k) => k + 1);
-  }, [allSlides.length]);
-
-  // Auto-rotate
   useEffect(() => {
-    if (!hasSlides || isPaused) return;
-    const timer = setInterval(next, SLIDE_INTERVAL);
-    return () => clearInterval(timer);
-  }, [next, hasSlides, isPaused]);
+    if (heroSlides.length <= 1) return;
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') next();
-      if (e.key === 'ArrowLeft') prev();
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [next, prev]);
+    const timer = window.setInterval(() => {
+      setCurrentSlide((current) => (current + 1) % heroSlides.length);
+    }, SLIDE_INTERVAL);
 
-  // Touch swipe
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) next();
-      else prev();
-    }
-  };
-
-  const slideNumber = String(current + 1).padStart(2, '0');
-  const totalSlides = String(allSlides.length).padStart(2, '0');
-
-  const getSlideUrl = (slide: HeroSlide) => {
-    if (slide.imageUrl) return slide.imageUrl;
-    try {
-      if (slide.image) return urlFor(slide.image).width(1920).quality(90).url();
-    } catch {
-      // urlFor failed
-    }
-    return '';
-  };
+    return () => window.clearInterval(timer);
+  }, [heroSlides.length]);
 
   return (
-    <section
-      className="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-ivory"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Background Slideshow */}
-      <div className="absolute inset-0">
-        {allSlides.map((slide, i) => {
-          const isActive = i === current;
-          const imageUrl = getSlideUrl(slide);
+    <section className="relative isolate min-h-[680px] overflow-hidden bg-[#06112A] pt-[82px] lg:min-h-[720px]">
+      {heroSlides.map((slide, index) => {
+        const isActive = index === currentSlide;
 
-          return (
-            <div
-              key={slide._id}
-              className="absolute inset-0"
-              style={{
-                opacity: isActive ? 1 : 0,
-                transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
-                zIndex: isActive ? 1 : 0,
-              }}
-            >
-              <div
-                className="h-full w-full"
-                style={{
-                  animation: isActive
-                    ? `kenBurns ${KEN_BURNS_DURATION}s ease-out forwards`
-                    : 'none',
-                }}
+        return (
+          <div
+            key={slide._id}
+            className="absolute inset-0 transition-opacity duration-[1800ms] ease-in-out"
+            style={{ opacity: isActive ? 1 : 0 }}
+          >
+            <Image
+              src={getSlideUrl(slide)}
+              alt={slide.alt || slide.category || 'Romantic wedding portrait'}
+              fill
+              sizes="100vw"
+              className="object-cover object-center transition-transform duration-[6500ms] ease-linear"
+              style={{ transform: isActive ? 'scale(1.045)' : 'scale(1)' }}
+              priority={index === 0}
+              quality={92}
+            />
+          </div>
+        );
+      })}
+      <div className="absolute inset-0 bg-[#06112A]/25" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#06112A]/95 via-[#06112A]/62 to-[#06112A]/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06112A]/42 via-transparent to-transparent" />
+
+      <Container className="relative z-10 flex min-h-[598px] items-center py-16 lg:py-20">
+        <div className="grid w-full items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="max-w-xl"
+          >
+            <span className="font-body text-[12px] font-semibold uppercase tracking-[0.22em] text-[#C8A23D]">
+              Timeless Storytelling
+            </span>
+            <h1 className="mt-5 font-heading text-5xl font-light leading-[0.98] text-[#FAF7F2] sm:text-6xl lg:text-7xl">
+              {title}
+            </h1>
+            <div className="mt-7 h-px w-16 bg-[#C8A23D]" />
+            <p className="mt-7 max-w-md font-heading text-xl leading-relaxed text-[#FAF7F2]/82">
+              {subtitle}
+            </p>
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+              <Button
+                variant="secondary"
+                size="lg"
+                href="/contact"
+                className="border-[#C8A23D] bg-[#C8A23D] text-[#FAF7F2] hover:bg-[#A8842E] hover:text-[#FAF7F2]"
               >
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    alt={slide.alt || slide.category}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                    priority={i === 0}
-                    quality={90}
-                  />
-                )}
-              </div>
+                Check Availability
+              </Button>
+              <Button variant="outline-light" size="lg" href="/portfolio">
+                View Portfolio
+              </Button>
             </div>
-          );
-        })}
-
-        {/* Editorial overlays - subtle navy gradient */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-navy/70 via-navy/20 to-navy/5" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-r from-navy/30 to-transparent" />
-      </div>
-
-      {/* Hero Content */}
-      <Container className="relative z-10">
-        <div className="max-w-3xl">
-          {/* Gold divider */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="h-[1px] w-16 bg-gold mb-8 origin-left"
-          />
-
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-ivory font-light leading-[1.05] tracking-tight"
-          >
-            {title}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-6 text-lg sm:text-xl text-ivory/70 font-body font-light max-w-xl leading-relaxed"
-          >
-            {subtitle}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-10 flex flex-col sm:flex-row items-start gap-4"
-          >
-            <Button variant="primary" size="lg" href="/contact">
-              Check Availability
-            </Button>
-            <Button variant="outline-light" size="lg" href="/portfolio">
-              View Portfolio
-            </Button>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-4 text-sm text-ivory/40"
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: 'easeOut' }}
+            className="relative hidden min-h-[500px] lg:block"
           >
-            or call{' '}
-            <a href={`tel:${SITE.phoneRaw}`} className="text-gold hover:text-gold/80 transition-colors">
-              {SITE.phone}
-            </a>
-          </motion.p>
+            <div className="absolute bottom-0 right-0 text-right">
+              <Image
+                src="/Logo Gerald Photo Video-b.png"
+                alt={SITE.name}
+                width={150}
+                height={70}
+                className="ml-auto h-auto w-32"
+                priority
+              />
+              <div className="mt-2 font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A23D]">
+                Omaha, NE
+              </div>
+            </div>
+          </motion.div>
         </div>
       </Container>
-
-      {/* Slide Counter — bottom left */}
-      {hasSlides && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-10 left-8 z-10 hidden sm:flex items-center gap-2"
-        >
-          <span className="font-body text-sm tracking-widest text-gold">{slideNumber}</span>
-          <span className="font-body text-sm tracking-widest text-ivory/30">/</span>
-          <span className="font-body text-sm tracking-widest text-ivory/30">{totalSlides}</span>
-        </motion.div>
-      )}
-
-      {/* Progress Bars — bottom right */}
-      {hasSlides && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="absolute bottom-6 right-4 sm:bottom-10 sm:right-8 z-10 flex items-center gap-2"
-        >
-          {allSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className="group relative h-[3px] rounded-full overflow-hidden transition-all duration-300"
-              style={{
-                width: i === current ? 50 : 30,
-                backgroundColor: 'rgba(255,255,255,0.15)',
-              }}
-              aria-label={`Go to slide ${i + 1}`}
-            >
-              {i === current && (
-                <motion.div
-                  key={progressKey}
-                  className="absolute inset-0 bg-gold rounded-full"
-                  initial={{ scaleX: 0, transformOrigin: 'left' }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: SLIDE_INTERVAL / 1000, ease: 'linear' }}
-                />
-              )}
-              {i !== current && (
-                <div className="absolute inset-0 bg-ivory/20 group-hover:bg-ivory/40 transition-colors" />
-              )}
-            </button>
-          ))}
-        </motion.div>
-      )}
-
-      {/* Category Badge — right edge, vertical */}
-      {hasSlides && (
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
-          className="absolute right-8 top-1/2 -translate-y-1/2 z-10 hidden lg:block"
-        >
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={current}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="font-body text-[10px] tracking-[0.3em] uppercase text-ivory/40"
-              style={{ writingMode: 'vertical-rl' }}
-            >
-              {allSlides[current]?.category}
-            </motion.span>
-          </AnimatePresence>
-        </motion.div>
-      )}
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 0.8 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-10 z-10 flex flex-col items-center gap-3"
-      >
-        <span className="font-body text-[10px] tracking-[0.3em] uppercase text-ivory/30">
-          Scroll
-        </span>
-        <div className="relative w-[1px] h-10 bg-ivory/10 overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 w-full bg-gold"
-            style={{ height: '30%' }}
-            animate={{ y: ['0%', '250%', '0%'] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
-      </motion.div>
     </section>
   );
 }

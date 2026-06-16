@@ -33,7 +33,7 @@ export function StickyCTA() {
           className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-body uppercase tracking-wider text-[#FAF7F2] bg-[#C8A23D] hover:bg-[#A8842E] transition-colors"
         >
           <MessageCircle className="h-4 w-4" />
-          Inquire
+          Check Availability
         </Link>
       </div>
     </div>

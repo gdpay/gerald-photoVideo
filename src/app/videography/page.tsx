@@ -120,7 +120,7 @@ export default async function VideographyPage() {
             href="/contact"
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            Inquire About Combos →
+            Check Availability →
           </a>
         </Container>
       </SectionWrapper>
@@ -128,7 +128,7 @@ export default async function VideographyPage() {
       <CTASection
         title="Book Your Wedding Film"
         subtitle="Let's create a cinematic keepsake you'll treasure for generations."
-        primaryCTA={{ label: 'Inquire About Videography', href: '/contact' }}
+        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
       />
     </>
   );

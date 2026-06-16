@@ -106,7 +106,7 @@ export default function PortraitsPage() {
       <CTASection
         title="Book Your Portrait Session"
         subtitle="Let's create beautiful portraits that celebrate you."
-        primaryCTA={{ label: 'Inquire About Portraits', href: '/contact' }}
+        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
       />
     </>
   );
