@@ -14,11 +14,11 @@ export function Footer() {
           <div className="lg:border-r lg:border-[#C8A23D]/45 lg:pr-10">
             <Link href="/" className="inline-block">
               <Image
-                src="/Logo Gerald Photo Video-b.png"
+                src="/Gerald Photo Video-w.png"
                 alt={SITE.name}
-                width={170}
-                height={70}
-                className="h-auto w-32"
+                width={200}
+                height={48}
+                className="h-auto w-44"
               />
             </Link>
             <p className="mt-5 max-w-xs font-heading text-base leading-relaxed text-[#FAF7F2]/62">

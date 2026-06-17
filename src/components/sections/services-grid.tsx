@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
@@ -44,6 +45,13 @@ const serviceTaglines: Record<(typeof featuredServiceIds)[number], string> = {
   quinceaneras: 'Celebrating Her Story',
   engagements: 'Your Beginning',
   videography: 'Cinematic Films',
+};
+
+const serviceFallbacks: Record<(typeof featuredServiceIds)[number], string> = {
+  weddings:'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=85&auto=format',
+  quinceaneras:'https://images.unsplash.com/photo-1495231916356-a86217efff12?w=800&q=85&auto=format',
+  engagements:'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=85&auto=format',
+  videography:'',
 };
 
 export function ServicesGrid({ services, galleries }: ServicesGridProps) {
@@ -100,6 +108,14 @@ export function ServicesGrid({ services, galleries }: ServicesGridProps) {
                   {service.heroImage ? (
                     <SanityImage
                       source={service.heroImage}
+                      alt={service.imageAlt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : (serviceFallbacks as Record<string, string>)[service.id] ? (
+                    <Image
+                      src={(serviceFallbacks as Record<string, string>)[service.id]}
                       alt={service.imageAlt}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

@@ -47,7 +47,7 @@ const fallbackSlides: HeroSlide[] = [
   },
 ];
 
-const SLIDE_INTERVAL = 5500;
+const SLIDE_INTERVAL = 2000;
 
 function getSlideUrl(slide?: HeroSlide) {
   if (slide?.imageUrl) return slide.imageUrl;
@@ -87,7 +87,7 @@ export function HeroSection({
         return (
           <div
             key={slide._id}
-            className="absolute inset-0 transition-opacity duration-[1800ms] ease-in-out"
+            className="absolute inset-0 transition-opacity duration-[600ms] ease-in-out"
             style={{ opacity: isActive ? 1 : 0 }}
           >
             <Image
@@ -95,8 +95,8 @@ export function HeroSection({
               alt={slide.alt || slide.category || 'Romantic wedding portrait'}
               fill
               sizes="100vw"
-              className="object-cover object-center transition-transform duration-[6500ms] ease-linear"
-              style={{ transform: isActive ? 'scale(1.045)' : 'scale(1)' }}
+              className="object-cover object-center transition-transform duration-[2000ms] ease-linear"
+              style={{ transform: isActive ? 'scale(1.03)' : 'scale(1)' }}
               priority={index === 0}
               quality={92}
             />
@@ -148,7 +148,7 @@ export function HeroSection({
           >
             <div className="absolute bottom-0 right-0 text-right">
               <Image
-                src="/Logo Gerald Photo Video-b.png"
+                src="/Gerald Photo Video-w.png"
                 alt={SITE.name}
                 width={150}
                 height={70}
@@ -162,6 +162,28 @@ export function HeroSection({
           </motion.div>
         </div>
       </Container>
+
+      {/* Slide Indicators */}
+      {heroSlides.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide._id}
+              onClick={() => setCurrentSlide(index)}
+              className="group flex items-center justify-center p-2"
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              <span
+                className={`block rounded-full transition-all duration-300 ${
+                  index === currentSlide
+                    ? 'h-3 w-8 bg-[#C8A23D] shadow-[0_0_12px_rgba(200,162,61,0.5)]'
+                    : 'h-2.5 w-2.5 bg-[#FAF7F2]/45 hover:bg-[#FAF7F2]/75'
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

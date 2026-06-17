@@ -59,14 +59,14 @@ export function Navigation({ logoUrl }: NavigationProps) {
           {/* Logo */}
           <Link href="/" className="relative z-10">
             <Image
-              src={logoUrl || '/Logo Gerald Photo Video-b.png'}
+              src={logoUrl || '/Gerald Photo Video-w.png'}
               alt={SITE.name}
-              width={180}
-              height={40}
+              width={220}
+              height={52}
               className={cn(
                 'w-auto transition-all duration-400',
                 logoUrl ? 'brightness-0 invert' : '',
-                isScrolled ? 'h-10' : 'h-12'
+                isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'
               )}
               priority
             />
