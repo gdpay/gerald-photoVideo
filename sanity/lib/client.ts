@@ -4,7 +4,8 @@ import { createImageUrlBuilder } from '@sanity/image-url';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SanityImageSource = any;
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '';
+// Uses the same fallback project ID as sanity.config.ts / sanity.cli.ts
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '9vm83yjc';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
 // Server-side client (has access to SANITY_API_TOKEN)
