@@ -107,7 +107,7 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-r from-[#06112A]/95 via-[#06112A]/62 to-[#06112A]/10" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#06112A]/42 via-transparent to-transparent" />
 
-      <Container className="relative z-10 flex min-h-[598px] items-center py-16 lg:py-20">
+      <Container className="relative z-10 flex min-h-[598px] items-center py-8 lg:py-20">
         <div className="grid w-full items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
           <motion.div
             initial={{ opacity: 0, y: 28 }}

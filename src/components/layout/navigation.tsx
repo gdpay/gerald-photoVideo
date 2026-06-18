@@ -16,7 +16,7 @@ interface NavigationProps {
 }
 
 const desktopNavItems = NAV_ITEMS.filter((item) =>
-  ['/', '/weddings', '/quinceaneras', '/engagements', '/portraits', '/investment', '/about', '/contact'].includes(item.href)
+  ['/', '/weddings', '/quinceaneras', '/engagements', '/portraits', '/investment', '/about', '/blog', '/contact'].includes(item.href)
 );
 
 export function Navigation({ logoUrl }: NavigationProps) {

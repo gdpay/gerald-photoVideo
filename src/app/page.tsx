@@ -3,7 +3,7 @@ import { HeroSection } from '@/components/sections/hero-section';
 import { TrustBar } from '@/components/sections/trust-bar';
 import { ServicesGrid } from '@/components/sections/services-grid';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
-import { CTASection } from '@/components/sections/cta-section';
+
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
@@ -16,11 +16,9 @@ import {
   HeartHandshake,
   Images,
   MapPin,
-  Maximize,
   Play,
   Sparkles,
   Users,
-  Volume2,
 } from 'lucide-react';
 
 const experienceFeatures = [
@@ -36,25 +34,7 @@ const experienceFeatures = [
 
 function FeaturedFilmFrame() {
   return (
-    <div className="relative aspect-video overflow-hidden bg-[#06112A] shadow-2xl">
-      <Image
-        src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=90"
-        alt="Wedding sparkler exit film preview"
-        fill
-        sizes="(max-width: 1024px) 100vw, 760px"
-        className="object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#06112A]/70 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 flex items-center gap-4 px-5 py-4 text-[#FAF7F2]">
-        <Play className="h-5 w-5 fill-current" aria-hidden="true" />
-        <span className="font-body text-xs text-[#FAF7F2]/85">02:17</span>
-        <div className="h-1 flex-1 bg-[#FAF7F2]/35">
-          <div className="h-full w-[38%] bg-[#FAF7F2]" />
-        </div>
-        <Volume2 className="h-4 w-4" aria-hidden="true" />
-        <Maximize className="h-4 w-4" aria-hidden="true" />
-      </div>
-    </div>
+    <div className="shadow-2xl" dangerouslySetInnerHTML={{ __html: '<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/284882984?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Quinceañera de Ayaremi"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>' }} />
   );
 }
 
@@ -184,7 +164,6 @@ export default async function HomePage() {
       </SectionWrapper>
 
       <TestimonialCarousel testimonials={testimonials} />
-      <CTASection />
     </>
   );
 }
