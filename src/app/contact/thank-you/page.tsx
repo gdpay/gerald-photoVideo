@@ -3,6 +3,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { ThankYouTracker } from '@/components/analytics/thank-you-tracker';
 import { Heart } from 'lucide-react';
 
 export const metadata: Metadata = generateMetadata({
@@ -14,6 +15,7 @@ export const metadata: Metadata = generateMetadata({
 export default function ThankYouPage() {
   return (
     <>
+      <ThankYouTracker />
       <SectionWrapper className="min-h-[80vh] flex items-center">
         <Container narrow className="text-center">
           <Heart className="h-12 w-12 text-[#C8A23D]/50 mx-auto mb-6" />

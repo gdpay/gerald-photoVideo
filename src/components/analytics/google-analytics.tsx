@@ -4,11 +4,11 @@ import { Suspense } from 'react';
 import Script from 'next/script';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { useAnalyticsConsent } from '@/components/analytics/meta-pixel-provider';
 
 declare global {
   interface Window {
     gtag: (...args: unknown[]) => void;
-    fbq: (...args: unknown[]) => void;
   }
 }
 
@@ -30,7 +30,9 @@ function GoogleAnalyticsInner() {
 }
 
 export function GoogleAnalytics() {
-  if (!GA_MEASUREMENT_ID) return null;
+  const { hasConsent } = useAnalyticsConsent();
+
+  if (!GA_MEASUREMENT_ID || !hasConsent) return null;
 
   return (
     <>

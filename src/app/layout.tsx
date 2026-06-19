@@ -5,6 +5,8 @@ import { StickyCTA } from '@/components/layout/sticky-cta';
 import { LocalBusinessSchema, WebSiteSchema, OrganizationSchema, ProfessionalServiceSchema } from '@/components/seo/schema-scripts';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
+import { AnalyticsConsentProvider } from '@/components/analytics/meta-pixel-provider';
+import { ConsentBanner } from '@/components/analytics/consent-banner';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
 import { settingsQuery } from '../../sanity/lib/queries';
@@ -122,12 +124,15 @@ export default async function RootLayout({
         <OrganizationSchema />
       </head>
       <body className="min-h-screen bg-[#FAF7F2] text-[#0A1F44] antialiased">
-        <Navigation logoUrl={logoUrl} />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <StickyCTA />
-        <GoogleAnalytics />
-        <MetaPixel />
+        <AnalyticsConsentProvider>
+          <Navigation logoUrl={logoUrl} />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          <StickyCTA />
+          <GoogleAnalytics />
+          <MetaPixel />
+          <ConsentBanner />
+        </AnalyticsConsentProvider>
       </body>
     </html>
   );

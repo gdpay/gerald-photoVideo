@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { client } from '../../sanity/lib/client';
 
 const BASE_URL = 'https://www.geraldphotovideo.com';
 
@@ -22,13 +23,32 @@ const staticPages = [
   { path: '/des-moines-wedding-photographer', priority: 0.7 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+async function getBlogPosts(): Promise<MetadataRoute.Sitemap> {
+  try {
+    const posts = await client.fetch<{ slug: string; publishedAt: string }[]>(
+      `*[_type == "post" && defined(slug)]{ "slug": slug.current, publishedAt }`
+    );
+
+    return posts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.publishedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls = staticPages.map((page) => ({
     url: `${BASE_URL}${page.path}`,
     lastModified: new Date(),
-    changeFrequency: page.priority >= 0.9 ? 'weekly' as const : 'monthly' as const,
+    changeFrequency: page.priority >= 0.9 ? ('weekly' as const) : ('monthly' as const),
     priority: page.priority,
   }));
 
-  return [...staticUrls];
+  const blogUrls = await getBlogPosts();
+
+  return [...staticUrls, ...blogUrls];
 }

@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useMetaPixel } from '@/hooks/use-meta-pixel';
 import { ArrowLeft, ArrowRight, Check, Camera, Film, Heart, Calendar, Users, Mail, Phone, MessageSquare } from 'lucide-react';
 
 const formSchema = z.object({
@@ -51,6 +52,7 @@ export function MultiStepInquiryForm() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { trackLead } = useMetaPixel();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -96,6 +98,10 @@ export function MultiStepInquiryForm() {
       });
       if (res.ok) {
         setIsSuccess(true);
+        trackLead({
+          content_name: `${data.serviceType} - ${data.eventType}`,
+          content_category: data.eventType,
+        });
       } else {
         const err = await res.json();
         alert(err.error || 'Something went wrong. Please try again.');

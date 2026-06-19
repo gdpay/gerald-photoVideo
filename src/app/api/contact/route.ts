@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { SITE } from '@/lib/constants';
+import { Resend } from 'resend';
 
-// In production, uncomment and configure:
-// import { Resend } from 'resend';
-// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactSchema = z.object({
   serviceType: z.enum(['photography', 'videography', 'both']),
-  eventType: z.enum(['wedding', 'quinceanera', 'engagement', 'other']),
+  eventType: z.enum(['wedding', 'quinceanera', 'engagement', 'portrait', 'other']),
   eventDate: z.string().min(1, 'Event date is required'),
   guestCount: z.string().optional(),
   venue: z.string().optional(),
@@ -44,47 +43,47 @@ export async function POST(request: Request) {
     // });
 
     // Send notification email via Resend
-    // await resend.emails.send({
-    //   from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
-    //   to: process.env.CONTACT_EMAIL_TO || 'info@geraldphotovideo.com',
-    //   subject: `New Inquiry: ${data.eventType} — ${data.name}`,
-    //   html: `
-    //     <h2>New Lead Generated</h2>
-    //     <table style="width:100%;border-collapse:collapse;">
-    //       ${Object.entries({
-    //         Service: `${data.serviceType} — ${data.eventType}`,
-    //         'Event Date': data.eventDate,
-    //         'Guest Count': data.guestCount || 'N/A',
-    //         Venue: data.venue || 'N/A',
-    //         Name: data.name,
-    //         Partner: data.partnerName || 'N/A',
-    //         Email: data.email,
-    //         Phone: data.phone,
-    //         'Heard Via': data.hearAbout || 'N/A',
-    //         Message: data.message || 'N/A',
-    //       }).map(([key, val]) => `
-    //         <tr>
-    //           <td style="padding:8px;border-bottom:1px solid #eee;font-weight:600;color:#333;width:120px;">${key}</td>
-    //           <td style="padding:8px;border-bottom:1px solid #eee;color:#555;">${val}</td>
-    //         </tr>
-    //       `).join('')}
-    //     </table>
-    //   `,
-    // });
+    await resend.emails.send({
+      from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
+      to: process.env.CONTACT_EMAIL_TO || 'info@geraldphotovideo.com',
+      subject: `New Inquiry: ${data.eventType} — ${data.name}`,
+      html: `
+        <h2>New Lead Generated</h2>
+        <table style="width:100%;border-collapse:collapse;">
+          ${Object.entries({
+            Service: `${data.serviceType} — ${data.eventType}`,
+            'Event Date': data.eventDate,
+            'Guest Count': data.guestCount || 'N/A',
+            Venue: data.venue || 'N/A',
+            Name: data.name,
+            Partner: data.partnerName || 'N/A',
+            Email: data.email,
+            Phone: data.phone,
+            'Heard Via': data.hearAbout || 'N/A',
+            Message: data.message || 'N/A',
+          }).map(([key, val]) => `
+            <tr>
+              <td style="padding:8px;border-bottom:1px solid #eee;font-weight:600;color:#333;width:120px;">${key}</td>
+              <td style="padding:8px;border-bottom:1px solid #eee;color:#555;">${val}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `,
+    });
 
     // Send auto-reply to lead
-    // await resend.emails.send({
-    //   from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
-    //   to: data.email,
-    //   subject: 'Thank you for reaching out — Gerald Photo Video',
-    //   html: `
-    //     <h2>Thank you, ${data.name}!</h2>
-    //     <p>We've received your inquiry and will get back to you within 24 hours.</p>
-    //     <p>In the meantime, feel free to browse our portfolio:</p>
-    //     <p><a href="https://www.geraldphotovideo.com/portfolio">View Our Portfolio →</a></p>
-    //     <p>— The Gerald Photo Video Team</p>
-    //   `,
-    // });
+    await resend.emails.send({
+      from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
+      to: data.email,
+      subject: 'Thank you for reaching out — Gerald Photo Video',
+      html: `
+        <h2>Thank you, ${data.name}!</h2>
+        <p>We've received your inquiry and will get back to you within 24 hours.</p>
+        <p>In the meantime, feel free to browse our portfolio:</p>
+        <p><a href="https://www.geraldphotovideo.com/portfolio">View Our Portfolio →</a></p>
+        <p>— The Gerald Photo Video Team</p>
+      `,
+    });
 
     console.log('New lead received:', {
       name: data.name,
