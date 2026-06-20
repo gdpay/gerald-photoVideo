@@ -31,6 +31,7 @@ export default function ContactPage() {
       <PageHero
         title="Let's Create Together"
         subtitle="Tell us about your vision and we'll make it happen."
+        imageUrl="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80"
       />
 
       <SectionWrapper>

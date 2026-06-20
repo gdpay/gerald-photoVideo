@@ -39,6 +39,7 @@ export default function PortraitsPage() {
       <PageHero
         title="Portrait Photography"
         subtitle="Timeless portraits that celebrate your unique beauty and personality."
+        imageUrl="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=1920&q=80"
       />
 
       <SectionWrapper>

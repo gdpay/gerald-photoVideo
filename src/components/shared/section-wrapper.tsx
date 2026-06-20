@@ -33,7 +33,7 @@ export function SectionWrapper({
       variants={fadeInUp}
       className={cn(
         'relative',
-        !noPadding && 'py-20 md:py-24 lg:py-32',
+        !noPadding && 'py-3 md:py-4 lg:py-4',
         dark && 'bg-[#0A1F44] text-[#FAF7F2]',
         champagne && 'bg-[#F8E8D0]',
         navy && 'bg-[#0A1F44] text-[#FAF7F2]',

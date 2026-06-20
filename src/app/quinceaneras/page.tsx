@@ -91,7 +91,7 @@ export default async function QuinceanerasPage() {
       ]} />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-navy min-h-[80vh] flex items-center">
+      <section className="relative pt-8 pb-6 md:pt-12 md:pb-6 overflow-hidden bg-navy min-h-[23vh] flex items-center">
         <div className="absolute inset-0">
           <Image
             src={heroSection?.backgroundImage || "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1920&q=90"}
@@ -155,8 +155,6 @@ export default async function QuinceanerasPage() {
       {galleryImages.length > 0 && (
         <GalleryPreview
           images={galleryImages}
-          title="Featured Quinceañeras"
-          subtitle="Recent Work"
         />
       )}
 

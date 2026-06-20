@@ -75,6 +75,7 @@ export default async function VideographyPage() {
       <PageHero
         title={data?.heroHeading || 'Cinematic Videography'}
         subtitle={data?.heroSubheading || 'Wedding films that let you relive every laugh, every tear, and every dance.'}
+        imageUrl="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1920&q=80"
       />
 
       <SectionWrapper>

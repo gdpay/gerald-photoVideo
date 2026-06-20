@@ -90,6 +90,7 @@ export default function FAQPage() {
       <PageHero
         title="Frequently Asked Questions"
         subtitle="Everything you need to know about working with us."
+        imageUrl="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80"
       />
 
       <SectionWrapper>

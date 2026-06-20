@@ -59,6 +59,7 @@ export default async function BlogPage() {
       <PageHero
         title="Our Blog"
         subtitle="Real weddings, planning tips, and stories from Nebraska & Iowa."
+        imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
       <SectionWrapper>

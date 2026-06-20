@@ -89,6 +89,7 @@ export default async function InvestmentPage() {
       <PageHero
         title={data?.heroHeading || 'Investment'}
         subtitle={data?.heroSubheading || 'Every collection is as unique as your story. We create custom experiences tailored to your vision.'}
+        imageUrl="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80"
       />
 
       <SectionWrapper>

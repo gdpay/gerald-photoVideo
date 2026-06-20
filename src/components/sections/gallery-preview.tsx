@@ -17,37 +17,15 @@ export interface GalleryImage {
 
 interface GalleryPreviewProps {
   images?: GalleryImage[];
-  title?: string;
-  subtitle?: string;
 }
 
-export function GalleryPreview({ images, title = 'Featured Collections', subtitle = 'Our Work' }: GalleryPreviewProps) {
+export function GalleryPreview({ images }: GalleryPreviewProps) {
   // If no images provided, show nothing
   if (!images || images.length === 0) return null;
 
   return (
     <SectionWrapper>
       <Container>
-        <div className="text-center mb-16">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-body text-[12px] font-medium uppercase tracking-[0.15em] text-[#C8A23D]"
-          >
-            {subtitle}
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl text-[#0A1F44]"
-          >
-            {title}
-          </motion.h2>
-        </div>
-
         <motion.div
           variants={staggerContainer}
           initial="hidden"

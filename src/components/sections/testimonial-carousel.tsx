@@ -60,7 +60,7 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
     : fallbackTestimonials;
 
   return (
-    <SectionWrapper className="bg-[#FFFDF9] py-16 lg:py-20">
+    <SectionWrapper className="bg-[#FFFDF9] py-3 md:py-4 lg:py-4">
       <Container>
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>

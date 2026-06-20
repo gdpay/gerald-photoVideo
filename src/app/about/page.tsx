@@ -70,6 +70,7 @@ export default async function AboutPage() {
       <PageHero
         title={data?.heroHeading || 'Our Story'}
         subtitle={data?.heroSubheading || "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans."}
+        imageUrl="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1920&q=80"
       />
 
       <SectionWrapper>

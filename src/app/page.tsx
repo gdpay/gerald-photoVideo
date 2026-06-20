@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       <ServicesGrid services={services} galleries={galleries} />
 
-      <SectionWrapper navy className="py-16 lg:py-20">
+      <SectionWrapper navy>
         <Container>
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.33fr_0.67fr] lg:gap-16">
             <div className="max-w-sm">
@@ -98,7 +98,7 @@ export default async function HomePage() {
         </Container>
       </SectionWrapper>
 
-      <SectionWrapper className="py-16 lg:py-20">
+      <SectionWrapper>
         <Container>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>

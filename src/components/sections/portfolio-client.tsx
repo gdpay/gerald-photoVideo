@@ -37,6 +37,7 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
       <PageHero
         title="Our Portfolio"
         subtitle="A curated collection of our favorite moments."
+        imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
       <SectionWrapper className="-mt-8">

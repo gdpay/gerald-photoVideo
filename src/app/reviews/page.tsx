@@ -70,6 +70,7 @@ export default async function ReviewsPage() {
       <PageHero
         title="Kind Words"
         subtitle="We're honored to be part of your celebrations. Here's what our clients say."
+        imageUrl="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80"
       />
 
       <SectionWrapper className="-mt-8">

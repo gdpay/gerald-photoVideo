@@ -16,7 +16,7 @@ export function PageHero({ title, subtitle, imageSource, imageUrl }: PageHeroPro
   const hasImage = !!(imageSource || imageUrl);
 
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-ivory">
+    <section className="relative pt-8 pb-4 md:pt-8 md:pb-6 overflow-hidden bg-ivory">
       {/* Background */}
       {hasImage && (
         <>

@@ -80,7 +80,7 @@ export function HeroSection({
   }, [heroSlides.length]);
 
   return (
-    <section className="relative isolate min-h-[680px] overflow-hidden bg-[#06112A] pt-[82px] lg:min-h-[720px]">
+    <section className="relative isolate min-h-[160px] overflow-hidden bg-[#06112A] pt-[82px] lg:min-h-[170px]">
       {heroSlides.map((slide, index) => {
         const isActive = index === currentSlide;
 
@@ -107,8 +107,8 @@ export function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-r from-[#06112A]/95 via-[#06112A]/62 to-[#06112A]/10" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#06112A]/42 via-transparent to-transparent" />
 
-      <Container className="relative z-10 flex min-h-[598px] items-center py-8 lg:py-20">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <Container className="relative z-10 flex min-h-[140px] items-center py-3 lg:py-4">
+        <div className="grid w-full items-center gap-3 lg:grid-cols-[0.9fr_1.1fr]">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -144,7 +144,7 @@ export function HeroSection({
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.15, ease: 'easeOut' }}
-            className="relative hidden min-h-[500px] lg:block"
+            className="relative hidden min-h-[140px] lg:block"
           >
             <div className="absolute bottom-0 right-0 text-right">
               <Image

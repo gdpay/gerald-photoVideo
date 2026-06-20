@@ -42,6 +42,7 @@ export function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
       <PageHero
         title={`${city} Wedding Photographer`}
         subtitle={`Serving ${city}, ${state} and the surrounding areas with premium photography and videography services.`}
+        imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
       <SectionWrapper>

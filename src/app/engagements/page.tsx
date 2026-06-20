@@ -56,6 +56,7 @@ export default async function EngagementsPage() {
       <PageHero
         title={data?.heroHeading || 'Engagement Portraits'}
         subtitle={data?.heroSubheading || "Your love story deserves a beautiful beginning. Let's create portraits that capture the excitement of this chapter."}
+        imageUrl="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&q=80"
       />
 
       <SectionWrapper>

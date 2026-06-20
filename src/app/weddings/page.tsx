@@ -92,7 +92,7 @@ export default async function WeddingsPage() {
       ]} />
 
       {/* Hero Section — Custom luxury hero */}
-      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-navy min-h-[80vh] flex items-center">
+      <section className="relative pt-9 pb-5 md:pt-9 md:pb-6 overflow-hidden bg-navy min-h-[22vh] flex items-center">
         <div className="absolute inset-0">
           <Image
             src={heroSection?.backgroundImage || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90'}
@@ -111,21 +111,21 @@ export default async function WeddingsPage() {
         <Container className="relative z-10">
           <div className="max-w-3xl animate-fade-in-up">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/30 text-gold text-[11px] font-body uppercase tracking-[0.2em] mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-gold/30 text-gold text-[10px] font-body uppercase tracking-[0.2em] mb-5">
               Weddings
             </div>
 
-            <div className="h-[1px] w-16 bg-gold mb-8" />
+            <div className="h-[1px] w-12 bg-gold mb-5" />
 
             <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory font-light leading-[1.05] tracking-tight">
               Cinematic Wedding Photography &amp; Films for Once-in-a-Lifetime Love Stories
             </h1>
 
-            <p className="mt-6 text-lg sm:text-xl text-ivory/60 font-body font-light max-w-2xl leading-relaxed">
+            <p className="mt-5 text-lg sm:text-xl text-ivory/60 font-body font-light max-w-2xl leading-relaxed">
               From quiet first looks to emotional vows and unforgettable celebrations, we preserve every detail with elegance, intention, and cinematic storytelling.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-start gap-4">
+            <div className="mt-7 flex flex-col sm:flex-row items-start gap-4">
               <Button variant="primary" size="lg" href="/contact">
                 Check Availability
               </Button>
@@ -155,8 +155,6 @@ export default async function WeddingsPage() {
       {galleryImages.length > 0 && (
         <GalleryPreview
           images={galleryImages}
-          title="Featured Weddings"
-          subtitle="Recent Work"
         />
       )}
 
