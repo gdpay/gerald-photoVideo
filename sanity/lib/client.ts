@@ -15,6 +15,10 @@ export const client = createClient({
   apiVersion: '2024-01-01',
   useCdn: process.env.NODE_ENV === 'production',
   token: process.env.SANITY_API_TOKEN,
+  ...(process.env.NODE_ENV !== 'production' && {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fetch: { cache: 'no-store' } as any,
+  }),
 });
 
 // Client-side safe client (no secret token, uses CDN for reads)

@@ -5,6 +5,8 @@ import { PortfolioClient } from '@/components/sections/portfolio-client';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as genMeta } from '@/lib/seo-metadata';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = genMeta({
   title: 'Portfolio',
   description: 'A curated collection of our favorite wedding, quinceañera, and engagement moments.',

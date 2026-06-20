@@ -13,6 +13,8 @@ import { Crown, Camera, Video, Users, Sparkles, Heart, Star, Music } from 'lucid
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = generateMetadata({
   title: "Quinceañera Photography & Videography",
   description:

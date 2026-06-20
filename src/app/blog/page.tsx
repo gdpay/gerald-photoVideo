@@ -10,6 +10,8 @@ import { client } from '../../../sanity/lib/client';
 import { blogPostsQuery } from '../../../sanity/lib/queries';
 import { SanityImage } from '@/components/shared/sanity-image';
 
+export const revalidate = 60;
+
 export const metadata: Metadata = generateMetadata({
   title: 'Blog',
   description: 'Real wedding stories, planning tips, and venue guides from Gerald Photo Video. Serving Nebraska and Iowa.',

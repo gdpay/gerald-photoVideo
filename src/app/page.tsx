@@ -21,6 +21,8 @@ import {
   Users,
 } from 'lucide-react';
 
+export const revalidate = 60;
+
 const experienceFeatures = [
   { icon: Camera, label: 'Photography & Videography Under One Team' },
   { icon: Sparkles, label: 'Thoughtful & Timeless Edits' },
@@ -40,9 +42,9 @@ function FeaturedFilmFrame() {
 
 export default async function HomePage() {
   const [services, galleries, testimonials, heroSlides, homeHero] = await Promise.all([
-    client.fetch(featuredServicesQuery),
-    client.fetch(galleriesQuery),
-    client.fetch(featuredTestimonialsQuery),
+    client.fetch(featuredServicesQuery).catch(() => []),
+    client.fetch(galleriesQuery).catch(() => []),
+    client.fetch(featuredTestimonialsQuery).catch(() => []),
     client.fetch(heroSlidesQuery).catch(() => []),
     client.fetch(homeHeroQuery).catch(() => null),
   ]);
