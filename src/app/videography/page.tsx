@@ -68,7 +68,7 @@ export default async function VideographyPage() {
         name: 'Gerald Photo Video Wedding Showreel',
         description: 'Cinematic wedding film showcase featuring beautiful weddings across Nebraska and Iowa.',
         thumbnailUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80',
-        contentUrl: 'https://player.vimeo.com/video/example',
+        contentUrl: 'https://player.vimeo.com/video/284882984',
         duration: 'PT3M45S',
         uploadDate: '2025-01-01',
       }} />
