@@ -12,6 +12,7 @@ export const SITE = {
   social: {
     facebook: 'https://www.facebook.com/geraldphotovideo',
     instagram: 'https://www.instagram.com/geraldphotovideo',
+    youtube: 'https://www.youtube.com/@_GeraldPhotoVideo',
     tiktok: 'https://www.tiktok.com/@geraldphotovideo',
   },
   url: 'https://www.geraldphotovideo.com',

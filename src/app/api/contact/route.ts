@@ -3,7 +3,13 @@ import { z } from 'zod';
 import { SITE } from '@/lib/constants';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY environment variable is not set');
+  }
+  return new Resend(apiKey);
+}
 
 const contactSchema = z.object({
   serviceType: z.enum(['photography', 'videography', 'both']),
@@ -43,7 +49,7 @@ export async function POST(request: Request) {
     // });
 
     // Send notification email via Resend
-    await resend.emails.send({
+    await getResend().emails.send({
       from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
       to: process.env.CONTACT_EMAIL_TO || 'info@geraldphotovideo.com',
       subject: `New Inquiry: ${data.eventType} — ${data.name}`,
@@ -72,7 +78,7 @@ export async function POST(request: Request) {
     });
 
     // Send auto-reply to lead
-    await resend.emails.send({
+    await getResend().emails.send({
       from: `Gerald Photo Video <${process.env.CONTACT_EMAIL_FROM || 'noreply@geraldphotovideo.com'}>`,
       to: data.email,
       subject: 'Thank you for reaching out — Gerald Photo Video',

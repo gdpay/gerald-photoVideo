@@ -61,7 +61,7 @@ export function Footer() {
               <a href={SITE.social.tiktok} target="_blank" rel="noopener noreferrer" className="text-[#FAF7F2]/70 transition hover:text-[#C8A23D]" aria-label="TikTok">
                 <Music className="h-5 w-5" />
               </a>
-              <a href="/videography" className="text-[#FAF7F2]/70 transition hover:text-[#C8A23D]" aria-label="YouTube">
+              <a href={SITE.social.youtube} target="_blank" rel="noopener noreferrer" className="text-[#FAF7F2]/70 transition hover:text-[#C8A23D]" aria-label="YouTube">
                 <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M23.5 6.2a3.02 3.02 0 00-2.13-2.14C19.49 3.56 12 3.56 12 3.56s-7.49 0-9.37.5A3.02 3.02 0 00.5 6.2 31.4 31.4 0 000 12a31.4 31.4 0 00.5 5.8 3.02 3.02 0 002.13 2.14c1.88.5 9.37.5 9.37.5s7.49 0 9.37-.5a3.02 3.02 0 002.13-2.14A31.4 31.4 0 0024 12a31.4 31.4 0 00-.5-5.8zM9.75 15.57V8.43L16 12l-6.25 3.57z" />
                 </svg>
