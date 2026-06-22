@@ -9,16 +9,14 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '9vm83yjc';
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
 // Server-side client (has access to SANITY_API_TOKEN)
+// Disables Sanity CDN so ISR revalidations always fetch fresh data.
+// Next.js page-level caching (ISR) handles performance instead.
 export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false,
   token: process.env.SANITY_API_TOKEN,
-  ...(process.env.NODE_ENV !== 'production' && {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fetch: { cache: 'no-store' } as any,
-  }),
 });
 
 // Client-side safe client (no secret token, uses CDN for reads)

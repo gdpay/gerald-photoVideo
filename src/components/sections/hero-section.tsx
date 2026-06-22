@@ -21,6 +21,7 @@ interface HeroSectionProps {
   slides?: HeroSlide[];
   title?: string;
   subtitle?: string;
+  tagline?: string;
 }
 
 const fallbackImage =
@@ -65,6 +66,7 @@ export function HeroSection({
   slides = [],
   title = "for Life's Most Beautiful Moments",
   subtitle = 'Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa.',
+  tagline,
 }: HeroSectionProps) {
   const heroSlides = useMemo(() => (slides.length > 0 ? slides : fallbackSlides), [slides]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -116,7 +118,7 @@ export function HeroSection({
             className="max-w-xl"
           >
             <span className="font-body text-[12px] font-semibold uppercase tracking-[0.22em] text-[#C8A23D]">
-              Timeless Storytelling
+              {tagline || 'Timeless Storytelling'}
             </span>
             <h1 className="mt-5 font-heading text-5xl font-light leading-[0.98] text-[#FAF7F2] sm:text-6xl lg:text-7xl">
               {title}

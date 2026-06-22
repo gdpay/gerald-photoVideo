@@ -8,7 +8,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { client } from '../../sanity/lib/client';
-import { featuredServicesQuery, featuredTestimonialsQuery, galleriesQuery, heroSlidesQuery, homeHeroQuery } from '../../sanity/lib/queries';
+import { featuredServicesQuery, featuredTestimonialsQuery, galleriesQuery, heroSlidesQuery, homeHeroQuery, settingsQuery } from '../../sanity/lib/queries';
 import {
   Album,
   Camera,
@@ -41,12 +41,13 @@ function FeaturedFilmFrame() {
 }
 
 export default async function HomePage() {
-  const [services, galleries, testimonials, heroSlides, homeHero] = await Promise.all([
+    const [services, galleries, testimonials, heroSlides, homeHero, settings] = await Promise.all([
     client.fetch(featuredServicesQuery).catch(() => []),
     client.fetch(galleriesQuery).catch(() => []),
     client.fetch(featuredTestimonialsQuery).catch(() => []),
     client.fetch(heroSlidesQuery).catch(() => []),
     client.fetch(homeHeroQuery).catch(() => null),
+    client.fetch(settingsQuery).catch(() => null),
   ]);
   const sanityHeroSlides = heroSlides.length > 0
     ? heroSlides
@@ -67,6 +68,7 @@ export default async function HomePage() {
         slides={sanityHeroSlides}
         title="for Life's Most Beautiful Moments"
         subtitle="Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa."
+        tagline={settings?.tagline}
       />
       <TrustBar />
 

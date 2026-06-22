@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+
+export const revalidate = 60;
 import { Navigation } from '@/components/layout/navigation';
 import { Footer } from '@/components/layout/footer';
 import { StickyCTA } from '@/components/layout/sticky-cta';

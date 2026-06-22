@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { SITE } from '@/lib/constants';
 
 export const alt = 'Gerald Photo Video — Wedding & Quinceañera Photographer Nebraska & Iowa';
 export const size = {
@@ -78,7 +79,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          Timeless Storytelling for Life&apos;s Most Beautiful Moments
+          {SITE.tagline}
         </div>
         {/* Separator */}
         <div
