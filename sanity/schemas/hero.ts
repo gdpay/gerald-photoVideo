@@ -6,6 +6,12 @@ export default defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'tagline',
+      title: 'Tagline / Eyebrow Text',
+      type: 'string',
+      description: 'Small uppercase text shown above the hero heading.',
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading',
       type: 'string',
@@ -31,6 +37,22 @@ export default defineType({
       name: 'ctaLink',
       title: 'Button Link',
       type: 'string',
+    }),
+    defineField({
+      name: 'secondaryCtaText',
+      title: 'Secondary Button Text',
+      type: 'string',
+    }),
+    defineField({
+      name: 'secondaryCtaLink',
+      title: 'Secondary Button Link',
+      type: 'string',
+    }),
+    defineField({
+      name: 'locationLabel',
+      title: 'Location Label',
+      type: 'string',
+      description: 'Small text shown near the logo on desktop.',
     }),
   ],
   preview: {

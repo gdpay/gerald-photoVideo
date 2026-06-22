@@ -134,11 +134,15 @@ export const pageBySlugQuery = (slug: string) =>
 // Home page hero
 export const homeHeroQuery = `*[_type == "page" && slug.current == "home"][0] {
   sections[_type == "hero"][0] {
+    tagline,
     heading,
     subheading,
     backgroundImage,
     ctaText,
-    ctaLink
+    ctaLink,
+    secondaryCtaText,
+    secondaryCtaLink,
+    locationLabel
   }
 }`;
 

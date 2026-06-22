@@ -22,6 +22,11 @@ interface HeroSectionProps {
   title?: string;
   subtitle?: string;
   tagline?: string;
+  primaryCtaText?: string;
+  primaryCtaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+  locationLabel?: string;
 }
 
 const fallbackImage =
@@ -67,6 +72,11 @@ export function HeroSection({
   title = "for Life's Most Beautiful Moments",
   subtitle = 'Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa.',
   tagline,
+  primaryCtaText = 'Check Availability',
+  primaryCtaLink = '/contact',
+  secondaryCtaText = 'View Portfolio',
+  secondaryCtaLink = '/portfolio',
+  locationLabel = 'Omaha, NE',
 }: HeroSectionProps) {
   const heroSlides = useMemo(() => (slides.length > 0 ? slides : fallbackSlides), [slides]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -131,13 +141,13 @@ export function HeroSection({
               <Button
                 variant="secondary"
                 size="lg"
-                href="/contact"
+                href={primaryCtaLink}
                 className="border-[#C8A23D] bg-[#C8A23D] text-[#FAF7F2] hover:bg-[#A8842E] hover:text-[#FAF7F2]"
               >
-                Check Availability
+                {primaryCtaText}
               </Button>
-              <Button variant="outline-light" size="lg" href="/portfolio">
-                View Portfolio
+              <Button variant="outline-light" size="lg" href={secondaryCtaLink}>
+                {secondaryCtaText}
               </Button>
             </div>
           </motion.div>
@@ -158,7 +168,7 @@ export function HeroSection({
                 priority
               />
               <div className="mt-2 font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A23D]">
-                Omaha, NE
+                {locationLabel}
               </div>
             </div>
           </motion.div>

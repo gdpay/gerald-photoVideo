@@ -61,14 +61,24 @@ export default async function HomePage() {
           },
         ]
       : [];
+  const heroTitle = homeHero?.sections?.heading || "for Life's Most Beautiful Moments";
+  const heroSubtitle =
+    homeHero?.sections?.subheading ||
+    'Luxury wedding, quinceanera & engagement photography and videography for couples and families in Nebraska & Iowa.';
+  const heroTagline = homeHero?.sections?.tagline || settings?.tagline;
 
   return (
     <>
       <HeroSection
         slides={sanityHeroSlides}
-        title="for Life's Most Beautiful Moments"
-        subtitle="Luxury wedding, quinceañera & engagement photography and videography for couples and families in Nebraska & Iowa."
-        tagline={settings?.tagline}
+        title={heroTitle}
+        subtitle={heroSubtitle}
+        tagline={heroTagline}
+        primaryCtaText={homeHero?.sections?.ctaText}
+        primaryCtaLink={homeHero?.sections?.ctaLink}
+        secondaryCtaText={homeHero?.sections?.secondaryCtaText}
+        secondaryCtaLink={homeHero?.sections?.secondaryCtaLink}
+        locationLabel={homeHero?.sections?.locationLabel}
       />
       <TrustBar />
 
