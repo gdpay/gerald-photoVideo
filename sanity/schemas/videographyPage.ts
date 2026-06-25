@@ -36,6 +36,38 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: 'featuredVideo',
+      title: 'Featured Video',
+      type: 'object',
+      description: 'Main video displayed on the videography page. Add a Vimeo or YouTube link.',
+      fields: [
+        defineField({
+          name: 'title',
+          title: 'Video Title',
+          type: 'string',
+          initialValue: 'Featured Film',
+        }),
+        defineField({
+          name: 'url',
+          title: 'Video Link',
+          type: 'url',
+          description: 'Paste a Vimeo or YouTube URL.',
+        }),
+        defineField({
+          name: 'description',
+          title: 'Description',
+          type: 'text',
+          rows: 2,
+        }),
+        defineField({
+          name: 'poster',
+          title: 'Thumbnail / Poster Image',
+          type: 'image',
+          options: { hotspot: true },
+        }),
+      ],
+    }),
+    defineField({
       name: 'featuresHeading',
       title: 'Features Heading',
       type: 'string',

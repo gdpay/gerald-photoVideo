@@ -7,6 +7,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { CTASection } from '@/components/sections/cta-section';
 import { SanityImage } from '@/components/shared/sanity-image';
+import { VideoEmbed } from '@/components/shared/video-embed';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -64,10 +65,29 @@ export function PortfolioClient({ galleryImages, hero }: PortfolioClientProps) {
             ))}
           </div>
 
+          {/* Featured Video — Videography */}
+          {activeCategory === 'Videography' && (
+            <div className="mb-12 max-w-4xl mx-auto">
+              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] text-center mb-3">
+                Featured Film
+              </p>
+              <VideoEmbed
+                src="https://vimeo.com/284882984"
+                title="Quinceañera de Ayaremi"
+              />
+              <p className="mt-4 text-sm text-[#736D63] text-center">
+                A cinematic highlight reel — Quinceañera de Ayaremi
+              </p>
+            </div>
+          )}
+
           {/* Gallery Grid */}
-          {galleryImages.length === 0 ? (
+          {galleryImages.length === 0 && activeCategory !== 'Videography' ? (
             <div className="text-center py-20 text-[#A39D93]">No gallery images yet.</div>
-          ) : (
+          ) : filtered.length === 0 && galleryImages.length > 0 && activeCategory !== 'Videography' ? (
+            <div className="text-center py-20 text-[#A39D93]">No images in this category yet.</div>
+          ) : null}
+          {filtered.length > 0 && (
             <motion.div
               variants={staggerContainer}
               initial="hidden"

@@ -59,13 +59,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const fallbackFeatures = [
-  { icon: 'Film', label: 'Highlight Film', description: 'Cinematic 3–5 minute highlight reel set to music' },
+  { icon: 'Film', label: 'Highlight Film', description: 'Cinematic 3-5 minute highlight reel set to music' },
   { icon: 'Camera', label: 'Full Ceremony Edit', description: 'Complete ceremony and reception coverage' },
   { icon: 'Drone', label: 'Aerial Footage', description: 'Stunning drone perspectives of your venue' },
   { icon: 'Music', label: 'Custom Soundtrack', description: 'Music selection that matches your style' },
   { icon: 'Heart', label: 'Same-Day Edit', description: 'Short highlight reel ready for your reception' },
   { icon: 'Clock', label: 'Multi-Hour Coverage', description: 'From preparations through the final dance' },
 ];
+
+const fallbackFeaturedVideo = {
+  title: 'Quinceanera de Ayaremi',
+  url: 'https://vimeo.com/284882984',
+  description: 'A cinematic featured film from Gerald Photo Video.',
+};
 
 export default async function VideographyPage() {
   const [data, videographyGallery] = await Promise.all([
@@ -75,6 +81,8 @@ export default async function VideographyPage() {
 
   const features = data?.features?.length ? data.features : fallbackFeatures;
   const galleryImages = prepareGalleryImages(videographyGallery);
+  const featuredVideo = data?.featuredVideo?.url ? data.featuredVideo : fallbackFeaturedVideo;
+  const showcaseVideos = data?.videos?.length ? data.videos : [];
 
   return (
     <>
@@ -83,10 +91,10 @@ export default async function VideographyPage() {
         { name: 'Videography', url: '/videography' },
       ]} />
       <VideoSchema video={{
-        name: 'Gerald Photo Video Wedding Showreel',
-        description: 'Cinematic wedding film showcase featuring beautiful weddings across Nebraska and Iowa.',
-        thumbnailUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80',
-        contentUrl: 'https://player.vimeo.com/video/284882984',
+        name: featuredVideo.title || 'Gerald Photo Video Wedding Showreel',
+        description: featuredVideo.description || 'Cinematic wedding film showcase featuring beautiful weddings across Nebraska and Iowa.',
+        thumbnailUrl: featuredVideo.poster?.asset?.url || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80',
+        contentUrl: featuredVideo.url,
         duration: 'PT3M45S',
         uploadDate: '2025-01-01',
       }} />
@@ -100,8 +108,33 @@ export default async function VideographyPage() {
       <SectionWrapper>
         <Container narrow>
           <p className="text-lg text-[#736D63] leading-relaxed">
-            {data?.introText || "A photograph captures a moment. A film captures time itself. Our cinematic wedding films are crafted to transport you back to your wedding day — the sound of your heartbeat during the first look, the laughter during toasts, the energy of the dance floor. We combine documentary storytelling with cinematic artistry to create films you'll watch again and again."}
+            {data?.introText || "A photograph captures a moment. A film captures time itself. Our cinematic wedding films are crafted to transport you back to your wedding day: the sound of your heartbeat during the first look, the laughter during toasts, the energy of the dance floor. We combine documentary storytelling with cinematic artistry to create films you'll watch again and again."}
           </p>
+        </Container>
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Container>
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-8 text-center">
+              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-3">
+                Featured Film
+              </p>
+              <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44]">
+                {featuredVideo.title || 'Our Work in Motion'}
+              </h2>
+              {featuredVideo.description && (
+                <p className="mt-4 text-[#736D63] max-w-2xl mx-auto">
+                  {featuredVideo.description}
+                </p>
+              )}
+            </div>
+            <VideoEmbed
+              src={featuredVideo.url}
+              title={featuredVideo.title || 'Featured Film'}
+              posterUrl={featuredVideo.poster?.asset?.url || featuredVideo.poster?.url}
+            />
+          </div>
         </Container>
       </SectionWrapper>
 
@@ -109,38 +142,37 @@ export default async function VideographyPage() {
         <GalleryPreview images={galleryImages} />
       )}
 
-      <SectionWrapper>
-        <Container>
-          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
-            Our Work in Motion
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {(data?.videos?.length
-              ? data.videos
-              : [{ title: 'Quinceañera de Ayaremi', url: 'https://vimeo.com/284882984' }]
-            ).map((
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              video: any,
-            ) => (
-              <div key={video.url} className="space-y-3">
-                <VideoEmbed
-                  src={video.url}
-                  title={video.title || 'Featured Film'}
-                  posterUrl={video.poster?.asset?.url || video.poster?.url}
-                />
-                {video.title && (
-                  <h3 className="font-heading text-lg text-[#0A1F44]">
-                    {video.title}
-                  </h3>
-                )}
-                {video.description && (
-                  <p className="text-sm text-[#736D63]">{video.description}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </Container>
-      </SectionWrapper>
+      {showcaseVideos.length > 0 && (
+        <SectionWrapper>
+          <Container>
+            <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
+              More Films
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {showcaseVideos.map((
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                video: any,
+              ) => (
+                <div key={video.url} className="space-y-3">
+                  <VideoEmbed
+                    src={video.url}
+                    title={video.title || 'Featured Film'}
+                    posterUrl={video.poster?.asset?.url || video.poster?.url}
+                  />
+                  {video.title && (
+                    <h3 className="font-heading text-lg text-[#0A1F44]">
+                      {video.title}
+                    </h3>
+                  )}
+                  {video.description && (
+                    <p className="text-sm text-[#736D63]">{video.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </Container>
+        </SectionWrapper>
+      )}
 
       <SectionWrapper champagne>
         <Container>
@@ -177,7 +209,7 @@ export default async function VideographyPage() {
             href="/contact"
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            Check Availability →
+            Check Availability
           </a>
         </Container>
       </SectionWrapper>

@@ -268,6 +268,17 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
   heroSubheading,
   heroImage,
   introText,
+  featuredVideo {
+    title,
+    url,
+    description,
+    poster {
+      asset-> {
+        url
+      },
+      alt
+    }
+  },
   featuresHeading,
   features,
   videos[] {
