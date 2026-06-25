@@ -84,7 +84,7 @@ export const galleryByServiceTypeQuery = (serviceType: string) =>
   }`;
 
 // Blog
-export const blogPostsQuery = `*[_type == "blog"] | order(publishedAt desc) {
+export const blogPostsQuery = `*[_type == "blog" && defined(coverImage)] | order(publishedAt desc) {
   _id,
   title,
   "slug": slug.current,

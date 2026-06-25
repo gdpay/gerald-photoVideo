@@ -51,6 +51,7 @@ export default defineType({
       title: 'Cover Image',
       type: 'image',
       options: { hotspot: true },
+      validation: (rule) => rule.required().error('A cover image is required for blog posts.'),
     }),
     defineField({
       name: 'excerpt',
