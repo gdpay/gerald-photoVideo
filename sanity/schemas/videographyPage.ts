@@ -60,6 +60,26 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'videos',
+      title: 'Showcase Videos',
+      type: 'array',
+      description: 'Vimeo or YouTube video URLs displayed on the videography page.',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Video Title' },
+            { name: 'url', type: 'url', title: 'Video URL', description: 'Vimeo or YouTube URL.' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+            { name: 'poster', type: 'image', title: 'Thumbnail / Poster Image', options: { hotspot: true } },
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'url', media: 'poster' },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'comboHeading',
       title: 'Combo Section Heading',
       type: 'string',

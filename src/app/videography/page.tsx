@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
+import { VideoEmbed } from '@/components/shared/video-embed';
 import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema, VideoSchema } from '@/components/seo/schema-scripts';
@@ -107,6 +108,39 @@ export default async function VideographyPage() {
       {galleryImages.length > 0 && (
         <GalleryPreview images={galleryImages} />
       )}
+
+      <SectionWrapper>
+        <Container>
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
+            Our Work in Motion
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {(data?.videos?.length
+              ? data.videos
+              : [{ title: 'Quinceañera de Ayaremi', url: 'https://vimeo.com/284882984' }]
+            ).map((
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              video: any,
+            ) => (
+              <div key={video.url} className="space-y-3">
+                <VideoEmbed
+                  src={video.url}
+                  title={video.title || 'Featured Film'}
+                  posterUrl={video.poster?.asset?.url || video.poster?.url}
+                />
+                {video.title && (
+                  <h3 className="font-heading text-lg text-[#0A1F44]">
+                    {video.title}
+                  </h3>
+                )}
+                {video.description && (
+                  <p className="text-sm text-[#736D63]">{video.description}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </Container>
+      </SectionWrapper>
 
       <SectionWrapper champagne>
         <Container>
