@@ -5,6 +5,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { getPageHeroData } from '@/lib/page-hero-data';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { client } from '../../../sanity/lib/client';
 import { blogPostsQuery } from '../../../sanity/lib/queries';
@@ -45,6 +46,7 @@ interface BlogPost {
 
 export default async function BlogPage() {
   let blogPosts: BlogPost[] = [];
+  const hero = await getPageHeroData('blog');
 
   try {
     blogPosts = await client.fetch(blogPostsQuery);
@@ -59,8 +61,10 @@ export default async function BlogPage() {
         { name: 'Blog', url: '/blog' },
       ]} />
       <PageHero
-        title="Our Blog"
-        subtitle="Real weddings, planning tips, and stories from Nebraska & Iowa."
+        tagline={hero?.tagline}
+        title={hero?.heading || 'Our Blog'}
+        subtitle={hero?.subheading || 'Real weddings, planning tips, and stories from Nebraska & Iowa.'}
+        imageSource={hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
@@ -75,7 +79,7 @@ export default async function BlogPage() {
                   className="group"
                 >
                   <article className="border border-[#E5E0D8] overflow-hidden hover:border-[#C8A23D]/30 transition-all duration-300">
-                    <div className="aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-[16/10] overflow-hidden">
                       {post.coverImage ? (
                         <SanityImage
                           source={post.coverImage}

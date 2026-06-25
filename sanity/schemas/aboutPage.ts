@@ -24,6 +24,13 @@ export default defineType({
       initialValue: "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans.",
     }),
     defineField({
+      name: 'heroImage',
+      title: 'Hero Background Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Background image used behind the page hero.',
+    }),
+    defineField({
       name: 'storyParagraphs',
       title: 'Story Paragraphs',
       type: 'array',

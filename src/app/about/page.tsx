@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
+import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
-import { aboutPageQuery } from '../../../sanity/lib/queries';
+import { aboutPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Camera, Heart, Star, Users, Award, Sparkles } from 'lucide-react';
 
 export const revalidate = 60;
@@ -55,11 +56,27 @@ const fallbackValues = [
   { icon: 'Heart', title: 'Connection', description: 'We build genuine relationships with our clients, creating comfort and trust.' },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function prepareGalleryImages(gallery: any) {
+  if (!gallery?.images) return [];
+  const images = gallery.images.slice(0, 5);
+  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  return images.map((img: any, i: number) => ({
+    source: img,
+    alt: img.alt || gallery.title,
+    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
+  }));
+}
+
 export default async function AboutPage() {
-  const data = await getAboutData();
+  const [data, aboutGallery] = await Promise.all([
+    getAboutData(),
+    client.fetch(galleryByServiceTypeQuery('about')).catch(() => null),
+  ]);
 
   const paragraphs = data?.storyParagraphs?.length ? data.storyParagraphs : fallbackParagraphs;
   const values = data?.values?.length ? data.values : fallbackValues;
+  const galleryImages = prepareGalleryImages(aboutGallery);
 
   return (
     <>
@@ -70,6 +87,7 @@ export default async function AboutPage() {
       <PageHero
         title={data?.heroHeading || 'Our Story'}
         subtitle={data?.heroSubheading || "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans."}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1920&q=80"
       />
 
@@ -82,6 +100,10 @@ export default async function AboutPage() {
           </div>
         </Container>
       </SectionWrapper>
+
+      {galleryImages.length > 0 && (
+        <GalleryPreview images={galleryImages} />
+      )}
 
       <SectionWrapper champagne>
         <Container>

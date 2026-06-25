@@ -66,6 +66,11 @@ export default async function HomePage() {
     homeHero?.sections?.subheading ||
     'Luxury wedding, quinceanera & engagement photography and videography for couples and families in Nebraska & Iowa.';
   const heroTagline = homeHero?.sections?.tagline || settings?.tagline;
+  const heroPrimaryCtaText = homeHero?.sections?.ctaText || 'Check Availability';
+  const heroPrimaryCtaLink = homeHero?.sections?.ctaLink || '/contact';
+  const heroSecondaryCtaText = homeHero?.sections?.secondaryCtaText || 'View Portfolio';
+  const heroSecondaryCtaLink = homeHero?.sections?.secondaryCtaLink || '/portfolio';
+  const heroLocationLabel = homeHero?.sections?.locationLabel || 'Omaha, NE';
 
   return (
     <>
@@ -74,11 +79,11 @@ export default async function HomePage() {
         title={heroTitle}
         subtitle={heroSubtitle}
         tagline={heroTagline}
-        primaryCtaText={homeHero?.sections?.ctaText}
-        primaryCtaLink={homeHero?.sections?.ctaLink}
-        secondaryCtaText={homeHero?.sections?.secondaryCtaText}
-        secondaryCtaLink={homeHero?.sections?.secondaryCtaLink}
-        locationLabel={homeHero?.sections?.locationLabel}
+        primaryCtaText={heroPrimaryCtaText}
+        primaryCtaLink={heroPrimaryCtaLink}
+        secondaryCtaText={heroSecondaryCtaText}
+        secondaryCtaLink={heroSecondaryCtaLink}
+        locationLabel={heroLocationLabel}
       />
       <TrustBar />
 

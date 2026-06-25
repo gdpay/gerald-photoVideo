@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
+import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
-import { engagementsPageQuery } from '../../../sanity/lib/queries';
+import { engagementsPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Heart, MapPin } from 'lucide-react';
 
 export const revalidate = 60;
@@ -18,6 +19,18 @@ async function getEngagementsData(): Promise<any> {
   } catch {
     return null;
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function prepareGalleryImages(gallery: any) {
+  if (!gallery?.images) return [];
+  const images = gallery.images.slice(0, 5);
+  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  return images.map((img: any, i: number) => ({
+    source: img,
+    alt: img.alt || gallery.title,
+    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
+  }));
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -43,9 +56,13 @@ const fallbackLocations = [
 ];
 
 export default async function EngagementsPage() {
-  const data = await getEngagementsData();
+  const [data, engagementGallery] = await Promise.all([
+    getEngagementsData(),
+    client.fetch(galleryByServiceTypeQuery('engagements')).catch(() => null),
+  ]);
 
   const locations = data?.locations?.length ? data.locations : fallbackLocations;
+  const galleryImages = prepareGalleryImages(engagementGallery);
 
   return (
     <>
@@ -56,6 +73,7 @@ export default async function EngagementsPage() {
       <PageHero
         title={data?.heroHeading || 'Engagement Portraits'}
         subtitle={data?.heroSubheading || "Your love story deserves a beautiful beginning. Let's create portraits that capture the excitement of this chapter."}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&q=80"
       />
 
@@ -66,6 +84,10 @@ export default async function EngagementsPage() {
           </p>
         </Container>
       </SectionWrapper>
+
+      {galleryImages.length > 0 && (
+        <GalleryPreview images={galleryImages} />
+      )}
 
       <SectionWrapper champagne>
         <Container>

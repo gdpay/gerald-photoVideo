@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
+import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { Button } from '@/components/ui/button';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
-import { investmentPageQuery } from '../../../sanity/lib/queries';
+import { investmentPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Check, Heart } from 'lucide-react';
 
 export const revalidate = 60;
@@ -74,11 +75,27 @@ const fallbackAddOns = [
   'Raw footage archive',
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function prepareGalleryImages(gallery: any) {
+  if (!gallery?.images) return [];
+  const images = gallery.images.slice(0, 5);
+  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  return images.map((img: any, i: number) => ({
+    source: img,
+    alt: img.alt || gallery.title,
+    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
+  }));
+}
+
 export default async function InvestmentPage() {
-  const data = await getInvestmentData();
+  const [data, investmentGallery] = await Promise.all([
+    getInvestmentData(),
+    client.fetch(galleryByServiceTypeQuery('investment')).catch(() => null),
+  ]);
 
   const collections = data?.collections?.length ? data.collections : fallbackCollections;
   const addOns = data?.addOns?.length ? data.addOns : fallbackAddOns;
+  const galleryImages = prepareGalleryImages(investmentGallery);
 
   return (
     <>
@@ -89,6 +106,7 @@ export default async function InvestmentPage() {
       <PageHero
         title={data?.heroHeading || 'Investment'}
         subtitle={data?.heroSubheading || 'Every collection is as unique as your story. We create custom experiences tailored to your vision.'}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80"
       />
 
@@ -102,6 +120,10 @@ export default async function InvestmentPage() {
           </p>
         </Container>
       </SectionWrapper>
+
+      {galleryImages.length > 0 && (
+        <GalleryPreview images={galleryImages} />
+      )}
 
       <SectionWrapper champagne>
         <Container>

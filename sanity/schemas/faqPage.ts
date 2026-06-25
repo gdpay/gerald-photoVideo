@@ -24,6 +24,13 @@ export default defineType({
       initialValue: "Everything you need to know about working with us.",
     }),
     defineField({
+      name: 'heroImage',
+      title: 'Hero Background Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Background image used behind the page hero.',
+    }),
+    defineField({
       name: 'categories',
       title: 'FAQ Categories',
       type: 'array',

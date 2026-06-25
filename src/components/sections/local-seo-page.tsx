@@ -8,6 +8,7 @@ import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
+import { getPageHeroData } from '@/lib/page-hero-data';
 import { MapPin, Camera } from 'lucide-react';
 
 interface LocalSEOPageProps {
@@ -32,7 +33,9 @@ export function generateLocalSEOMetadata({ city, state, slug, services }: LocalS
   });
 }
 
-export function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
+export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
+  const hero = await getPageHeroData(`${slug}-wedding-photographer`);
+
   return (
     <>
       <BreadcrumbSchema items={[
@@ -40,8 +43,10 @@ export function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
         { name: `${city} Wedding Photographer`, url: `/${slug}-wedding-photographer` },
       ]} />
       <PageHero
-        title={`${city} Wedding Photographer`}
-        subtitle={`Serving ${city}, ${state} and the surrounding areas with premium photography and videography services.`}
+        tagline={hero?.tagline}
+        title={hero?.heading || `${city} Wedding Photographer`}
+        subtitle={hero?.subheading || `Serving ${city}, ${state} and the surrounding areas with premium photography and videography services.`}
+        imageSource={hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 

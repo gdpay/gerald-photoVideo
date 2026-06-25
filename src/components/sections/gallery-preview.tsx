@@ -31,7 +31,7 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+          className="grid grid-cols-2 md:grid-cols-4 gap-0"
         >
           {images.map((image, index) => (
             <motion.div
@@ -42,7 +42,8 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
                 image.span === 'large' && 'col-span-2 row-span-2',
                 image.span === 'wide' && 'col-span-2',
                 image.span === 'tall' && 'row-span-2',
-                !image.span && 'aspect-[3/4]'
+                !image.span && 'aspect-[3/4]',
+                'border-[6px] md:border-[8px] border-[#FAF7F2]'
               )}
             >
               <SanityImage
@@ -51,7 +52,7 @@ export function GalleryPreview({ images }: GalleryPreviewProps) {
                 fill
                 className="transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-[#0A1F44]/0 group-hover:bg-[#0A1F44]/20 transition-all duration-500" />
+              <div className="absolute inset-[6px] md:inset-[8px] bg-[#0A1F44]/0 group-hover:bg-[#0A1F44]/20 transition-all duration-500" />
             </motion.div>
           ))}
         </motion.div>

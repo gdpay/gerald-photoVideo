@@ -4,6 +4,7 @@ import { Container } from '@/components/shared/container';
 import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
 import { CTASection } from '@/components/sections/cta-section';
+import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
@@ -11,7 +12,6 @@ import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, pageBySlugQuery, featuredTestimonialsQuery } from '../../../sanity/lib/queries';
 import { Camera, Video, Users, Clock, Heart, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 
 export const revalidate = 60;
 
@@ -94,51 +94,13 @@ export default async function WeddingsPage() {
       ]} />
 
       {/* Hero Section — Custom luxury hero */}
-      <section className="relative pt-9 pb-5 md:pt-9 md:pb-6 overflow-hidden bg-navy min-h-[22vh] flex items-center">
-        <div className="absolute inset-0">
-          <Image
-            src={heroSection?.backgroundImage || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90'}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover opacity-60"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-navy/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/60 to-transparent" />
-        </div>
-
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
-
-        <Container className="relative z-10">
-          <div className="max-w-3xl animate-fade-in-up">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 border border-gold/30 text-gold text-[10px] font-body uppercase tracking-[0.2em] mb-5">
-              Weddings
-            </div>
-
-            <div className="h-[1px] w-12 bg-gold mb-5" />
-
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory font-light leading-[1.05] tracking-tight">
-              Cinematic Wedding Photography &amp; Films for Once-in-a-Lifetime Love Stories
-            </h1>
-
-            <p className="mt-5 text-lg sm:text-xl text-ivory/60 font-body font-light max-w-2xl leading-relaxed">
-              From quiet first looks to emotional vows and unforgettable celebrations, we preserve every detail with elegance, intention, and cinematic storytelling.
-            </p>
-
-            <div className="mt-7 flex flex-col sm:flex-row items-start gap-4">
-              <Button variant="primary" size="lg" href="/contact">
-                Check Availability
-              </Button>
-              <Button variant="outline-light" size="lg" href="/portfolio">
-                View Wedding Gallery
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
-
+      <PageHero
+        tagline={heroSection?.tagline || 'Weddings'}
+        title={heroSection?.heading || 'Cinematic Wedding Photography & Films for Once-in-a-Lifetime Love Stories'}
+        subtitle={heroSection?.subheading || 'From quiet first looks to emotional vows and unforgettable celebrations, we preserve every detail with elegance, intention, and cinematic storytelling.'}
+        imageSource={heroSection?.backgroundImage}
+        imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90"
+      />
       {/* Intro Section */}
       <SectionWrapper>
         <Container narrow>

@@ -6,6 +6,7 @@ import { MultiStepInquiryForm } from '@/components/forms/multi-step-inquiry-form
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
+import { getPageHeroData } from '@/lib/page-hero-data';
 import { Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 
 export const metadata: Metadata = generateMetadata({
@@ -21,7 +22,9 @@ export const metadata: Metadata = generateMetadata({
   ],
 });
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const hero = await getPageHeroData('contact');
+
   return (
     <>
       <BreadcrumbSchema items={[
@@ -29,8 +32,10 @@ export default function ContactPage() {
         { name: 'Contact', url: '/contact' },
       ]} />
       <PageHero
-        title="Let's Create Together"
-        subtitle="Tell us about your vision and we'll make it happen."
+        tagline={hero?.tagline}
+        title={hero?.heading || "Let's Create Together"}
+        subtitle={hero?.subheading || "Tell us about your vision and we'll make it happen."}
+        imageSource={hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80"
       />
 

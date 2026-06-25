@@ -131,6 +131,22 @@ export const pageBySlugQuery = (slug: string) =>
     sections
   }`;
 
+export const pageHeroBySlugQuery = (slug: string) =>
+  `*[_type == "page" && slug.current == "${slug}"][0] {
+    title,
+    sections[_type == "hero"][0] {
+      tagline,
+      heading,
+      subheading,
+      backgroundImage,
+      ctaText,
+      ctaLink,
+      secondaryCtaText,
+      secondaryCtaLink,
+      locationLabel
+    }
+  }`;
+
 // Home page hero
 export const homeHeroQuery = `*[_type == "page" && slug.current == "home"][0] {
   sections[_type == "hero"][0] {
@@ -179,6 +195,7 @@ export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
 export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   heroHeading,
   heroSubheading,
+  heroImage,
   storyParagraphs,
   values,
   communityHeading,
@@ -191,6 +208,7 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
 export const investmentPageQuery = `*[_type == "investmentPage"][0] {
   heroHeading,
   heroSubheading,
+  heroImage,
   philosophyText,
   philosophyNote,
   collections,
@@ -204,6 +222,7 @@ export const investmentPageQuery = `*[_type == "investmentPage"][0] {
 export const faqPageQuery = `*[_type == "faqPage"][0] {
   heroHeading,
   heroSubheading,
+  heroImage,
   categories
 }`;
 
@@ -211,6 +230,7 @@ export const faqPageQuery = `*[_type == "faqPage"][0] {
 export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
   heroHeading,
   heroSubheading,
+  heroImage,
   introText,
   locationsHeading,
   locationsSubheading,
@@ -223,6 +243,7 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
 export const videographyPageQuery = `*[_type == "videographyPage"][0] {
   heroHeading,
   heroSubheading,
+  heroImage,
   introText,
   featuresHeading,
   features,

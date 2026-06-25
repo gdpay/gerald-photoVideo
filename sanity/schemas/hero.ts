@@ -42,11 +42,14 @@ export default defineType({
       name: 'secondaryCtaText',
       title: 'Secondary Button Text',
       type: 'string',
+      initialValue: 'View Portfolio',
     }),
     defineField({
       name: 'secondaryCtaLink',
       title: 'Secondary Button Link',
       type: 'string',
+      initialValue: '/portfolio',
+      description: 'Link for the secondary button.',
     }),
     defineField({
       name: 'locationLabel',

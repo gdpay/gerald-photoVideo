@@ -4,6 +4,7 @@ import { galleriesQuery } from '../../../sanity/lib/queries';
 import { PortfolioClient } from '@/components/sections/portfolio-client';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as genMeta } from '@/lib/seo-metadata';
+import { getPageHeroData } from '@/lib/page-hero-data';
 
 export const revalidate = 60;
 
@@ -39,6 +40,7 @@ function prepareImages(galleries: any[]) {
 
 export default async function PortfolioPage() {
   let galleryImages: { source: any; alt: string; category: string }[] = [];
+  const hero = await getPageHeroData('portfolio');
 
   try {
     const galleries = await client.fetch(galleriesQuery);
@@ -53,7 +55,7 @@ export default async function PortfolioPage() {
         { name: 'Home', url: '/' },
         { name: 'Portfolio', url: '/portfolio' },
       ]} />
-      <PortfolioClient galleryImages={galleryImages} />
+      <PortfolioClient galleryImages={galleryImages} hero={hero} />
     </>
   );
 }

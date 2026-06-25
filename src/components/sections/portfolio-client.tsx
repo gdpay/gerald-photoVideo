@@ -10,6 +10,7 @@ import { SanityImage } from '@/components/shared/sanity-image';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { PageHeroData } from '@/lib/page-hero-data';
 
 const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Videography'] as const;
 
@@ -22,9 +23,10 @@ interface GalleryImage {
 
 interface PortfolioClientProps {
   galleryImages: GalleryImage[];
+  hero?: PageHeroData | null;
 }
 
-export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
+export function PortfolioClient({ galleryImages, hero }: PortfolioClientProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -35,8 +37,10 @@ export function PortfolioClient({ galleryImages }: PortfolioClientProps) {
   return (
     <>
       <PageHero
-        title="Our Portfolio"
-        subtitle="A curated collection of our favorite moments."
+        tagline={hero?.tagline}
+        title={hero?.heading || 'Our Portfolio'}
+        subtitle={hero?.subheading || 'A curated collection of our favorite moments.'}
+        imageSource={hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 

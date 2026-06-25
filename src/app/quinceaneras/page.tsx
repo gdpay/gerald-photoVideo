@@ -4,6 +4,7 @@ import { Container } from '@/components/shared/container';
 import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
 import { CTASection } from '@/components/sections/cta-section';
+import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
@@ -11,7 +12,6 @@ import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, pageBySlugQuery, featuredTestimonialsQuery } from '../../../sanity/lib/queries';
 import { Crown, Camera, Video, Users, Sparkles, Heart, Star, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 
 export const revalidate = 60;
 
@@ -93,52 +93,13 @@ export default async function QuinceanerasPage() {
       ]} />
 
       {/* Hero Section */}
-      <section className="relative pt-8 pb-6 md:pt-12 md:pb-6 overflow-hidden bg-navy min-h-[23vh] flex items-center">
-        <div className="absolute inset-0">
-          <Image
-            src={heroSection?.backgroundImage || "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1920&q=90"}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover opacity-60"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-navy/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/60 to-transparent" />
-        </div>
-
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
-
-        <Container className="relative z-10">
-          <div className="max-w-3xl">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-gold/30 text-gold text-[11px] font-body uppercase tracking-[0.2em] mb-8">
-              <Crown className="h-3 w-3" />
-              Quinceañeras
-            </div>
-
-            <div className="h-[1px] w-16 bg-gold mb-8" />
-
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-ivory font-light leading-[1.05] tracking-tight">
-              Celebrating Her Story With Elegance, Family, and Cinematic Beauty
-            </h1>
-
-            <p className="mt-6 text-lg sm:text-xl text-ivory/60 font-body font-light max-w-2xl leading-relaxed">
-              From the dress and crown to the ceremony, waltz, family emotions, and reception celebration, we preserve her once-in-a-lifetime milestone with artistry and care.
-            </p>
-
-            <div className="mt-10 flex flex-col sm:flex-row items-start gap-4">
-              <Button variant="primary" size="lg" href="/contact">
-                Check Availability
-              </Button>
-              <Button variant="outline-light" size="lg" href="/portfolio">
-                View Quinceañera Gallery
-              </Button>
-            </div>
-          </div>
-        </Container>
-      </section>
-
+      <PageHero
+        tagline={heroSection?.tagline || "QuinceaÃ±eras"}
+        title={heroSection?.heading || "Celebrating Her Story With Elegance, Family, and Cinematic Beauty"}
+        subtitle={heroSection?.subheading || "From the dress and crown to the ceremony, waltz, family emotions, and reception celebration, we preserve her once-in-a-lifetime milestone with artistry and care."}
+        imageSource={heroSection?.backgroundImage}
+        imageUrl="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1920&q=90"
+      />
       {/* Intro Section */}
       <SectionWrapper>
         <Container narrow>

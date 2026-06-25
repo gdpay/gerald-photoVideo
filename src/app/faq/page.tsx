@@ -20,6 +20,13 @@ interface FAQCategory {
   questions: FAQItem[];
 }
 
+interface FAQHero {
+  title: string;
+  subtitle?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  imageSource?: any;
+}
+
 const fallbackData: FAQCategory[] = [
   {
     category: 'Booking & Timing',
@@ -66,6 +73,10 @@ const fallbackData: FAQCategory[] = [
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [faqData, setFaqData] = useState<FAQCategory[]>(fallbackData);
+  const [hero, setHero] = useState<FAQHero>({
+    title: 'Frequently Asked Questions',
+    subtitle: 'Everything you need to know about working with us.',
+  });
 
   useEffect(() => {
     fetch('/api/faq')
@@ -74,6 +85,11 @@ export default function FAQPage() {
         if (data?.categories?.length) {
           setFaqData(data.categories);
         }
+        setHero({
+          title: data?.heroHeading || 'Frequently Asked Questions',
+          subtitle: data?.heroSubheading || 'Everything you need to know about working with us.',
+          imageSource: data?.heroImage,
+        });
       })
       .catch(() => {});
   }, []);
@@ -88,8 +104,9 @@ export default function FAQPage() {
       ]} />
       <FAQSchema faqs={flatFaqs} />
       <PageHero
-        title="Frequently Asked Questions"
-        subtitle="Everything you need to know about working with us."
+        title={hero.title}
+        subtitle={hero.subtitle}
+        imageSource={hero.imageSource}
         imageUrl="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80"
       />
 

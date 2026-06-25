@@ -2,9 +2,13 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
+import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { getPageHeroData } from '@/lib/page-hero-data';
+import { client } from '../../../sanity/lib/client';
+import { galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
 
 export const metadata: Metadata = generateMetadata({
@@ -28,8 +32,25 @@ const highlights = [
   { icon: Sun, label: 'Natural Light', desc: 'Beautiful outdoor sessions using golden hour light' },
   { icon: MapPin, label: 'Location Options', desc: 'Studio, urban, or outdoor locations across Nebraska & Iowa' },
 ];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function prepareGalleryImages(gallery: any) {
+  if (!gallery?.images) return [];
+  const images = gallery.images.slice(0, 5);
+  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  return images.map((img: any, i: number) => ({
+    source: img,
+    alt: img.alt || gallery.title,
+    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
+  }));
+}
 
-export default function PortraitsPage() {
+export default async function PortraitsPage() {
+  const [hero, portraitsGallery] = await Promise.all([
+    getPageHeroData('portraits'),
+    client.fetch(galleryByServiceTypeQuery('portraits')).catch(() => null),
+  ]);
+  const galleryImages = prepareGalleryImages(portraitsGallery);
+
   return (
     <>
       <BreadcrumbSchema items={[
@@ -37,8 +58,10 @@ export default function PortraitsPage() {
         { name: 'Portraits', url: '/portraits' },
       ]} />
       <PageHero
-        title="Portrait Photography"
-        subtitle="Timeless portraits that celebrate your unique beauty and personality."
+        tagline={hero?.tagline}
+        title={hero?.heading || 'Portrait Photography'}
+        subtitle={hero?.subheading || 'Timeless portraits that celebrate your unique beauty and personality.'}
+        imageSource={hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=1920&q=80"
       />
 
@@ -52,6 +75,10 @@ export default function PortraitsPage() {
           </p>
         </Container>
       </SectionWrapper>
+
+      {galleryImages.length > 0 && (
+        <GalleryPreview images={galleryImages} />
+      )}
 
       <SectionWrapper champagne>
         <Container>

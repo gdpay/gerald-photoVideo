@@ -23,6 +23,13 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'heroImage',
+      title: 'Hero Background Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Background image used behind the page hero.',
+    }),
+    defineField({
       name: 'philosophyText',
       title: 'Philosophy Text',
       type: 'text',
