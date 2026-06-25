@@ -24,8 +24,6 @@ interface HeroSectionProps {
   tagline?: string;
   primaryCtaText?: string;
   primaryCtaLink?: string;
-  secondaryCtaText?: string;
-  secondaryCtaLink?: string;
   locationLabel?: string;
 }
 
@@ -90,13 +88,10 @@ export function HeroSection({
   tagline,
   primaryCtaText = 'Check Availability',
   primaryCtaLink = '/contact',
-  secondaryCtaText = 'View Portfolio',
-  secondaryCtaLink = '/portfolio',
   locationLabel = 'Omaha, NE',
 }: HeroSectionProps) {
   const heroSlides = useMemo(() => (slides.length > 0 ? slides : fallbackSlides), [slides]);
   const primaryHref = normalizeCtaLink(primaryCtaLink, primaryCtaText, '/contact');
-  const secondaryHref = normalizeCtaLink(secondaryCtaLink, secondaryCtaText, '/portfolio');
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -155,7 +150,7 @@ export function HeroSection({
             <p className="mt-7 max-w-md font-heading text-xl leading-relaxed text-[#FAF7F2]/82">
               {subtitle}
             </p>
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-9">
               <Button
                 variant="secondary"
                 size="lg"
@@ -163,9 +158,6 @@ export function HeroSection({
                 className="border-[#C8A23D] bg-[#C8A23D] text-[#FAF7F2] hover:bg-[#A8842E] hover:text-[#FAF7F2]"
               >
                 {primaryCtaText}
-              </Button>
-              <Button variant="outline-light" size="lg" href={secondaryHref}>
-                {secondaryCtaText}
               </Button>
             </div>
           </motion.div>

@@ -68,8 +68,6 @@ export default async function HomePage() {
   const heroTagline = homeHero?.sections?.tagline || settings?.tagline;
   const heroPrimaryCtaText = homeHero?.sections?.ctaText || 'Check Availability';
   const heroPrimaryCtaLink = homeHero?.sections?.ctaLink || '/contact';
-  const heroSecondaryCtaText = homeHero?.sections?.secondaryCtaText || 'View Portfolio';
-  const heroSecondaryCtaLink = homeHero?.sections?.secondaryCtaLink || '/portfolio';
   const heroLocationLabel = homeHero?.sections?.locationLabel || 'Omaha, NE';
 
   return (
@@ -81,8 +79,6 @@ export default async function HomePage() {
         tagline={heroTagline}
         primaryCtaText={heroPrimaryCtaText}
         primaryCtaLink={heroPrimaryCtaLink}
-        secondaryCtaText={heroSecondaryCtaText}
-        secondaryCtaLink={heroSecondaryCtaLink}
         locationLabel={heroLocationLabel}
       />
       <TrustBar />

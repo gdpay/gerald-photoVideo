@@ -141,8 +141,6 @@ export const pageHeroBySlugQuery = (slug: string) =>
       backgroundImage,
       ctaText,
       ctaLink,
-      secondaryCtaText,
-      secondaryCtaLink,
       locationLabel
     }
   }`;
@@ -156,8 +154,6 @@ export const homeHeroQuery = `*[_type == "page" && slug.current == "home"][0] {
     backgroundImage,
     ctaText,
     ctaLink,
-    secondaryCtaText,
-    secondaryCtaLink,
     locationLabel
   }
 }`;
