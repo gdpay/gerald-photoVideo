@@ -38,6 +38,17 @@ export default defineType({
       description: 'Each item becomes a paragraph in the story section.',
     }),
     defineField({
+      name: 'storyImage',
+      title: 'Story Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Portrait or brand image shown beside the story text.',
+      fields: [
+        { name: 'alt', type: 'string', title: 'Alt Text' },
+        { name: 'caption', type: 'string', title: 'Caption' },
+      ],
+    }),
+    defineField({
       name: 'values',
       title: 'Values',
       type: 'array',

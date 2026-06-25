@@ -33,8 +33,8 @@ async function getVideographyData(): Promise<any> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function prepareGalleryImages(gallery: any) {
   if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 5);
-  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  const images = gallery.images.slice(0, 3);
+  const spans = ['large', 'tall', 'wide'] as const;
   return images.map((img: any, i: number) => ({
     source: img,
     alt: img.alt || gallery.title,

@@ -197,6 +197,11 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   heroSubheading,
   heroImage,
   storyParagraphs,
+  storyImage {
+    asset->,
+    alt,
+    caption
+  },
   values,
   communityHeading,
   communityText,

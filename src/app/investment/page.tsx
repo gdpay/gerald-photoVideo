@@ -75,11 +75,29 @@ const fallbackAddOns = [
   'Raw footage archive',
 ];
 
+const fallbackGalleryImages = [
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80',
+    alt: 'Wedding couple sharing a quiet portrait moment',
+    span: 'large' as const,
+  },
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=900&q=80',
+    alt: 'Elegant wedding reception table details',
+    span: 'tall' as const,
+  },
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1200&q=80',
+    alt: 'Couple portrait during an engagement session',
+    span: 'wide' as const,
+  },
+];
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function prepareGalleryImages(gallery: any) {
   if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 5);
-  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+  const images = gallery.images.slice(0, 3);
+  const spans = ['large', 'tall', 'wide'] as const;
   return images.map((img: any, i: number) => ({
     source: img,
     alt: img.alt || gallery.title,
@@ -96,6 +114,7 @@ export default async function InvestmentPage() {
   const collections = data?.collections?.length ? data.collections : fallbackCollections;
   const addOns = data?.addOns?.length ? data.addOns : fallbackAddOns;
   const galleryImages = prepareGalleryImages(investmentGallery);
+  const previewImages = galleryImages.length > 0 ? galleryImages : fallbackGalleryImages;
 
   return (
     <>
@@ -121,9 +140,7 @@ export default async function InvestmentPage() {
         </Container>
       </SectionWrapper>
 
-      {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
-      )}
+      <GalleryPreview images={previewImages} layout="row" />
 
       <SectionWrapper champagne>
         <Container>
@@ -217,7 +234,6 @@ export default async function InvestmentPage() {
         title="Let's Create Your Custom Collection"
         subtitle="Tell us about your vision and we'll design the perfect collection for you."
         primaryCTA={{ label: 'Get Your Custom Quote', href: '/contact' }}
-        secondaryCTA={{ label: '(402) 541-4498', href: 'tel:+14025414498' }}
       />
     </>
   );

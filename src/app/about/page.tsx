@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
-import { GalleryPreview } from '@/components/sections/gallery-preview';
+import { SanityImage } from '@/components/shared/sanity-image';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
-import { aboutPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
+import { aboutPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Heart, Star, Users, Award, Sparkles } from 'lucide-react';
 
 export const revalidate = 60;
@@ -50,33 +51,20 @@ const fallbackParagraphs = [
   "Our approach is warm, professional, and unobtrusive. We blend into the background to capture authentic moments while providing gentle guidance when needed. We're not just your photographers — we become part of your celebration.",
 ];
 
+const fallbackStoryImageUrl = 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=90';
+
 const fallbackValues = [
   { icon: 'Heart', title: 'Passion', description: 'We pour our hearts into every project. Your celebration becomes our mission.' },
   { icon: 'Camera', title: 'Artistry', description: 'Every image is crafted with intention — from composition to color to emotion.' },
   { icon: 'Heart', title: 'Connection', description: 'We build genuine relationships with our clients, creating comfort and trust.' },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 5);
-  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
-  return images.map((img: any, i: number) => ({
-    source: img,
-    alt: img.alt || gallery.title,
-    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
-  }));
-}
-
 export default async function AboutPage() {
-  const [data, aboutGallery] = await Promise.all([
-    getAboutData(),
-    client.fetch(galleryByServiceTypeQuery('about')).catch(() => null),
-  ]);
+  const data = await getAboutData();
 
   const paragraphs = data?.storyParagraphs?.length ? data.storyParagraphs : fallbackParagraphs;
   const values = data?.values?.length ? data.values : fallbackValues;
-  const galleryImages = prepareGalleryImages(aboutGallery);
+  const storyImage = data?.storyImage;
 
   return (
     <>
@@ -92,18 +80,47 @@ export default async function AboutPage() {
       />
 
       <SectionWrapper>
-        <Container narrow>
-          <div className="space-y-6 text-lg text-[#736D63] leading-relaxed">
-            {paragraphs.map((p: string, i: number) => (
-              <p key={i}>{p}</p>
-            ))}
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10 lg:gap-16 items-center">
+            <div>
+              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-4">
+                Gerald Photo Video
+              </p>
+              <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-6">
+                Capturing the moments that become your story
+              </h2>
+              <div className="space-y-5 text-base md:text-lg text-[#736D63] leading-relaxed">
+                {paragraphs.map((p: string, i: number) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-[420px]">
+              <div className="absolute -inset-4 border border-[#C8A23D]/25" />
+              <div className="relative aspect-[4/5] overflow-hidden bg-[#F0EDE6] shadow-[0_24px_60px_rgba(10,31,68,0.12)]">
+                {storyImage ? (
+                  <SanityImage
+                    source={storyImage}
+                    alt={storyImage.alt || 'Gerald Photo Video portrait'}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 420px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={fallbackStoryImageUrl}
+                    alt="Gerald portrait"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 420px"
+                    className="object-cover"
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </Container>
       </SectionWrapper>
-
-      {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
-      )}
 
       <SectionWrapper champagne>
         <Container>

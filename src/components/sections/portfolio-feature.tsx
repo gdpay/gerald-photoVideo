@@ -1,10 +1,12 @@
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/shared/container';
 import { SanityImage } from '@/components/shared/sanity-image';
 
 type PortfolioFeatureImage = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  source: any;
+  source?: any;
+  imageUrl?: string;
   alt?: string;
 };
 
@@ -28,22 +30,28 @@ export function PortfolioFeature({
   return (
     <section className="bg-[#FAF7F2] py-12 md:py-16 border-b border-[#C8A23D]">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-3 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {visibleImages.map((image, index) => (
             <div
               key={index}
-              className="relative overflow-hidden aspect-[4/3] md:aspect-auto md:h-72"
+              className="relative overflow-hidden aspect-[4/3]"
             >
-              <SanityImage
-                source={image.source}
-                alt={image.alt}
-                fill
-                sizes={
-                  index === 0
-                    ? '(max-width: 768px) 100vw, 48vw'
-                    : '(max-width: 768px) 100vw, 24vw'
-                }
-              />
+              {image.source ? (
+                <SanityImage
+                  source={image.source}
+                  alt={image.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              ) : image.imageUrl ? (
+                <Image
+                  src={image.imageUrl}
+                  alt={image.alt || ''}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-cover"
+                />
+              ) : null}
             </div>
           ))}
         </div>

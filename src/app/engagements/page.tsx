@@ -8,7 +8,7 @@ import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
 import { engagementsPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
-import { Heart, MapPin } from 'lucide-react';
+import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
 
 export const revalidate = 60;
 
@@ -24,7 +24,7 @@ async function getEngagementsData(): Promise<any> {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function preparePortfolioFeatureImages(feature: any, gallery: any) {
   const images = feature?.images?.length ? feature.images : gallery?.images;
-  if (!images) return [];
+  if (!images || images.length === 0) return fallbackGalleryImages;
 
   return images.map((img: any, i: number) => ({
     source: img,
@@ -46,6 +46,30 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
   });
 }
+
+const fallbackGalleryImages = [
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1200&q=80',
+    alt: 'Romantic couple portrait in golden hour light',
+  },
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1529507843649-c4f5e56ea9b0?w=900&q=80',
+    alt: 'Engagement session at a scenic botanical garden',
+  },
+  {
+    imageUrl: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=1200&q=80',
+    alt: 'Couple sharing a candid moment during their engagement session',
+  },
+];
+
+const highlights = [
+  { icon: Camera, label: 'Couples Photography', desc: 'Romantic portraits that capture your unique connection and chemistry' },
+  { icon: Users, label: 'Save-the-Date Sessions', desc: 'Create stunning images for your save-the-dates and wedding decor' },
+  { icon: Sparkles, label: 'Styling Guidance', desc: 'We help you choose outfits and locations that reflect your story' },
+  { icon: Heart, label: 'Love Storytelling', desc: 'Every session is tailored to celebrate your journey together' },
+  { icon: Sun, label: 'Golden Hour Sessions', desc: 'Beautiful outdoor sessions timed for the most flattering natural light' },
+  { icon: MapPin, label: 'Scenic Locations', desc: 'From urban backdrops to stunning natural landscapes across Nebraska & Iowa' },
+];
 
 const fallbackLocations = [
   { name: 'Old Market', area: 'Omaha, NE', description: 'Urban charm with historic brick streets and vibrant murals' },
@@ -90,6 +114,26 @@ export default async function EngagementsPage() {
         buttonHref={data?.portfolioFeature?.buttonLink}
       />
 
+      <SectionWrapper>
+        <Container>
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
+            Engagement Sessions
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {highlights.map((item) => (
+              <div
+                key={item.label}
+                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
+              >
+                <item.icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                <p className="text-sm text-[#736D63]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </SectionWrapper>
+
       <SectionWrapper champagne>
         <Container>
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-4">
@@ -110,6 +154,37 @@ export default async function EngagementsPage() {
                 <p className="text-sm text-[#736D63]">{loc.description}</p>
               </div>
             ))}
+          </div>
+        </Container>
+      </SectionWrapper>
+
+      <SectionWrapper>
+        <Container narrow className="text-center">
+          <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
+            The Engagement Experience
+          </h2>
+          <div className="space-y-6 text-left">
+            <div className="flex items-start gap-4">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">01</span>
+              <div>
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Planning Your Session</h3>
+                <p className="text-sm text-[#736D63]">We&apos;ll discuss your vision, choose the perfect location, and plan outfits that reflect your style.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">02</span>
+              <div>
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Session</h3>
+                <p className="text-sm text-[#736D63]">A relaxed, fun photoshoot capturing your connection — from candid laughter to romantic portraits.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">03</span>
+              <div>
+                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Gallery</h3>
+                <p className="text-sm text-[#736D63]">Beautifully edited images delivered in a private online gallery — perfect for save-the-dates and sharing.</p>
+              </div>
+            </div>
           </div>
         </Container>
       </SectionWrapper>

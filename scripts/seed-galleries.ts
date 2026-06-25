@@ -133,6 +133,14 @@ const aboutDescriptions = [
   'Client consultation and planning session',
 ];
 
+const engagementDescriptions = [
+  'Romantic couple portrait in golden hour light',
+  'Engagement session at a scenic botanical garden',
+  'Couple sharing a candid moment during their session',
+  'Urban engagement portraits with city skyline backdrop',
+  'Laughing couple walking through a flower field',
+];
+
 // Well-known, highly reliable Unsplash photo IDs
 const galleries = [
   {
@@ -174,13 +182,26 @@ const galleries = [
     ],
     descriptions: aboutDescriptions,
   },
+  {
+    title: 'Engagement Collection',
+    serviceType: 'engagements',
+    slug: 'engagement-collection',
+    imageUrls: [
+      'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800',
+      'https://images.unsplash.com/photo-1529507843649-c4f5e56ea9b0?w=800',
+      'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800',
+      'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=800',
+      'https://images.unsplash.com/photo-1460978812857-470ed1c77af0?w=800',
+    ],
+    descriptions: engagementDescriptions,
+  },
 ];
 
 async function seed() {
   console.log('🌱 Seeding gallery collections for Portraits, Investment, and About...\n');
 
   // Delete existing galleries for these service types to avoid duplicates
-  const serviceTypes = ['portraits', 'investment', 'about'];
+  const serviceTypes = ['portraits', 'investment', 'about', 'engagements'];
   const existing = await client.fetch(
     `*[_type == "gallery" && serviceType in $serviceTypes] { _id, title, serviceType }`,
     { serviceTypes }
@@ -263,7 +284,7 @@ async function seed() {
 
   console.log('🎉 Done! Galleries created in Sanity.');
   console.log('\n📸 The images will appear on the pages after Next.js revalidates.');
-  console.log('   Visit /portraits, /investment, or /about to see them.');
+  console.log('   Visit /portraits, /investment, /about, or /engagements to see them.');
   console.log('   If they don\'t show up, restart the dev server.');
 }
 

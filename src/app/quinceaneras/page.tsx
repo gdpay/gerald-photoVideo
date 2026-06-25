@@ -63,9 +63,9 @@ const experienceSteps = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function prepareGalleryImages(gallery: any) {
   if (!gallery?.images) return [];
-  // Curate: use fewer images (max 5), only the strongest ones
-  const images = gallery.images.slice(0, 5);
-  const spans = ["large", "tall", "wide", undefined, undefined];
+  // Curate: use fewer images (max 3), only the strongest ones
+  const images = gallery.images.slice(0, 3);
+  const spans = ["large", "tall", "wide"];
   return images.map((img: any, i: number) => ({
     source: img,
     alt: img.alt || gallery.title,
@@ -118,6 +118,7 @@ export default async function QuinceanerasPage() {
       {galleryImages.length > 0 && (
         <GalleryPreview
           images={galleryImages}
+          layout="row"
         />
       )}
 
