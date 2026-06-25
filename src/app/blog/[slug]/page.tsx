@@ -63,7 +63,9 @@ interface Props {
 export async function generateStaticParams() {
   try {
     const posts = await client.fetch(blogPostsQuery);
-    return posts.map((post: { slug: string }) => ({ slug: post.slug }));
+    return posts
+      .filter((post: { slug: unknown }) => typeof post.slug === 'string')
+      .map((post: { slug: string }) => ({ slug: post.slug }));
   } catch {
     return [];
   }
