@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
-import { GalleryPreview } from '@/components/sections/gallery-preview';
+import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
@@ -22,15 +22,14 @@ async function getEngagementsData(): Promise<any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 5);
-  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+function preparePortfolioFeatureImages(feature: any, gallery: any) {
+  const images = feature?.images?.length ? feature.images : gallery?.images;
+  if (!images) return [];
+
   return images.map((img: any, i: number) => ({
     source: img,
-    alt: img.alt || gallery.title,
-    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
-  }));
+    alt: img.alt || gallery?.title || `Engagement portfolio image ${i + 1}`,
+  })).slice(0, 3);
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -62,7 +61,7 @@ export default async function EngagementsPage() {
   ]);
 
   const locations = data?.locations?.length ? data.locations : fallbackLocations;
-  const galleryImages = prepareGalleryImages(engagementGallery);
+  const portfolioFeatureImages = preparePortfolioFeatureImages(data?.portfolioFeature, engagementGallery);
 
   return (
     <>
@@ -85,9 +84,11 @@ export default async function EngagementsPage() {
         </Container>
       </SectionWrapper>
 
-      {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
-      )}
+      <PortfolioFeature
+        images={portfolioFeatureImages}
+        buttonLabel={data?.portfolioFeature?.buttonLabel}
+        buttonHref={data?.portfolioFeature?.buttonLink}
+      />
 
       <SectionWrapper champagne>
         <Container>

@@ -236,7 +236,29 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
   locationsSubheading,
   locations,
   bundleHeading,
-  bundleText
+  bundleText,
+  portfolioFeature {
+    images[] {
+      asset->,
+      alt,
+      caption
+    },
+    buttonLabel,
+    buttonLink
+  }
+}`;
+
+// Portraits Page
+export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
+  portfolioFeature {
+    images[] {
+      asset->,
+      alt,
+      caption
+    },
+    buttonLabel,
+    buttonLink
+  }
 }`;
 
 // Videography Page

@@ -2,13 +2,13 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
-import { GalleryPreview } from '@/components/sections/gallery-preview';
+import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { getPageHeroData } from '@/lib/page-hero-data';
 import { client } from '../../../sanity/lib/client';
-import { galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
+import { galleryByServiceTypeQuery, portraitsPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
 
 export const metadata: Metadata = generateMetadata({
@@ -33,23 +33,23 @@ const highlights = [
   { icon: MapPin, label: 'Location Options', desc: 'Studio, urban, or outdoor locations across Nebraska & Iowa' },
 ];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 5);
-  const spans = ['large', 'tall', 'wide', undefined, undefined] as const;
+function preparePortfolioFeatureImages(feature: any, gallery: any) {
+  const images = feature?.images?.length ? feature.images : gallery?.images;
+  if (!images) return [];
+
   return images.map((img: any, i: number) => ({
     source: img,
-    alt: img.alt || gallery.title,
-    span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
-  }));
+    alt: img.alt || gallery?.title || `Portrait portfolio image ${i + 1}`,
+  })).slice(0, 3);
 }
 
 export default async function PortraitsPage() {
-  const [hero, portraitsGallery] = await Promise.all([
+  const [hero, data, portraitsGallery] = await Promise.all([
     getPageHeroData('portraits'),
+    client.fetch(portraitsPageQuery).catch(() => null),
     client.fetch(galleryByServiceTypeQuery('portraits')).catch(() => null),
   ]);
-  const galleryImages = prepareGalleryImages(portraitsGallery);
+  const portfolioFeatureImages = preparePortfolioFeatureImages(data?.portfolioFeature, portraitsGallery);
 
   return (
     <>
@@ -76,9 +76,11 @@ export default async function PortraitsPage() {
         </Container>
       </SectionWrapper>
 
-      {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
-      )}
+      <PortfolioFeature
+        images={portfolioFeatureImages}
+        buttonLabel={data?.portfolioFeature?.buttonLabel}
+        buttonHref={data?.portfolioFeature?.buttonLink}
+      />
 
       <SectionWrapper champagne>
         <Container>

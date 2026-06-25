@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
-import { MultiStepInquiryForm } from '@/components/forms/multi-step-inquiry-form';
+import { HoneyBookContactWidget } from '@/components/forms/honeybook-contact-widget';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
@@ -44,10 +44,8 @@ export default async function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
             {/* Form */}
             <div className="lg:col-span-3">
-              <div className="p-8 border border-[#E5E0D8] bg-[#FAF7F2]">
-                <h2 className="font-heading text-2xl text-[#0A1F44] mb-1">Send Us a Message</h2>
-                <p className="text-[#736D63] text-sm mb-8">We respond within 24 hours.</p>
-                <MultiStepInquiryForm />
+              <div className="overflow-hidden border border-[#E5E0D8] bg-[#FAF7F2]">
+                <HoneyBookContactWidget />
               </div>
             </div>
 
