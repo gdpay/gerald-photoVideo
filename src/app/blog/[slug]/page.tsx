@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: `/blog/${slug}`,
       type: 'article',
       publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
-      image: post.coverImage ? urlFor(post.coverImage).width(1200).url() : undefined,
+      image: post.coverImage?.asset ? urlFor(post.coverImage).width(1200).url() : undefined,
     });
   } catch {
     return {};
@@ -110,7 +110,7 @@ export default async function BlogPostPage({ params }: Props) {
       ]} />
 
       {/* Hero with cover image */}
-      {post.coverImage && (
+      {post.coverImage?.asset && (
         <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
           <SanityImage
             source={post.coverImage}
