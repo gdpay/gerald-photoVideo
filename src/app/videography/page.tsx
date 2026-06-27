@@ -113,47 +113,21 @@ export default async function VideographyPage() {
         </Container>
       </SectionWrapper>
 
+      {/* Video Gallery - up to 3 videos, editable in Sanity */}
       <SectionWrapper>
         <Container>
-          <div className="max-w-5xl mx-auto">
-            <div className="mb-8 text-center">
-              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-3">
-                Featured Film
-              </p>
-              <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44]">
-                {featuredVideo.title || 'Our Work in Motion'}
-              </h2>
-              {featuredVideo.description && (
-                <p className="mt-4 text-[#736D63] max-w-2xl mx-auto">
-                  {featuredVideo.description}
-                </p>
-              )}
-            </div>
-            <VideoEmbed
-              src={featuredVideo.url}
-              title={featuredVideo.title || 'Featured Film'}
-              posterUrl={featuredVideo.poster?.asset?.url || featuredVideo.poster?.url}
-            />
-          </div>
-        </Container>
-      </SectionWrapper>
-
-      {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
-      )}
-
-      {showcaseVideos.length > 0 && (
-        <SectionWrapper>
-          <Container>
-            <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
-              More Films
+          <div className="text-center mb-12">
+            <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-3">
+              Cinematic Films
+            </p>
+            <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44]">
+              Featured Films
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              {showcaseVideos.map((
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                video: any,
-              ) => (
-                <div key={video.url} className="space-y-3">
+          </div>
+          {showcaseVideos.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {showcaseVideos.slice(0, 3).map((video: any, index: number) => (
+                <div key={video.url || index} className="space-y-3">
                   <VideoEmbed
                     src={video.url}
                     title={video.title || 'Featured Film'}
@@ -170,9 +144,54 @@ export default async function VideographyPage() {
                 </div>
               ))}
             </div>
-          </Container>
-        </SectionWrapper>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* Fallback videos if none set in Sanity */}
+              <div className="space-y-3">
+                <VideoEmbed
+                  src={featuredVideo.url}
+                  title={featuredVideo.title || 'Featured Film'}
+                  posterUrl={featuredVideo.poster?.asset?.url || featuredVideo.poster?.url}
+                />
+                {featuredVideo.title && (
+                  <h3 className="font-heading text-lg text-[#0A1F44]">
+                    {featuredVideo.title}
+                  </h3>
+                )}
+                {featuredVideo.description && (
+                  <p className="text-sm text-[#736D63]">{featuredVideo.description}</p>
+                )}
+              </div>
+              <div className="space-y-3">
+                <VideoEmbed
+                  src="https://vimeo.com/284882984"
+                  title="Quinceañera de Ayaremi"
+                />
+                <h3 className="font-heading text-lg text-[#0A1F44]">
+                  Quinceañera de Ayaremi
+                </h3>
+                <p className="text-sm text-[#736D63]">A cinematic quinceañera highlight film</p>
+              </div>
+              <div className="space-y-3">
+                <VideoEmbed
+                  src="https://vimeo.com/284882984"
+                  title="Wedding Highlight Film"
+                />
+                <h3 className="font-heading text-lg text-[#0A1F44]">
+                  Wedding Highlight Film
+                </h3>
+                <p className="text-sm text-[#736D63]">A cinematic wedding highlight film</p>
+              </div>
+            </div>
+          )}
+        </Container>
+      </SectionWrapper>
+
+      {galleryImages.length > 0 && (
+        <GalleryPreview images={galleryImages} />
       )}
+
+
 
       <SectionWrapper champagne>
         <Container>

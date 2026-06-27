@@ -199,10 +199,7 @@ export default async function QuinceanerasPage() {
               <p className="mt-6 text-ivory/60 leading-relaxed max-w-md">
                 A cinematic highlight film captures the emotions of the day in a way photographs alone cannot. The waltz, the smiles, the tears of joy — all set to music that moves the soul.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
-                <Button variant="primary" size="lg" href="/videography">
-                  Watch Quinceañera Films
-                </Button>
+              <div className="mt-8 flex justify-center">
                 <Button variant="outline-light" size="lg" href="/videography">
                   Learn About Videography
                 </Button>

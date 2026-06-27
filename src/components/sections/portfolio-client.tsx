@@ -12,6 +12,7 @@ import { staggerContainer, staggerItem } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { PageHeroData } from '@/lib/page-hero-data';
+import { urlFor } from '../../../sanity/lib/client';
 
 const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Videography'] as const;
 
@@ -25,9 +26,11 @@ interface GalleryImage {
 interface PortfolioClientProps {
   galleryImages: GalleryImage[];
   hero?: PageHeroData | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  videographyVideos?: any[];
 }
 
-export function PortfolioClient({ galleryImages, hero }: PortfolioClientProps) {
+export function PortfolioClient({ galleryImages, hero, videographyVideos = [] }: PortfolioClientProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -65,19 +68,35 @@ export function PortfolioClient({ galleryImages, hero }: PortfolioClientProps) {
             ))}
           </div>
 
-          {/* Featured Video — Videography */}
+          {/* Video Gallery — Videography (up to 3 videos, editable in Sanity) */}
           {activeCategory === 'Videography' && (
-            <div className="mb-12 max-w-4xl mx-auto">
-              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] text-center mb-3">
-                Featured Film
+            <div className="mb-12 max-w-5xl mx-auto">
+              <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] text-center mb-8">
+                Cinematic Films
               </p>
-              <VideoEmbed
-                src="https://vimeo.com/284882984"
-                title="Quinceañera de Ayaremi"
-              />
-              <p className="mt-4 text-sm text-[#736D63] text-center">
-                A cinematic highlight reel — Quinceañera de Ayaremi
-              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {(videographyVideos.length > 0 ? videographyVideos.slice(0, 3) : [
+                  { url: 'https://vimeo.com/284882984', title: 'Quinceañera de Ayaremi', description: 'A cinematic quinceañera highlight film' },
+                  { url: 'https://vimeo.com/284882984', title: 'Wedding Highlight Film', description: 'A cinematic wedding highlight film' },
+                  { url: 'https://vimeo.com/284882984', title: 'Event Coverage', description: 'Professional event cinematography' },
+                ]).map((video: any, index: number) => (
+                  <div key={video.url || index} className="space-y-3">
+                    <VideoEmbed
+                      src={video.url}
+                      title={video.title || 'Featured Film'}
+                      posterUrl={video.poster?.asset?.url || video.poster?.url}
+                    />
+                    {video.title && (
+                      <p className="text-center text-sm font-heading text-[#0A1F44]">
+                        {video.title}
+                      </p>
+                    )}
+                    {video.description && (
+                      <p className="text-center text-xs text-[#736D63]">{video.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -151,12 +170,16 @@ export function PortfolioClient({ galleryImages, hero }: PortfolioClientProps) {
               </button>
             )}
 
-            <div className="relative max-h-[90vh] max-w-[90vw] aspect-[3/4]" onClick={(e) => e.stopPropagation()}>
-              <SanityImage
-                source={filtered[lightboxIndex].source}
+            <div
+              className="flex items-center justify-center"
+              style={{ width: '90vw', height: '85vh', maxWidth: '90vw', maxHeight: '85vh' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={urlFor(filtered[lightboxIndex].source).width(1600).url()}
                 alt={filtered[lightboxIndex].alt}
-                fill
-                priority
+                className="max-h-full max-w-full object-contain"
               />
             </div>
 

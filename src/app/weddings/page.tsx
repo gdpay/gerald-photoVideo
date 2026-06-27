@@ -206,10 +206,7 @@ export default async function WeddingsPage() {
               <p className="mt-6 text-ivory/60 leading-relaxed max-w-md">
                 A photograph captures a moment. A film captures time itself. Our cinematic wedding films are crafted to transport you back — the sound of your heartbeat during the first look, the laughter during toasts, the energy of the dance floor.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row items-start gap-4">
-                <Button variant="primary" size="lg" href="/videography">
-                  Watch Wedding Films
-                </Button>
+              <div className="mt-8 flex justify-center">
                 <Button variant="outline-light" size="lg" href="/videography">
                   Learn About Videography
                 </Button>

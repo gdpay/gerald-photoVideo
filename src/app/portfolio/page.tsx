@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { client } from '../../../sanity/lib/client';
-import { galleriesQuery } from '../../../sanity/lib/queries';
+import { galleriesQuery, videographyPageQuery } from '../../../sanity/lib/queries';
 import { PortfolioClient } from '@/components/sections/portfolio-client';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as genMeta } from '@/lib/seo-metadata';
@@ -42,9 +42,16 @@ export default async function PortfolioPage() {
   let galleryImages: { source: any; alt: string; category: string }[] = [];
   const hero = await getPageHeroData('portfolio');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let videographyVideos: any[] = [];
+
   try {
-    const galleries = await client.fetch(galleriesQuery);
+    const [galleries, videographyData] = await Promise.all([
+      client.fetch(galleriesQuery),
+      client.fetch(videographyPageQuery).catch(() => null),
+    ]);
     galleryImages = prepareImages(galleries);
+    videographyVideos = videographyData?.videos?.length ? videographyData.videos : [];
   } catch {
     // Sanity unavailable
   }
@@ -55,7 +62,7 @@ export default async function PortfolioPage() {
         { name: 'Home', url: '/' },
         { name: 'Portfolio', url: '/portfolio' },
       ]} />
-      <PortfolioClient galleryImages={galleryImages} hero={hero} />
+      <PortfolioClient galleryImages={galleryImages} hero={hero} videographyVideos={videographyVideos} />
     </>
   );
 }

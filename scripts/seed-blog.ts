@@ -133,6 +133,31 @@ const samplePosts = [
   },
 ];
 
+const additionalPost = {
+  _type: 'blog',
+  title: "Iowa's Most Photogenic Wedding Venues: A Couple's Guide",
+  slug: { _type: 'slug', current: 'iowa-wedding-venues-photography-guide' },
+  author: 'Gerald Photo Video',
+  publishedAt: '2025-07-01T10:00:00Z',
+  category: 'Venue Guides',
+  excerpt: 'From charming barn venues in Council Bluffs to elegant ballrooms in Des Moines, explore the most photogenic wedding venues Iowa has to offer with photography tips for each.',
+  content: [
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: 'Iowa is home to some incredibly photogenic wedding venues, each offering unique backdrops for your special day. As photographers who regularly work across the state, we\'ve compiled our favorite venues for stunning wedding photography.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: '1. The Scottish Rite Consistory in Des Moines — A stunning Beaux-Arts building with grand columns, sweeping staircases, and incredible natural light. The architecture alone provides endless portrait opportunities.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: '2. The River Center in Council Bluffs — Modern riverfront venue with floor-to-ceiling windows overlooking the Missouri River. The sunset views are absolutely breathtaking.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: '3. Barn at Rush Creek in Adel — A rustic-chic barn venue with beautiful grounds, twinkling lights, and a charming ceremony site by the pond. Perfect for couples who love the countryside aesthetic.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: '4. Hotel Fort Des Moines — A historic hotel with timeless elegance. The lobby, ballroom, and vintage details create a sophisticated atmosphere for both ceremonies and receptions.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: '5. The Meadows at Norland in Ames — A beautiful estate venue with manicured gardens, a charming chapel, and a reception barn. The variety of settings makes for incredibly diverse photo galleries.' }] },
+    { _type: 'block', style: 'normal', children: [{ _type: 'span', text: 'Each venue offers unique lighting conditions and backdrops. We recommend scheduling a venue tour with your photographer to identify the best photo locations and plan your timeline accordingly.' }] },
+  ],
+  seo: {
+    metaTitle: "Iowa's Most Photogenic Wedding Venues: A Couple's Guide",
+    metaDescription: 'Explore the most photogenic wedding venues across Iowa, from Council Bluffs to Des Moines, with expert photography tips for each location.',
+  },
+};
+
+const allPosts = [...samplePosts, additionalPost];
+
 async function seed() {
   console.log('🌱 Seeding blog posts...\n');
 
@@ -147,14 +172,14 @@ async function seed() {
   }
 
   // Create the sample posts
-  for (const post of samplePosts) {
+  for (const post of allPosts) {
     const result = await client.create(post);
     console.log(`   ✅ Created: "${post.title}"`);
     console.log(`      ID: ${result._id}`);
     console.log(`      Slug: /blog/${post.slug.current}\n`);
   }
 
-  console.log('🎉 Done! 4 sample blog posts created.');
+  console.log(`🎉 Done! ${allPosts.length} sample blog posts created.`);
   console.log('   Visit http://localhost:3000/blog to see them.');
 }
 
