@@ -12,7 +12,7 @@ import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { client } from '../../../../sanity/lib/client';
 import { blogPostBySlugQuery, blogPostsQuery } from '../../../../sanity/lib/queries';
 import { SanityImage } from '@/components/shared/sanity-image';
-import { urlFor } from '../../../../sanity/lib/client';
+import { hasSanityImageAsset, urlFor } from '../../../../sanity/lib/client';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatDate(dateString: string) {
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: `/blog/${slug}`,
       type: 'article',
       publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
-      image: post.coverImage?.asset ? urlFor(post.coverImage).width(1200).url() : undefined,
+      image: hasSanityImageAsset(post.coverImage) ? urlFor(post.coverImage).width(1200).url() : undefined,
     });
   } catch {
     return {};
@@ -110,7 +110,7 @@ export default async function BlogPostPage({ params }: Props) {
       ]} />
 
       {/* Hero with cover image */}
-      {post.coverImage?.asset && (
+      {hasSanityImageAsset(post.coverImage) && (
         <section className="relative h-[50vh] min-h-[400px] overflow-hidden">
           <SanityImage
             source={post.coverImage}
@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: Props) {
         </section>
       )}
 
-      <SectionWrapper className={post.coverImage ? "-mt-20 relative z-10" : "pt-32"}>
+      <SectionWrapper className={hasSanityImageAsset(post.coverImage) ? "-mt-20 relative z-10" : "pt-32"}>
         <Container narrow>
           <Link
             href="/blog"

@@ -32,3 +32,20 @@ const builder = createImageUrlBuilder(client);
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
+
+export function hasSanityImageAsset(source: SanityImageSource): boolean {
+  if (!source) return false;
+
+  if (typeof source === 'string') {
+    return source.startsWith('image-') || source.startsWith('http://') || source.startsWith('https://');
+  }
+
+  const asset = source.asset || source;
+  if (!asset) return false;
+
+  if (typeof asset === 'string') {
+    return asset.length > 0;
+  }
+
+  return Boolean(asset._ref || asset._id || asset.url);
+}

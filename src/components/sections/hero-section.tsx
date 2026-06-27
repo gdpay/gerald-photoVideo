@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { SITE } from '@/lib/constants';
-import { urlFor } from '../../../sanity/lib/client';
+import { hasSanityImageAsset, urlFor } from '../../../sanity/lib/client';
 
 interface HeroSlide {
   _id: string;
@@ -57,7 +57,9 @@ function getSlideUrl(slide?: HeroSlide) {
   if (slide?.imageUrl) return slide.imageUrl;
 
   try {
-    if (slide?.image) return urlFor(slide.image).width(1920).quality(90).url();
+    if (slide?.image && hasSanityImageAsset(slide.image)) {
+      return urlFor(slide.image).width(1920).quality(90).url();
+    }
   } catch {
     return fallbackImage;
   }

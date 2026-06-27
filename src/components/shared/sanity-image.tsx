@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { urlFor } from '../../../sanity/lib/client';
+import { hasSanityImageAsset, urlFor } from '../../../sanity/lib/client';
 import { useState } from 'react';
 
 interface SanityImageProps {
@@ -82,6 +82,16 @@ export function SanityImage({
   // Extract dimensions for fixed-size images (helps prevent CLS)
   const dimensions = !fill ? getImageDimensions(source as Record<string, unknown>) : null;
 
+  if (!hasSanityImageAsset(source) || imgError) {
+    return (
+      <div
+        className={`bg-warm-black/20 ${className}`}
+        role="img"
+        aria-label={altText || 'Decorative image placeholder'}
+      />
+    );
+  }
+
   // Build the Sanity URL with appropriate dimensions
   const imageUrl = urlFor(source)
     .width(fill ? DEFAULT_FILL_WIDTH : (dimensions?.width || DEFAULT_FIXED_WIDTH))
@@ -97,16 +107,6 @@ export function SanityImage({
     loading: priority ? undefined : ('lazy' as const),
     onError: () => setImgError(true),
   };
-
-  if (!source || imgError) {
-    return (
-      <div
-        className={`bg-warm-black/20 ${className}`}
-        role="img"
-        aria-label={altText || 'Decorative image placeholder'}
-      />
-    );
-  }
 
   if (fill) {
     return (

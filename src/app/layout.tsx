@@ -12,7 +12,7 @@ import { ConsentBanner } from '@/components/analytics/consent-banner';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
 import { settingsQuery } from '../../sanity/lib/queries';
-import { urlFor } from '../../sanity/lib/client';
+import { hasSanityImageAsset, urlFor } from '../../sanity/lib/client';
 import './globals.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +27,7 @@ async function getSettings(): Promise<any> {
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
 
-  const faviconUrl = settings?.favicon
+  const faviconUrl = hasSanityImageAsset(settings?.favicon)
     ? urlFor(settings.favicon).width(64).url()
     : null;
 
@@ -107,7 +107,7 @@ export default async function RootLayout({
 }) {
   const settings = await getSettings();
 
-  const logoUrl = settings?.logo
+  const logoUrl = hasSanityImageAsset(settings?.logo)
     ? urlFor(settings.logo).width(200).url()
     : null;
 
