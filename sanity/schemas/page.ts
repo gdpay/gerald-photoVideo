@@ -37,6 +37,7 @@ export default defineType({
         { type: 'services' },
         { type: 'testimonials' },
         { type: 'cta' },
+        { type: 'videoSection' },
       ],
     }),
   ],

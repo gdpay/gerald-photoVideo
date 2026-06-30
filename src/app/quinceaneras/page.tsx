@@ -81,9 +81,11 @@ export default async function QuinceanerasPage() {
   ]);
   const galleryImages = prepareGalleryImages(gallery);
 
-  // Find hero section from page data
+  // Find hero and video sections from page data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const heroSection = pageData?.sections?.find((s: any) => s._type === "hero");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const videoSection = pageData?.sections?.find((s: any) => s._type === "videoSection");
 
   return (
     <>
@@ -206,9 +208,9 @@ export default async function QuinceanerasPage() {
               </div>
             </div>
             <VideoEmbed
-              src="https://player.vimeo.com/video/284882984"
-              title="Watch Featured Quinceañera Film"
-              posterUrl="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80"
+              src={videoSection?.videoUrl || 'https://player.vimeo.com/video/284882984'}
+              title={videoSection?.title || 'Watch Featured Quinceañera Film'}
+              posterUrl={videoSection?.poster?.asset?.url || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80'}
             />
           </div>
         </Container>
