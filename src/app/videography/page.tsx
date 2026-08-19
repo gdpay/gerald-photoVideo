@@ -162,6 +162,7 @@ export default async function VideographyPage() {
                   <p className="text-sm text-[#736D63]">{featuredVideo.description}</p>
                 )}
               </div>
+              
               <div className="space-y-3">
                 <VideoEmbed
                   src="https://vimeo.com/284882984"
