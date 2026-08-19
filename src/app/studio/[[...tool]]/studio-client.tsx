@@ -15,12 +15,12 @@ const NextStudio = dynamic(() => import('next-sanity/studio').then((mod) => mod.
 let config: any = null;
 
 try {
-  config = require('../../../sanity.config').default;
+  config = require('../../../../sanity.config').default;
 } catch {
   // Config not available
 }
 
-export default function StudioPage() {
+export default function StudioClient() {
   if (!config) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#1c1b1a', color: '#f5f0e8', fontFamily: 'sans-serif' }}>

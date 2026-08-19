@@ -10,6 +10,7 @@ export default defineConfig({
   title: 'Gerald Photo Video',
   projectId,
   dataset,
+  basePath: '/studio',
   plugins: [structureTool()],
   schema: {
     types: schemaTypes,
