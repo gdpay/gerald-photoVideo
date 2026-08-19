@@ -117,6 +117,10 @@ export const settingsQuery = `*[_type == "settings"][0] {
   phone,
   email,
   socialLinks,
+  addressRegion,
+  footerTagline,
+  footerNote,
+  availabilityButtonLabel,
   logo,
   favicon
 }`;
@@ -233,6 +237,12 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
   heroSubheading,
   heroImage,
   introText,
+  highlightsHeading,
+  highlights,
+  stepsHeading,
+  steps,
+  ctaTitle,
+  ctaSubtitle,
   locationsHeading,
   locationsSubheading,
   locations,
@@ -251,6 +261,16 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
 
 // Portraits Page
 export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  introText,
+  highlightsHeading,
+  highlights,
+  stepsHeading,
+  steps,
+  ctaTitle,
+  ctaSubtitle,
   portfolioFeature {
     images[] {
       asset->,

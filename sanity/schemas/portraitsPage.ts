@@ -12,6 +12,87 @@ export default defineType({
       initialValue: 'Portraits',
     }),
     defineField({
+      name: 'heroHeading',
+      title: 'Hero Heading',
+      type: 'string',
+      initialValue: 'Portrait Photography',
+    }),
+    defineField({
+      name: 'heroSubheading',
+      title: 'Hero Subheading',
+      type: 'string',
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero Background Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Background image used behind the page hero.',
+    }),
+    defineField({
+      name: 'introText',
+      title: 'Introduction Text',
+      type: 'text',
+      rows: 3,
+    }),
+    defineField({
+      name: 'highlightsHeading',
+      title: 'Highlights Heading',
+      type: 'string',
+      initialValue: 'Portrait Sessions',
+    }),
+    defineField({
+      name: 'highlights',
+      title: 'Highlights',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Title' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'description' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'stepsHeading',
+      title: 'Steps Section Heading',
+      type: 'string',
+      initialValue: 'The Portrait Experience',
+    }),
+    defineField({
+      name: 'steps',
+      title: 'Experience Steps',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Step Title' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'description' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'ctaTitle',
+      title: 'CTA Title',
+      type: 'string',
+      initialValue: 'Book Your Portrait Session',
+    }),
+    defineField({
+      name: 'ctaSubtitle',
+      title: 'CTA Subtitle',
+      type: 'string',
+    }),
+    defineField({
       name: 'portfolioFeature',
       title: 'Portfolio Feature Section',
       type: 'object',

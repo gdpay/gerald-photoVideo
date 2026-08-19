@@ -68,8 +68,8 @@ const fallbackFeatures = [
 ];
 
 const fallbackFeaturedVideo = {
-  title: 'Quinceanera de Ayaremi',
-  url: 'https://vimeo.com/284882984',
+  title: "Gene and Euphrem's Wedding",
+  url: 'https://vimeo.com/283202022',
   description: 'A cinematic featured film from Gerald Photo Video.',
 };
 
@@ -82,7 +82,7 @@ export default async function VideographyPage() {
   const features = data?.features?.length ? data.features : fallbackFeatures;
   const galleryImages = prepareGalleryImages(videographyGallery);
   const featuredVideo = data?.featuredVideo?.url ? data.featuredVideo : fallbackFeaturedVideo;
-  const showcaseVideos = data?.videos?.length ? data.videos : [];
+  const showcaseVideos = data?.videos?.length ? data.videos.filter((v: any) => v?.url) : [];
 
   return (
     <>
@@ -165,23 +165,23 @@ export default async function VideographyPage() {
               
               <div className="space-y-3">
                 <VideoEmbed
-                  src="https://vimeo.com/284882984"
-                  title="Quinceañera de Ayaremi"
+                  src="https://vimeo.com/280665114"
+                  title="Quinceañera de Mariaelena & Surprise Dance"
                 />
                 <h3 className="font-heading text-lg text-[#0A1F44]">
-                  Quinceañera de Ayaremi
+                  Quinceañera de Mariaelena & Surprise Dance
                 </h3>
-                <p className="text-sm text-[#736D63]">A cinematic quinceañera highlight film</p>
+                <p className="text-sm text-[#736D63]">A joyful quinceañera celebration with a surprise dance</p>
               </div>
               <div className="space-y-3">
                 <VideoEmbed
-                  src="https://vimeo.com/284882984"
-                  title="Wedding Highlight Film"
+                  src="https://vimeo.com/281147633"
+                  title="African Cultural Festival in Omaha 2018"
                 />
                 <h3 className="font-heading text-lg text-[#0A1F44]">
-                  Wedding Highlight Film
+                  African Cultural Festival in Omaha 2018
                 </h3>
-                <p className="text-sm text-[#736D63]">A cinematic wedding highlight film</p>
+                <p className="text-sm text-[#736D63]">Highlights from the African Cultural Festival in Omaha</p>
               </div>
             </div>
           )}

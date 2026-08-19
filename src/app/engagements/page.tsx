@@ -62,14 +62,33 @@ const fallbackGalleryImages = [
   },
 ];
 
-const highlights = [
-  { icon: Camera, label: 'Couples Photography', desc: 'Romantic portraits that capture your unique connection and chemistry' },
-  { icon: Users, label: 'Save-the-Date Sessions', desc: 'Create stunning images for your save-the-dates and wedding decor' },
-  { icon: Sparkles, label: 'Styling Guidance', desc: 'We help you choose outfits and locations that reflect your story' },
-  { icon: Heart, label: 'Love Storytelling', desc: 'Every session is tailored to celebrate your journey together' },
-  { icon: Sun, label: 'Golden Hour Sessions', desc: 'Beautiful outdoor sessions timed for the most flattering natural light' },
-  { icon: MapPin, label: 'Scenic Locations', desc: 'From urban backdrops to stunning natural landscapes across Nebraska & Iowa' },
+const fallbackHighlights = [
+  { label: 'Couples Photography', description: 'Romantic portraits that capture your unique connection and chemistry' },
+  { label: 'Save-the-Date Sessions', description: 'Create stunning images for your save-the-dates and wedding decor' },
+  { label: 'Styling Guidance', description: 'We help you choose outfits and locations that reflect your story' },
+  { label: 'Love Storytelling', description: 'Every session is tailored to celebrate your journey together' },
+  { label: 'Golden Hour Sessions', description: 'Beautiful outdoor sessions timed for the most flattering natural light' },
+  { label: 'Scenic Locations', description: 'From urban backdrops to stunning natural landscapes across Nebraska & Iowa' },
 ];
+
+const highlightIcons = [Camera, Users, Sparkles, Heart, Sun, MapPin];
+
+const fallbackSteps = [
+  { title: 'Planning Your Session', description: "We'll discuss your vision, choose the perfect location, and plan outfits that reflect your style." },
+  { title: 'Your Session', description: 'A relaxed, fun photoshoot capturing your connection — from candid laughter to romantic portraits.' },
+  { title: 'Your Gallery', description: 'Beautifully edited images delivered in a private online gallery — perfect for save-the-dates and sharing.' },
+];
+
+interface HighlightItem {
+  label: string;
+  description?: string;
+  desc?: string;
+}
+
+interface StepItem {
+  title: string;
+  description: string;
+}
 
 const fallbackLocations = [
   { name: 'Old Market', area: 'Omaha, NE', description: 'Urban charm with historic brick streets and vibrant murals' },
@@ -85,6 +104,8 @@ export default async function EngagementsPage() {
   ]);
 
   const locations = data?.locations?.length ? data.locations : fallbackLocations;
+  const highlights: HighlightItem[] = data?.highlights?.length ? data.highlights : fallbackHighlights;
+  const steps: StepItem[] = data?.steps?.length ? data.steps : fallbackSteps;
   const portfolioFeatureImages = preparePortfolioFeatureImages(data?.portfolioFeature, engagementGallery);
 
   return (
@@ -117,19 +138,22 @@ export default async function EngagementsPage() {
       <SectionWrapper>
         <Container>
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
-            Engagement Sessions
+            {data?.highlightsHeading || 'Engagement Sessions'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {highlights.map((item) => (
-              <div
-                key={item.label}
-                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
-              >
-                <item.icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
-                <p className="text-sm text-[#736D63]">{item.desc}</p>
-              </div>
-            ))}
+            {highlights.map((item, index) => {
+              const Icon = highlightIcons[index % highlightIcons.length];
+              return (
+                <div
+                  key={item.label}
+                  className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
+                >
+                  <Icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                  <p className="text-sm text-[#736D63]">{item.description || item.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </Container>
       </SectionWrapper>
@@ -161,30 +185,20 @@ export default async function EngagementsPage() {
       <SectionWrapper>
         <Container narrow className="text-center">
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
-            The Engagement Experience
+            {data?.stepsHeading || 'The Engagement Experience'}
           </h2>
           <div className="space-y-6 text-left">
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">01</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Planning Your Session</h3>
-                <p className="text-sm text-[#736D63]">We&apos;ll discuss your vision, choose the perfect location, and plan outfits that reflect your style.</p>
+            {steps.map((step, index) => (
+              <div key={step.title} className="flex items-start gap-4">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-1">{step.title}</h3>
+                  <p className="text-sm text-[#736D63]">{step.description}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">02</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Session</h3>
-                <p className="text-sm text-[#736D63]">A relaxed, fun photoshoot capturing your connection — from candid laughter to romantic portraits.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">03</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Gallery</h3>
-                <p className="text-sm text-[#736D63]">Beautifully edited images delivered in a private online gallery — perfect for save-the-dates and sharing.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </Container>
       </SectionWrapper>
@@ -208,8 +222,8 @@ export default async function EngagementsPage() {
       </SectionWrapper>
 
       <CTASection
-        title="Capture This Season of Love"
-        subtitle="Let's plan an engagement session that reflects your unique story."
+        title={data?.ctaTitle || 'Capture This Season of Love'}
+        subtitle={data?.ctaSubtitle || "Let's plan an engagement session that reflects your unique story."}
         primaryCTA={{ label: 'Book Your Session', href: '/contact' }}
       />
     </>

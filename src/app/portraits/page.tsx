@@ -24,14 +24,33 @@ export const metadata: Metadata = generateMetadata({
   ],
 });
 
-const highlights = [
-  { icon: Camera, label: 'Individual Portraits', desc: 'Professional portraits that capture your unique personality and style' },
-  { icon: Users, label: 'Family Portraits', desc: 'Beautiful family portraits that celebrate your loved ones' },
-  { icon: Sparkles, label: 'Senior Portraits', desc: 'Celebrate this milestone with stunning senior portraits' },
-  { icon: Heart, label: 'Couple Portraits', desc: 'Romantic portraits that capture your connection' },
-  { icon: Sun, label: 'Natural Light', desc: 'Beautiful outdoor sessions using golden hour light' },
-  { icon: MapPin, label: 'Location Options', desc: 'Studio, urban, or outdoor locations across Nebraska & Iowa' },
+const highlightIcons = [Camera, Users, Sparkles, Heart, Sun, MapPin];
+
+const fallbackHighlights = [
+  { label: 'Individual Portraits', description: 'Professional portraits that capture your unique personality and style' },
+  { label: 'Family Portraits', description: 'Beautiful family portraits that celebrate your loved ones' },
+  { label: 'Senior Portraits', description: 'Celebrate this milestone with stunning senior portraits' },
+  { label: 'Couple Portraits', description: 'Romantic portraits that capture your connection' },
+  { label: 'Natural Light', description: 'Beautiful outdoor sessions using golden hour light' },
+  { label: 'Location Options', description: 'Studio, urban, or outdoor locations across Nebraska & Iowa' },
 ];
+
+const fallbackSteps = [
+  { title: 'Consultation', description: "We'll discuss your vision, style preferences, and choose the perfect location." },
+  { title: 'Your Session', description: 'A relaxed, enjoyable photoshoot where we capture a range of natural and styled portraits.' },
+  { title: 'Your Gallery', description: 'Beautifully edited images delivered in a private online gallery ready to share and print.' },
+];
+
+interface HighlightItem {
+  label: string;
+  description?: string;
+  desc?: string;
+}
+
+interface StepItem {
+  title: string;
+  description: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function preparePortfolioFeatureImages(feature: any, gallery: any) {
   const images = feature?.images?.length ? feature.images : gallery?.images;
@@ -50,6 +69,8 @@ export default async function PortraitsPage() {
     client.fetch(galleryByServiceTypeQuery('portraits')).catch(() => null),
   ]);
   const portfolioFeatureImages = preparePortfolioFeatureImages(data?.portfolioFeature, portraitsGallery);
+  const highlights: HighlightItem[] = data?.highlights?.length ? data.highlights : fallbackHighlights;
+  const steps: StepItem[] = data?.steps?.length ? data.steps : fallbackSteps;
 
   return (
     <>
@@ -59,19 +80,16 @@ export default async function PortraitsPage() {
       ]} />
       <PageHero
         tagline={hero?.tagline}
-        title={hero?.heading || 'Portrait Photography'}
-        subtitle={hero?.subheading || 'Timeless portraits that celebrate your unique beauty and personality.'}
-        imageSource={hero?.backgroundImage}
+        title={data?.heroHeading || hero?.heading || 'Portrait Photography'}
+        subtitle={data?.heroSubheading || hero?.subheading || 'Timeless portraits that celebrate your unique beauty and personality.'}
+        imageSource={data?.heroImage || hero?.backgroundImage}
         imageUrl="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=1920&q=80"
       />
 
       <SectionWrapper>
         <Container narrow>
           <p className="text-lg text-[#736D63] leading-relaxed">
-            Every person has a story worth telling. Our portrait sessions are designed to capture 
-            your authentic self — whether you&apos;re celebrating a milestone, updating your professional 
-            brand, or simply want beautiful images of yourself and your loved ones. We create a 
-            comfortable, relaxed environment where your true personality can shine through.
+            {data?.introText || "Every person has a story worth telling. Our portrait sessions are designed to capture your authentic self — whether you're celebrating a milestone, updating your professional brand, or simply want beautiful images of yourself and your loved ones. We create a comfortable, relaxed environment where your true personality can shine through."}
           </p>
         </Container>
       </SectionWrapper>
@@ -85,19 +103,22 @@ export default async function PortraitsPage() {
       <SectionWrapper champagne>
         <Container>
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] text-center mb-12">
-            Portrait Sessions
+            {data?.highlightsHeading || 'Portrait Sessions'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {highlights.map((item) => (
-              <div
-                key={item.label}
-                className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
-              >
-                <item.icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
-                <p className="text-sm text-[#736D63]">{item.desc}</p>
-              </div>
-            ))}
+            {highlights.map((item, index) => {
+              const Icon = highlightIcons[index % highlightIcons.length];
+              return (
+                <div
+                  key={item.label}
+                  className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
+                >
+                  <Icon className="h-6 w-6 text-[#C8A23D] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-2">{item.label}</h3>
+                  <p className="text-sm text-[#736D63]">{item.description || item.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </Container>
       </SectionWrapper>
@@ -105,37 +126,27 @@ export default async function PortraitsPage() {
       <SectionWrapper>
         <Container narrow className="text-center">
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
-            The Portrait Experience
+            {data?.stepsHeading || 'The Portrait Experience'}
           </h2>
           <div className="space-y-6 text-left">
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">01</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Consultation</h3>
-                <p className="text-sm text-[#736D63]">We&apos;ll discuss your vision, style preferences, and choose the perfect location.</p>
+            {steps.map((step, index) => (
+              <div key={step.title} className="flex items-start gap-4">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 className="font-heading text-xl text-[#0A1F44] mb-1">{step.title}</h3>
+                  <p className="text-sm text-[#736D63]">{step.description}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">02</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Session</h3>
-                <p className="text-sm text-[#736D63]">A relaxed, enjoyable photoshoot where we capture a range of natural and styled portraits.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#C8A23D]/10 text-[#C8A23D] text-sm font-body shrink-0 mt-1">03</span>
-              <div>
-                <h3 className="font-heading text-xl text-[#0A1F44] mb-1">Your Gallery</h3>
-                <p className="text-sm text-[#736D63]">Beautifully edited images delivered in a private online gallery ready to share and print.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </Container>
       </SectionWrapper>
 
       <CTASection
-        title="Book Your Portrait Session"
-        subtitle="Let's create beautiful portraits that celebrate you."
+        title={data?.ctaTitle || 'Book Your Portrait Session'}
+        subtitle={data?.ctaSubtitle || "Let's create beautiful portraits that celebrate you."}
         primaryCTA={{ label: 'Check Availability', href: '/contact' }}
       />
     </>

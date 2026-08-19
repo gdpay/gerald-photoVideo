@@ -16,6 +16,10 @@ export function VideoEmbed({ src, title = 'Featured Film', posterUrl }: VideoEmb
     setIsLoaded(true);
   }, []);
 
+  if (!src) {
+    return null;
+  }
+
   const isVimeo = src.includes('vimeo.com') || src.includes('player.vimeo.com');
   const isYoutube = src.includes('youtube.com') || src.includes('youtu.be');
 

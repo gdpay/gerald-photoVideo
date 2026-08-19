@@ -31,11 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
     ? urlFor(settings.favicon).width(64).url()
     : null;
 
+  const name = settings?.title || SITE.name;
+
   return {
     metadataBase: new URL(SITE.url),
     title: {
-      default: `${SITE.name} | Wedding & Quinceañera Photographer Nebraska & Iowa`,
-      template: `%s | ${SITE.name}`,
+      default: `${name} | Wedding & Quinceañera Photographer Nebraska & Iowa`,
+      template: `%s | ${name}`,
     },
     description: settings?.description || SITE.description,
     keywords: [
@@ -50,9 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
       'cinematic wedding films',
       'Gerald Photo Video',
     ],
-    authors: [{ name: SITE.name }],
-    creator: SITE.name,
-    publisher: SITE.name,
+    authors: [{ name: name }],
+    creator: name,
+    publisher: name,
     formatDetection: {
       telephone: true,
       email: true,
@@ -61,8 +63,8 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      siteName: SITE.name,
-      title: `${SITE.name} | Wedding & Quinceañera Photographer Nebraska & Iowa`,
+      siteName: name,
+      title: `${name} | Wedding & Quinceañera Photographer Nebraska & Iowa`,
       description: settings?.description || SITE.description,
       url: SITE.url,
       images: [
@@ -70,13 +72,13 @@ export async function generateMetadata(): Promise<Metadata> {
           url: `${SITE.url}/images/og-default.jpg`,
           width: 1200,
           height: 630,
-          alt: SITE.name,
+          alt: name,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: SITE.name,
+      title: name,
       description: settings?.description || SITE.description,
       images: [`${SITE.url}/images/og-default.jpg`],
     },
@@ -129,7 +131,7 @@ export default async function RootLayout({
         <AnalyticsConsentProvider>
           <Navigation logoUrl={logoUrl} />
           <main className="min-h-screen">{children}</main>
-          <Footer />
+          <Footer settings={settings} />
           <StickyCTA />
           <GoogleAnalytics />
           <MetaPixel />

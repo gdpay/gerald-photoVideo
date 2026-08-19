@@ -36,6 +36,63 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: 'highlightsHeading',
+      title: 'Highlights Heading',
+      type: 'string',
+      initialValue: 'Engagement Sessions',
+    }),
+    defineField({
+      name: 'highlights',
+      title: 'Highlights',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Title' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'description' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'stepsHeading',
+      title: 'Steps Section Heading',
+      type: 'string',
+      initialValue: 'The Engagement Experience',
+    }),
+    defineField({
+      name: 'steps',
+      title: 'Experience Steps',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Step Title' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'description' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'ctaTitle',
+      title: 'CTA Title',
+      type: 'string',
+      initialValue: 'Capture This Season of Love',
+    }),
+    defineField({
+      name: 'ctaSubtitle',
+      title: 'CTA Subtitle',
+      type: 'string',
+    }),
+    defineField({
       name: 'locationsHeading',
       title: 'Locations Heading',
       type: 'string',
