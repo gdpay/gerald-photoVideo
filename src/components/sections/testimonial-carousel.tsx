@@ -45,9 +45,19 @@ const fallbackTestimonials = [
 
 interface TestimonialCarouselProps {
   testimonials?: TestimonialItem[];
+  eyebrow?: string;
+  heading?: string;
+  buttonLabel?: string;
+  buttonLink?: string;
 }
 
-export function TestimonialCarousel({ testimonials: sanityTestimonials }: TestimonialCarouselProps) {
+export function TestimonialCarousel({
+  testimonials: sanityTestimonials,
+  eyebrow = 'Kind Words',
+  heading = 'Stories From Our Clients',
+  buttonLabel = 'Read More Reviews',
+  buttonLink = '/reviews',
+}: TestimonialCarouselProps) {
   const testimonials = sanityTestimonials && sanityTestimonials.length > 0
     ? sanityTestimonials.slice(0, 3).map((t, index) => ({
         quote: t.quote,
@@ -65,17 +75,17 @@ export function TestimonialCarousel({ testimonials: sanityTestimonials }: Testim
         <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
-              Kind Words
+              {eyebrow}
             </span>
             <h2 className="mt-3 font-heading text-4xl font-light leading-tight text-[#0A1F44] md:text-5xl">
-              Stories From Our Clients
+              {heading}
             </h2>
           </div>
           <Link
-            href="/reviews"
+            href={buttonLink}
             className="inline-flex h-11 w-fit items-center justify-center border border-[#C8A23D] px-7 font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-[#C8A23D] transition hover:bg-[#C8A23D] hover:text-[#06112A]"
           >
-            Read More Reviews
+            {buttonLabel}
           </Link>
         </div>
 

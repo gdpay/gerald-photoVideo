@@ -15,6 +15,7 @@ interface ServiceItem {
   title: string;
   slug: string;
   shortDescription?: string;
+  tagline?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   heroImage?: any;
 }
@@ -36,6 +37,9 @@ interface GalleryItem {
 interface ServicesGridProps {
   services?: ServiceItem[];
   galleries?: GalleryItem[];
+  eyebrow?: string;
+  heading?: string;
+  linkLabel?: string;
 }
 
 const featuredServiceIds = ['weddings', 'quinceaneras', 'engagements', 'videography'] as const;
@@ -54,7 +58,7 @@ const serviceFallbacks: Record<(typeof featuredServiceIds)[number], string> = {
   videography:'',
 };
 
-export function ServicesGrid({ services, galleries }: ServicesGridProps) {
+export function ServicesGrid({ services, galleries, eyebrow = 'Explore', heading = 'Every Love Story is Unique', linkLabel = 'View Gallery' }: ServicesGridProps) {
   const displayServices = featuredServiceIds.map((serviceId) => {
     const service = SERVICES.find((s) => s.id === serviceId);
     if (!service) return null;
@@ -67,7 +71,7 @@ export function ServicesGrid({ services, galleries }: ServicesGridProps) {
       ...service,
       heroImage: galleryImage || sanityService?.heroImage,
       imageAlt: sanityGallery?.coverImage?.alt || sanityGallery?.images?.[0]?.alt || service.title,
-      tagline: serviceTaglines[serviceId],
+      tagline: sanityService?.tagline || serviceTaglines[serviceId],
     };
   }).filter((service): service is NonNullable<typeof service> => Boolean(service));
 
@@ -81,7 +85,7 @@ export function ServicesGrid({ services, galleries }: ServicesGridProps) {
             viewport={{ once: true }}
             className="font-body text-[12px] font-semibold uppercase tracking-[0.22em] text-[#A8842E]"
           >
-            Explore
+            {eyebrow}
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +94,7 @@ export function ServicesGrid({ services, galleries }: ServicesGridProps) {
             transition={{ delay: 0.1 }}
             className="mt-2 font-heading text-4xl font-light leading-none text-[#0A1F44] md:text-5xl lg:text-6xl"
           >
-            Every Love Story is Unique
+            {heading}
           </motion.h2>
         </div>
 
@@ -142,7 +146,7 @@ export function ServicesGrid({ services, galleries }: ServicesGridProps) {
                     {service.tagline}
                   </p>
                   <span className="mt-7 inline-flex items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A1713] transition-all duration-300 group-hover:gap-3 group-hover:text-[#A8842E]">
-                    View Gallery <ArrowRight className="h-3.5 w-3.5" />
+                    {linkLabel} <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>

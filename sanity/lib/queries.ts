@@ -4,6 +4,7 @@ export const servicesQuery = `*[_type == "service"] | order(title asc) {
   title,
   "slug": slug.current,
   shortDescription,
+  tagline,
   heroImage,
   features,
   seo
@@ -168,6 +169,7 @@ export const featuredServicesQuery = `*[_type == "service"] | order(title asc) {
   title,
   "slug": slug.current,
   shortDescription,
+  tagline,
   heroImage,
   features
 }`;
@@ -189,6 +191,44 @@ export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
   image,
   category,
   alt
+}`;
+
+// Home Page (editable homepage sections)
+export const homePageQuery = `*[_type == "homePage"][0] {
+  trustStats,
+  servicesEyebrow,
+  servicesHeading,
+  servicesLinkLabel,
+  featuredFilm {
+    eyebrow,
+    heading,
+    text,
+    buttonLabel,
+    buttonLink,
+    videoTitle,
+    videoUrl
+  },
+  meetGerald {
+    eyebrow,
+    heading,
+    image,
+    text1,
+    text2,
+    name,
+    buttonLabel,
+    buttonLink
+  },
+  experience {
+    eyebrow,
+    heading,
+    features,
+    buttonLabel,
+    buttonLink
+  },
+  testimonialsEyebrow,
+  testimonialsHeading,
+  testimonialsButtonLabel,
+  testimonialsButtonLink
 }`;
 
 // About Page

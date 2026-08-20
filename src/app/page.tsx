@@ -3,12 +3,22 @@ import { HeroSection } from '@/components/sections/hero-section';
 import { TrustBar } from '@/components/sections/trust-bar';
 import { ServicesGrid } from '@/components/sections/services-grid';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
+import { VideoEmbed } from '@/components/shared/video-embed';
+import { SanityImage } from '@/components/shared/sanity-image';
 
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
-import { client } from '../../sanity/lib/client';
-import { featuredServicesQuery, featuredTestimonialsQuery, galleriesQuery, heroSlidesQuery, homeHeroQuery, settingsQuery } from '../../sanity/lib/queries';
+import { client, hasSanityImageAsset } from '../../sanity/lib/client';
+import {
+  featuredServicesQuery,
+  featuredTestimonialsQuery,
+  galleriesQuery,
+  heroSlidesQuery,
+  homeHeroQuery,
+  homePageQuery,
+  settingsQuery,
+} from '../../sanity/lib/queries';
 import {
   Album,
   Camera,
@@ -23,30 +33,36 @@ import {
 
 export const revalidate = 60;
 
-const experienceFeatures = [
-  { icon: Camera, label: 'Photography & Videography Under One Team' },
-  { icon: Sparkles, label: 'Thoughtful & Timeless Edits' },
-  { icon: HeartHandshake, label: 'Natural Poses & Guidance' },
-  { icon: Users, label: 'Trusted by 500+ Families' },
-  { icon: Images, label: 'Cinematic & True to Life' },
-  { icon: Album, label: 'Luxury Albums & Keepsakes' },
-  { icon: Clock, label: 'Fast & Clear Communication' },
-  { icon: MapPin, label: 'Nebraska & Iowa Expertise' },
+const iconMap: Record<string, React.ElementType> = {
+  Camera,
+  Sparkles,
+  HeartHandshake,
+  Users,
+  Images,
+  Album,
+  Clock,
+  MapPin,
+};
+
+const fallbackExperienceFeatures = [
+  { icon: 'Camera', label: 'Photography & Videography Under One Team' },
+  { icon: 'Sparkles', label: 'Thoughtful & Timeless Edits' },
+  { icon: 'HeartHandshake', label: 'Natural Poses & Guidance' },
+  { icon: 'Users', label: 'Trusted by 500+ Families' },
+  { icon: 'Images', label: 'Cinematic & True to Life' },
+  { icon: 'Album', label: 'Luxury Albums & Keepsakes' },
+  { icon: 'Clock', label: 'Fast & Clear Communication' },
+  { icon: 'MapPin', label: 'Nebraska & Iowa Expertise' },
 ];
 
-function FeaturedFilmFrame() {
-  return (
-    <div className="shadow-2xl" dangerouslySetInnerHTML={{ __html: '<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/284882984?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Quinceañera de Ayaremi"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>' }} />
-  );
-}
-
 export default async function HomePage() {
-    const [services, galleries, testimonials, heroSlides, homeHero, settings] = await Promise.all([
+    const [services, galleries, testimonials, heroSlides, homeHero, homeData, settings] = await Promise.all([
     client.fetch(featuredServicesQuery).catch(() => []),
     client.fetch(galleriesQuery).catch(() => []),
     client.fetch(featuredTestimonialsQuery).catch(() => []),
     client.fetch(heroSlidesQuery).catch(() => []),
     client.fetch(homeHeroQuery).catch(() => null),
+    client.fetch(homePageQuery).catch(() => null),
     client.fetch(settingsQuery).catch(() => null),
   ]);
   const sanityHeroSlides = heroSlides.length > 0
@@ -70,6 +86,11 @@ export default async function HomePage() {
   const heroPrimaryCtaLink = homeHero?.sections?.ctaLink || '/contact';
   const heroLocationLabel = homeHero?.sections?.locationLabel || 'Omaha, NE';
 
+  const featuredFilm = homeData?.featuredFilm || {};
+  const meetGerald = homeData?.meetGerald || {};
+  const experience = homeData?.experience || {};
+  const experienceFeatures = experience.features?.length ? experience.features : fallbackExperienceFeatures;
+
   return (
     <>
       <HeroSection
@@ -81,68 +102,92 @@ export default async function HomePage() {
         primaryCtaLink={heroPrimaryCtaLink}
         locationLabel={heroLocationLabel}
       />
-      <TrustBar />
+      <TrustBar stats={homeData?.trustStats?.length ? homeData.trustStats : undefined} />
 
-      <ServicesGrid services={services} galleries={galleries} />
+      <ServicesGrid
+        services={services}
+        galleries={galleries}
+        eyebrow={homeData?.servicesEyebrow}
+        heading={homeData?.servicesHeading}
+        linkLabel={homeData?.servicesLinkLabel}
+      />
 
-      <SectionWrapper navy>
-        <Container>
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.33fr_0.67fr] lg:gap-16">
-            <div className="max-w-sm">
-              <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
-                Featured Wedding Film
-              </span>
-              <h2 className="mt-4 font-heading text-4xl font-light leading-tight text-[#FAF7F2] md:text-5xl">
-                A Day to Remember Forever
-              </h2>
-              <div className="mt-5 h-px w-14 bg-[#C8A23D]" />
-              <p className="mt-6 max-w-xs font-heading text-lg leading-relaxed text-[#FAF7F2]/78">
-                Cinematic storytelling that lets you relive every emotion, every time.
-              </p>
-              <Button
-                variant="outline-light"
-                size="md"
-                href="/videography"
-                className="mt-8 border-[#C8A23D] text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
-              >
-                Watch Film <Play className="h-3.5 w-3.5 fill-current" />
-              </Button>
+      {featuredFilm?.videoUrl && (
+        <SectionWrapper navy>
+          <Container>
+            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.33fr_0.67fr] lg:gap-16">
+              <div className="max-w-sm">
+                <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
+                  {featuredFilm.eyebrow || 'Featured Wedding Film'}
+                </span>
+                <h2 className="mt-4 font-heading text-4xl font-light leading-tight text-[#FAF7F2] md:text-5xl">
+                  {featuredFilm.heading || 'A Day to Remember Forever'}
+                </h2>
+                <div className="mt-5 h-px w-14 bg-[#C8A23D]" />
+                <p className="mt-6 max-w-xs font-heading text-lg leading-relaxed text-[#FAF7F2]/78">
+                  {featuredFilm.text || 'Cinematic storytelling that lets you relive every emotion, every time.'}
+                </p>
+                <Button
+                  variant="outline-light"
+                  size="md"
+                  href={featuredFilm.buttonLink || '/videography'}
+                  className="mt-8 border-[#C8A23D] text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
+                >
+                  {featuredFilm.buttonLabel || 'Watch Film'} <Play className="h-3.5 w-3.5 fill-current" />
+                </Button>
+              </div>
+              <VideoEmbed
+                src={featuredFilm.videoUrl}
+                title={featuredFilm.videoTitle || 'Featured Film'}
+              />
             </div>
-            <FeaturedFilmFrame />
-          </div>
-        </Container>
-      </SectionWrapper>
+          </Container>
+        </SectionWrapper>
+      )}
 
       <SectionWrapper>
         <Container>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
-                Meet Gerald
+                {meetGerald.eyebrow || 'Meet Gerald'}
               </span>
               <h2 className="mt-4 max-w-md font-heading text-4xl font-light leading-tight text-[#0A1F44] md:text-5xl">
-                More Than Photos. We Preserve Legacy.
+                {meetGerald.heading || 'More Than Photos. We Preserve Legacy.'}
               </h2>
               <div className="mt-8 grid gap-8 sm:grid-cols-[0.9fr_1fr]">
                 <div className="relative aspect-[4/5] overflow-hidden bg-[#E5E0D8]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=90"
-                    alt="Gerald portrait"
-                    fill
-                    sizes="(max-width: 640px) 100vw, 320px"
-                    className="object-cover"
-                  />
+                  {hasSanityImageAsset(meetGerald.image) ? (
+                    <SanityImage
+                      source={meetGerald.image}
+                      alt={meetGerald.name || 'Gerald portrait'}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 320px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=700&q=90"
+                      alt={meetGerald.name || 'Gerald portrait'}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 320px"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-col justify-center">
                   <p className="font-heading text-lg leading-relaxed text-[#524C43]">
-                    My passion is capturing the emotion, connection, and love that make your story unique. I approach each wedding and quinceañera with heart, intention, and care.
+                    {meetGerald.text1 ||
+                      'My passion is capturing the emotion, connection, and love that make your story unique. I approach each wedding and quinceañera with heart, intention, and care.'}
                   </p>
                   <p className="mt-5 font-heading text-lg leading-relaxed text-[#524C43]">
-                    When you look back, you&apos;ll feel the moment all over again.
+                    {meetGerald.text2 || "When you look back, you'll feel the moment all over again."}
                   </p>
-                  <div className="mt-6 font-heading text-4xl italic text-[#0A1F44]">Gerald</div>
-                  <Button variant="primary" size="md" href="/about" className="mt-6 w-fit">
-                    Read Our Story
+                  <div className="mt-6 font-heading text-4xl italic text-[#0A1F44]">
+                    {meetGerald.name || 'Gerald'}
+                  </div>
+                  <Button variant="primary" size="md" href={meetGerald.buttonLink || '/about'} className="mt-6 w-fit">
+                    {meetGerald.buttonLabel || 'Read Our Story'}
                   </Button>
                 </div>
               </div>
@@ -150,35 +195,44 @@ export default async function HomePage() {
 
             <div className="border-t border-[#D4CEC4] pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
               <span className="font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C8A23D]">
-                Why Couples Choose Us
+                {experience.eyebrow || 'Why Couples Choose Us'}
               </span>
               <h2 className="mt-4 max-w-md font-heading text-4xl font-light leading-tight text-[#0A1F44] md:text-5xl">
-                The Gerald Photo Video Experience
+                {experience.heading || 'The Gerald Photo Video Experience'}
               </h2>
               <div className="mt-9 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-                {experienceFeatures.map((feature) => (
-                  <div key={feature.label} className="flex items-start gap-4">
-                    <feature.icon className="mt-0.5 h-6 w-6 shrink-0 text-[#C8A23D]" strokeWidth={1.5} />
-                    <span className="font-heading text-lg leading-snug text-[#3D382F]">
-                      {feature.label}
-                    </span>
-                  </div>
-                ))}
+                {experienceFeatures.map((feature: { icon?: string; label: string }) => {
+                  const Icon = iconMap[feature.icon || ''] || Camera;
+                  return (
+                    <div key={feature.label} className="flex items-start gap-4">
+                      <Icon className="mt-0.5 h-6 w-6 shrink-0 text-[#C8A23D]" strokeWidth={1.5} />
+                      <span className="font-heading text-lg leading-snug text-[#3D382F]">
+                        {feature.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
               <Button
                 variant="secondary"
                 size="lg"
-                href="/about"
+                href={experience.buttonLink || '/about'}
                 className="mt-10 border-[#C8A23D] bg-[#C8A23D] text-[#FAF7F2] hover:bg-[#A8842E] hover:text-[#FAF7F2]"
               >
-                Learn More About Our Process
+                {experience.buttonLabel || 'Learn More About Our Process'}
               </Button>
             </div>
           </div>
         </Container>
       </SectionWrapper>
 
-      <TestimonialCarousel testimonials={testimonials} />
+      <TestimonialCarousel
+        testimonials={testimonials}
+        eyebrow={homeData?.testimonialsEyebrow}
+        heading={homeData?.testimonialsHeading}
+        buttonLabel={homeData?.testimonialsButtonLabel}
+        buttonLink={homeData?.testimonialsButtonLink}
+      />
     </>
   );
 }

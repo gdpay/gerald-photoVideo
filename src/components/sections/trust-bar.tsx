@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Container } from '@/components/shared/container';
 import { Heart, Star } from 'lucide-react';
 
-const stats = [
+const defaultStats = [
   {
     value: '20+',
     label: 'Years Experience',
@@ -31,7 +31,7 @@ const stats = [
   },
 ];
 
-export function TrustBar() {
+export function TrustBar({ stats = defaultStats }: { stats?: { value: string; label: string; variant?: string }[] }) {
   return (
     <section className="border-y border-[#C8A23D]/30 bg-[#06112A] py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
       <Container>

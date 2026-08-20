@@ -25,6 +25,12 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: 'tagline',
+      title: 'Tagline',
+      type: 'string',
+      description: 'Short italic subtitle shown on the homepage card (e.g. "Timeless & Elegant").',
+    }),
+    defineField({
       name: 'description',
       title: 'Full Description',
       type: 'array',
