@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter, usePathname } from 'next/navigation';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
@@ -14,7 +15,20 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { PageHeroData } from '@/lib/page-hero-data';
 import { urlFor } from '../../../sanity/lib/client';
 
-const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Videography'] as const;
+const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Portraits', 'Videography'] as const;
+
+const categorySlugMap: Record<string, string> = {
+  All: '',
+  Weddings: 'weddings',
+  Quinceañeras: 'quinceaneras',
+  Engagements: 'engagements',
+  Portraits: 'portraits',
+  Videography: 'videography',
+};
+
+const slugCategoryMap: Record<string, string> = Object.fromEntries(
+  Object.entries(categorySlugMap).map(([key, val]) => [val, key])
+);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface GalleryImage {
@@ -28,11 +42,40 @@ interface PortfolioClientProps {
   hero?: PageHeroData | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   videographyVideos?: any[];
+  initialCategory?: string;
 }
 
-export function PortfolioClient({ galleryImages, hero, videographyVideos = [] }: PortfolioClientProps) {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
+export function PortfolioClient({ galleryImages, hero, videographyVideos = [], initialCategory }: PortfolioClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const getInitialCategory = useCallback(() => {
+    if (initialCategory) {
+      const slug = categorySlugMap[initialCategory];
+      if (slug !== undefined || initialCategory === 'All') {
+        return initialCategory;
+      }
+    }
+    const slug = pathname.replace('/portfolio', '').replace('/', '');
+    return slugCategoryMap[slug] || 'All';
+  }, [pathname, initialCategory]);
+
+  const [activeCategory, setActiveCategory] = useState<string>(getInitialCategory);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const slug = pathname.replace('/portfolio', '').replace('/', '');
+    const cat = slugCategoryMap[slug] || 'All';
+    if (cat !== activeCategory) {
+      setActiveCategory(cat);
+    }
+  }, [pathname, activeCategory]);
+
+  const handleCategoryChange = useCallback((cat: string) => {
+    const slug = categorySlugMap[cat];
+    const newPath = slug ? `/portfolio/${slug}` : '/portfolio';
+    router.push(newPath, { scroll: false });
+  }, [router]);
 
   const filtered = activeCategory === 'All'
     ? galleryImages
@@ -55,7 +98,7 @@ export function PortfolioClient({ galleryImages, hero, videographyVideos = [] }:
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => handleCategoryChange(cat)}
                 className={cn(
                   'px-5 py-2 text-sm font-body uppercase tracking-wider transition-all duration-300',
                   activeCategory === cat

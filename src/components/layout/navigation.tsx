@@ -16,7 +16,7 @@ interface NavigationProps {
 }
 
 const desktopNavItems = NAV_ITEMS.filter((item) =>
-  ['/', '/weddings', '/quinceaneras', '/engagements', '/portraits', '/investment', '/about', '/blog', '/contact'].includes(item.href)
+  ['/', '/weddings', '/quinceaneras', '/engagements', '/portfolio/portraits', '/investment', '/about', '/blog', '/contact'].includes(item.href)
 );
 
 export function Navigation({ logoUrl }: NavigationProps) {
@@ -74,20 +74,25 @@ export function Navigation({ logoUrl }: NavigationProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-2">
-            {desktopNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
-                  pathname === item.href
-                    ? 'text-[#C8A23D] after:w-8'
-                    : 'text-[#FAF7F2]/78 after:w-0 hover:text-[#C8A23D] hover:after:w-8'
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {desktopNavItems.map((item) => {
+              const isActive = item.href === '/portfolio'
+                ? pathname.startsWith('/portfolio')
+                : pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
+                    isActive
+                      ? 'text-[#C8A23D] after:w-8'
+                      : 'text-[#FAF7F2]/78 after:w-0 hover:text-[#C8A23D] hover:after:w-8'
+                  )}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <div className="ml-4">
               <Button
                 variant="outline-light"
@@ -123,26 +128,31 @@ export function Navigation({ logoUrl }: NavigationProps) {
           >
             <div className="flex flex-col h-full p-6 pb-24 overflow-y-auto">
               <div className="flex-1 space-y-1">
-                {desktopNavItems.map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        'block py-3 px-4 text-lg font-body transition-colors rounded-lg',
-                        pathname === item.href
-                          ? 'text-[#C8A23D] bg-[#C8A23D]/5'
-                          : 'text-[#FAF7F2]/70 hover:text-[#C8A23D] hover:bg-white/5'
-                      )}
+                {desktopNavItems.map((item, i) => {
+                  const isActive = item.href === '/portfolio'
+                    ? pathname.startsWith('/portfolio')
+                    : pathname === item.href;
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
                     >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'block py-3 px-4 text-lg font-body transition-colors rounded-lg',
+                          isActive
+                            ? 'text-[#C8A23D] bg-[#C8A23D]/5'
+                            : 'text-[#FAF7F2]/70 hover:text-[#C8A23D] hover:bg-white/5'
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
               </div>
               <div className="space-y-3 pt-6 border-t border-[#FAF7F2]/10">
                 <a

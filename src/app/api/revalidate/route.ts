@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
  *   URL:    https://www.geraldphotovideo.com/api/revalidate
  *   Secret: (set SANITY_REVALIDATE_SECRET in Vercel env vars)
  *   Trigger: Create, update, delete
- *   Filter: _type == "settings" || _type == "page" || _type == "heroSlide" || _type == "service" || _type == "gallery" || _type == "testimonial" || _type == "blog" || _type == "aboutPage" || _type == "investmentPage" || _type == "faqPage" || _type == "engagementsPage" || _type == "videographyPage"
+ *   Filter: _type == "settings" || _type == "page" || _type == "heroSlide" || _type == "service" || _type == "gallery" || _type == "testimonial" || _type == "blog" || _type == "homePage" || _type == "aboutPage" || _type == "investmentPage" || _type == "faqPage" || _type == "engagementsPage" || _type == "videographyPage"
  */
 export async function POST(request: NextRequest) {
   try {
@@ -99,6 +99,9 @@ export async function POST(request: NextRequest) {
           break;
         case 'heroSlide':
           // Hero slides appear on the homepage
+          break;
+        case 'homePage':
+          // Home page content (trust stats, services, featured film, etc.)
           break;
         default:
           // For unknown types, revalidate all main paths

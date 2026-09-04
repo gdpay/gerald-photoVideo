@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { client } from '../../../sanity/lib/client';
-import { galleriesQuery, videographyPageQuery } from '../../../sanity/lib/queries';
+import { notFound } from 'next/navigation';
+import { client } from '../../../../sanity/lib/client';
+import { galleriesQuery, videographyPageQuery } from '../../../../sanity/lib/queries';
 import { PortfolioClient } from '@/components/sections/portfolio-client';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as genMeta } from '@/lib/seo-metadata';
@@ -8,11 +9,7 @@ import { getPageHeroData } from '@/lib/page-hero-data';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = genMeta({
-  title: 'Portfolio',
-  description: 'A curated collection of our favorite wedding, quinceañera, and engagement moments.',
-  path: '/portfolio',
-});
+const validCategories = ['weddings', 'quinceaneras', 'engagements', 'portraits', 'videography'];
 
 const CATEGORY_LABELS: Record<string, string> = {
   weddings: 'Weddings',
@@ -22,6 +19,19 @@ const CATEGORY_LABELS: Record<string, string> = {
   videography: 'Videography',
   featured: 'Featured',
 };
+
+export function generateMetadata({ params }: { params: { category: string } }): Metadata {
+  const category = params.category;
+  if (!validCategories.includes(category)) {
+    return {};
+  }
+  const label = CATEGORY_LABELS[category] || category;
+  return genMeta({
+    title: `${label} Portfolio`,
+    description: `Browse our ${label.toLowerCase()} photography and videography portfolio.`,
+    path: `/portfolio/${category}`,
+  });
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function prepareImages(galleries: any[]) {
@@ -39,7 +49,13 @@ function prepareImages(galleries: any[]) {
   return images;
 }
 
-export default async function PortfolioPage() {
+export default async function PortfolioCategoryPage({ params }: { params: { category: string } }) {
+  const { category } = params;
+
+  if (!validCategories.includes(category)) {
+    notFound();
+  }
+
   let galleryImages: { source: any; alt: string; category: string }[] = [];
   const hero = await getPageHeroData('portfolio');
 
@@ -62,8 +78,14 @@ export default async function PortfolioPage() {
       <BreadcrumbSchema items={[
         { name: 'Home', url: '/' },
         { name: 'Portfolio', url: '/portfolio' },
+        { name: CATEGORY_LABELS[category] || category, url: `/portfolio/${category}` },
       ]} />
-      <PortfolioClient galleryImages={galleryImages} hero={hero} videographyVideos={videographyVideos} />
+      <PortfolioClient
+        galleryImages={galleryImages}
+        hero={hero}
+        videographyVideos={videographyVideos}
+        initialCategory={CATEGORY_LABELS[category] || category}
+      />
     </>
   );
 }
