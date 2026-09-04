@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
@@ -46,7 +46,6 @@ interface PortfolioClientProps {
 }
 
 export function PortfolioClient({ galleryImages, hero, videographyVideos = [], initialCategory }: PortfolioClientProps) {
-  const router = useRouter();
   const pathname = usePathname();
 
   const getInitialCategory = useCallback(() => {
@@ -71,11 +70,23 @@ export function PortfolioClient({ galleryImages, hero, videographyVideos = [], i
     }
   }, [pathname, activeCategory]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const slug = path.replace('/portfolio', '').replace('/', '');
+      const cat = slugCategoryMap[slug] || 'All';
+      setActiveCategory(cat);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const handleCategoryChange = useCallback((cat: string) => {
     const slug = categorySlugMap[cat];
     const newPath = slug ? `/portfolio/${slug}` : '/portfolio';
-    router.push(newPath, { scroll: false });
-  }, [router]);
+    window.history.pushState({}, '', newPath);
+    setActiveCategory(cat);
+  }, []);
 
   const filtered = activeCategory === 'All'
     ? galleryImages
