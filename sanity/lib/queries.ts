@@ -356,6 +356,18 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
   comboText
 }`;
 
+// Portfolio Page
+export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  videographyEyebrow,
+  ctaHeading,
+  ctaSubheading,
+  ctaButtonLabel,
+  ctaButtonLink
+}`;
+
 // Reviews Page (testimonials with ordering)
 export const allTestimonialsQuery = `*[_type == "testimonial"] | order(order asc) {
   _id,

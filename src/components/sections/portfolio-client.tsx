@@ -39,13 +39,31 @@ interface GalleryImage {
 
 interface PortfolioClientProps {
   galleryImages: GalleryImage[];
-  hero?: PageHeroData | null;
+  hero?: {
+    heading?: string;
+    subheading?: string;
+    backgroundImage?: any;
+  } | null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   videographyVideos?: any[];
+  videographyEyebrow?: string;
+  cta?: {
+    heading?: string;
+    subheading?: string;
+    buttonLabel?: string;
+    buttonLink?: string;
+  };
   initialCategory?: string;
 }
 
-export function PortfolioClient({ galleryImages, hero, videographyVideos = [], initialCategory }: PortfolioClientProps) {
+export function PortfolioClient({
+  galleryImages,
+  hero,
+  videographyVideos = [],
+  videographyEyebrow = 'Cinematic Films',
+  cta = {},
+  initialCategory,
+}: PortfolioClientProps) {
   const pathname = usePathname();
 
   const getInitialCategory = useCallback(() => {
@@ -95,7 +113,6 @@ export function PortfolioClient({ galleryImages, hero, videographyVideos = [], i
   return (
     <>
       <PageHero
-        tagline={hero?.tagline}
         title={hero?.heading || 'Our Portfolio'}
         subtitle={hero?.subheading || 'A curated collection of our favorite moments.'}
         imageSource={hero?.backgroundImage}
@@ -126,7 +143,7 @@ export function PortfolioClient({ galleryImages, hero, videographyVideos = [], i
           {activeCategory === 'Videography' && (
             <div className="mb-12 max-w-5xl mx-auto">
               <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] text-center mb-8">
-                Cinematic Films
+                {videographyEyebrow}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {(videographyVideos.length > 0 ? videographyVideos.slice(0, 3) : [
@@ -255,9 +272,9 @@ export function PortfolioClient({ galleryImages, hero, videographyVideos = [], i
       </AnimatePresence>
 
       <CTASection
-        title="Ready to Create Your Own Gallery?"
-        subtitle="Let's work together to create images you'll love."
-        primaryCTA={{ label: 'Get Started', href: '/contact' }}
+        title={cta.heading || 'Ready to Create Your Own Gallery?'}
+        subtitle={cta.subheading || "Let's work together to create images you'll love."}
+        primaryCTA={{ label: cta.buttonLabel || 'Get Started', href: cta.buttonLink || '/contact' }}
       />
     </>
   );
