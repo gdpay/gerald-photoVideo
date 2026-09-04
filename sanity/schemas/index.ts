@@ -18,6 +18,7 @@ import engagementsPage from './engagementsPage';
 import portraitsPage from './portraitsPage';
 import videographyPage from './videographyPage';
 import portfolioPage from './portfolioPage';
+import reviewsPage from './reviewsPage';
 import heroSlide from './heroSlide';
 import homePage from './homePage';
 
@@ -42,6 +43,7 @@ export const schemaTypes = [
   portraitsPage,
   videographyPage,
   portfolioPage,
+  reviewsPage,
   heroSlide,
   homePage,
 ];

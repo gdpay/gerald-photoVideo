@@ -7,7 +7,7 @@ import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
 import { client } from '../../../sanity/lib/client';
-import { allTestimonialsQuery } from '../../../sanity/lib/queries';
+import { allTestimonialsQuery, reviewsPageQuery } from '../../../sanity/lib/queries';
 import { Star, Quote } from 'lucide-react';
 
 export const revalidate = 60;
@@ -18,6 +18,15 @@ async function getTestimonials(): Promise<any[]> {
     return await client.fetch(allTestimonialsQuery);
   } catch {
     return [];
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getReviewsPageData(): Promise<any> {
+  try {
+    return await client.fetch(reviewsPageQuery);
+  } catch {
+    return null;
   }
 }
 
@@ -58,7 +67,10 @@ const serviceLabels: Record<string, string> = {
 };
 
 export default async function ReviewsPage() {
-  const testimonials = await getTestimonials();
+  const [testimonials, reviewsData] = await Promise.all([
+    getTestimonials(),
+    getReviewsPageData(),
+  ]);
   const reviewsList = testimonials.length > 0 ? testimonials : fallbackReviews;
 
   return (
@@ -68,8 +80,9 @@ export default async function ReviewsPage() {
         { name: 'Reviews', url: '/reviews' },
       ]} />
       <PageHero
-        title="Kind Words"
-        subtitle="We're honored to be part of your celebrations. Here's what our clients say."
+        title={reviewsData?.heroHeading || 'Kind Words'}
+        subtitle={reviewsData?.heroSubheading || "We're honored to be part of your celebrations. Here's what our clients say."}
+        imageSource={reviewsData?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80"
       />
 

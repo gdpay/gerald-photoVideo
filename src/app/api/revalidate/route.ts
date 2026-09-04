@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
  *   URL:    https://www.geraldphotovideo.com/api/revalidate
  *   Secret: (set SANITY_REVALIDATE_SECRET in Vercel env vars)
  *   Trigger: Create, update, delete
- *   Filter: _type == "settings" || _type == "page" || _type == "heroSlide" || _type == "service" || _type == "gallery" || _type == "testimonial" || _type == "blog" || _type == "homePage" || _type == "portfolioPage" || _type == "aboutPage" || _type == "investmentPage" || _type == "faqPage" || _type == "engagementsPage" || _type == "videographyPage"
+ *   Filter: _type == "settings" || _type == "page" || _type == "heroSlide" || _type == "service" || _type == "gallery" || _type == "testimonial" || _type == "blog" || _type == "homePage" || _type == "portfolioPage" || _type == "reviewsPage" || _type == "aboutPage" || _type == "investmentPage" || _type == "faqPage" || _type == "engagementsPage" || _type == "videographyPage"
  */
 export async function POST(request: NextRequest) {
   try {
@@ -106,6 +106,10 @@ export async function POST(request: NextRequest) {
         case 'portfolioPage':
           // Portfolio page content (hero, CTA, videography eyebrow)
           pathsToRevalidate.add('/portfolio');
+          break;
+        case 'reviewsPage':
+          // Reviews page content (hero)
+          pathsToRevalidate.add('/reviews');
           break;
         default:
           // For unknown types, revalidate all main paths

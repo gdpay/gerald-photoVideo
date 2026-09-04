@@ -368,6 +368,13 @@ export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
   ctaButtonLink
 }`;
 
+// Reviews Page
+export const reviewsPageQuery = `*[_type == "reviewsPage"][0] {
+  heroHeading,
+  heroSubheading,
+  heroImage
+}`;
+
 // Reviews Page (testimonials with ordering)
 export const allTestimonialsQuery = `*[_type == "testimonial"] | order(order asc) {
   _id,
