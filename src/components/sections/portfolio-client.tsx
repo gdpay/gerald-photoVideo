@@ -155,6 +155,7 @@ export function PortfolioClient({
                     <VideoEmbed
                       src={video.url}
                       title={video.title || 'Featured Film'}
+                      posterAsset={video.poster}
                       posterUrl={video.poster?.asset?.url || video.poster?.url}
                     />
                     {video.title && (

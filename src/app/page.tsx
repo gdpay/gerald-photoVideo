@@ -139,6 +139,7 @@ export default async function HomePage() {
               <VideoEmbed
                 src={featuredFilm.videoUrl}
                 title={featuredFilm.videoTitle || 'Featured Film'}
+                posterAsset={featuredFilm.videoPoster}
               />
             </div>
           </Container>

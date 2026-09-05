@@ -73,6 +73,7 @@ export default defineType({
         { name: 'buttonLink', type: 'string', title: 'Button Link', initialValue: '/videography' },
         { name: 'videoTitle', type: 'string', title: 'Video Title', initialValue: 'Featured Film' },
         { name: 'videoUrl', type: 'url', title: 'Video URL', description: 'Vimeo or YouTube link.' },
+        { name: 'videoPoster', type: 'image', title: 'Video Thumbnail', options: { hotspot: true }, description: 'Poster image shown before the video plays.' },
       ],
     }),
     defineField({

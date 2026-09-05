@@ -131,6 +131,7 @@ export default async function VideographyPage() {
                   <VideoEmbed
                     src={video.url}
                     title={video.title || 'Featured Film'}
+                    posterAsset={video.poster}
                     posterUrl={video.poster?.asset?.url || video.poster?.url}
                   />
                   {video.title && (
@@ -151,6 +152,7 @@ export default async function VideographyPage() {
                 <VideoEmbed
                   src={featuredVideo.url}
                   title={featuredVideo.title || 'Featured Film'}
+                  posterAsset={featuredVideo.poster}
                   posterUrl={featuredVideo.poster?.asset?.url || featuredVideo.poster?.url}
                 />
                 {featuredVideo.title && (

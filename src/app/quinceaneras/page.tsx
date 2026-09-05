@@ -210,6 +210,7 @@ export default async function QuinceanerasPage() {
             <VideoEmbed
               src={videoSection?.videoUrl || 'https://player.vimeo.com/video/284882984'}
               title={videoSection?.title || 'Watch Featured Quinceañera Film'}
+              posterAsset={videoSection?.poster}
               posterUrl={videoSection?.poster?.asset?.url || 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80'}
             />
           </div>

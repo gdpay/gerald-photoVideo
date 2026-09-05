@@ -217,6 +217,7 @@ export default async function WeddingsPage() {
             <VideoEmbed
               src={videoSection?.videoUrl || 'https://player.vimeo.com/video/284882984'}
               title={videoSection?.title || 'Watch Featured Wedding Film'}
+              posterAsset={videoSection?.poster}
               posterUrl={videoSection?.poster?.asset?.url || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80'}
             />
           </div>
