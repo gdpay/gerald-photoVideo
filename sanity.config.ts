@@ -29,6 +29,10 @@ export default defineConfig({
               .title('Reviews Page')
               .child(S.document().schemaType('reviewsPage').documentId('reviewsPage')),
             S.divider(),
+            S.listItem()
+              .title('Site Settings')
+              .child(S.document().schemaType('settings').documentId('siteSettings')),
+            S.divider(),
             ...S.documentTypeListItems().filter(
               (item) => item.getId() && !singletonTypes.has(item.getId()!)
             ),
