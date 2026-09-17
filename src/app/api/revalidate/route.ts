@@ -2,17 +2,13 @@ import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * Sanity webhook endpoint for on-demand revalidation.
+ * Revalidation endpoint.
  *
- * Configure a Sanity webhook (Project → API → Webhooks) with:
- *   URL:    https://www.geraldphotovideo.com/api/revalidate
- *   Secret: (set SANITY_REVALIDATE_SECRET in Vercel env vars)
- *   Trigger: Create, update, delete
- *   Filter: _type == "settings" || _type == "page" || _type == "heroSlide" || _type == "service" || _type == "gallery" || _type == "testimonial" || _type == "blog" || _type == "homePage" || _type == "portfolioPage" || _type == "reviewsPage" || _type == "aboutPage" || _type == "investmentPage" || _type == "faqPage" || _type == "engagementsPage" || _type == "videographyPage"
+ * POST: Sanity webhook (requires Bearer secret)
+ * GET:  Manual trigger (requires ?secret= query param)
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
     const secret =
       process.env.SANITY_REVALIDATE_SECRET || process.env.SANITY_WEBHOOK_SECRET;
     if (!secret) {
@@ -29,113 +25,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}));
     const documentType = body?._type as string | undefined;
 
-    // Determine which paths to revalidate based on document type
-    const pathsToRevalidate = new Set<string>();
+    const pathsToRevalidate = getPathsForType(documentType);
 
-    // Always revalidate the homepage — it uses settings, heroSlides, services, etc.
-    pathsToRevalidate.add('/');
-
-    if (documentType) {
-      switch (documentType) {
-        case 'settings':
-          // Site settings affect all pages (logo, metadata, footer)
-          // Revalidate root layout so Navigation and Footer pick up changes
-          pathsToRevalidate.add('/');
-          pathsToRevalidate.add('/about');
-          pathsToRevalidate.add('/weddings');
-          pathsToRevalidate.add('/quinceaneras');
-          pathsToRevalidate.add('/engagements');
-          pathsToRevalidate.add('/portraits');
-          pathsToRevalidate.add('/videography');
-          pathsToRevalidate.add('/portfolio');
-          pathsToRevalidate.add('/investment');
-          pathsToRevalidate.add('/blog');
-          pathsToRevalidate.add('/reviews');
-          pathsToRevalidate.add('/faq');
-          pathsToRevalidate.add('/contact');
-          break;
-        case 'aboutPage':
-          pathsToRevalidate.add('/about');
-          break;
-        case 'investmentPage':
-          pathsToRevalidate.add('/investment');
-          break;
-        case 'faqPage':
-          pathsToRevalidate.add('/faq');
-          break;
-        case 'engagementsPage':
-          pathsToRevalidate.add('/engagements');
-          break;
-        case 'videographyPage':
-          pathsToRevalidate.add('/videography');
-          break;
-        case 'service':
-          pathsToRevalidate.add('/weddings');
-          pathsToRevalidate.add('/quinceaneras');
-          pathsToRevalidate.add('/engagements');
-          pathsToRevalidate.add('/portraits');
-          pathsToRevalidate.add('/videography');
-          break;
-        case 'gallery':
-        case 'testimonial':
-          pathsToRevalidate.add('/portfolio');
-          pathsToRevalidate.add('/reviews');
-          break;
-        case 'blog':
-          pathsToRevalidate.add('/blog');
-          // Slug-based blog posts will be revalidated via layout
-          break;
-        case 'page':
-          // Pages have dynamic slugs — revalidate main paths
-          pathsToRevalidate.add('/about');
-          pathsToRevalidate.add('/weddings');
-          pathsToRevalidate.add('/quinceaneras');
-          pathsToRevalidate.add('/engagements');
-          pathsToRevalidate.add('/portraits');
-          pathsToRevalidate.add('/videography');
-          pathsToRevalidate.add('/portfolio');
-          pathsToRevalidate.add('/investment');
-          pathsToRevalidate.add('/blog');
-          pathsToRevalidate.add('/reviews');
-          pathsToRevalidate.add('/faq');
-          break;
-        case 'heroSlide':
-          // Hero slides appear on the homepage
-          break;
-        case 'homePage':
-          // Home page content (trust stats, services, featured film, etc.)
-          break;
-        case 'portfolioPage':
-          // Portfolio page content (hero, CTA, videography eyebrow)
-          pathsToRevalidate.add('/portfolio');
-          break;
-        case 'reviewsPage':
-          // Reviews page content (hero)
-          pathsToRevalidate.add('/reviews');
-          break;
-        default:
-          // For unknown types, revalidate all main paths
-          pathsToRevalidate.add('/about');
-          pathsToRevalidate.add('/weddings');
-          pathsToRevalidate.add('/quinceaneras');
-          pathsToRevalidate.add('/engagements');
-          pathsToRevalidate.add('/portraits');
-          pathsToRevalidate.add('/videography');
-          pathsToRevalidate.add('/portfolio');
-          pathsToRevalidate.add('/investment');
-          pathsToRevalidate.add('/blog');
-          pathsToRevalidate.add('/reviews');
-          pathsToRevalidate.add('/faq');
-          break;
-      }
-    }
-
-    // Revalidate all determined paths
     for (const path of pathsToRevalidate) {
       revalidatePath(path, 'page');
     }
-
-    // Also revalidate the root layout to catch any shared data
     revalidatePath('/', 'layout');
 
     return NextResponse.json({
@@ -151,4 +45,104 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const secret = process.env.SANITY_REVALIDATE_SECRET || process.env.SANITY_WEBHOOK_SECRET;
+    const providedSecret = request.nextUrl.searchParams.get('secret');
+
+    if (!secret || providedSecret !== secret) {
+      return NextResponse.json({ message: 'Invalid or missing secret' }, { status: 401 });
+    }
+
+    const paths = [
+      '/', '/about', '/weddings', '/quinceaneras', '/engagements',
+      '/portraits', '/videography', '/portfolio', '/investment',
+      '/blog', '/reviews', '/faq', '/contact',
+    ];
+
+    for (const path of paths) {
+      revalidatePath(path, 'page');
+    }
+    revalidatePath('/', 'layout');
+
+    return NextResponse.json({
+      revalidated: true,
+      paths,
+      now: Date.now(),
+    });
+  } catch (error) {
+    console.error('Revalidation error:', error);
+    return NextResponse.json(
+      { message: 'Error revalidating', error: String(error) },
+      { status: 500 }
+    );
+  }
+}
+
+function getPathsForType(documentType?: string): Set<string> {
+  const paths = new Set<string>(['/']);
+
+  if (!documentType) {
+    const all = ['/', '/about', '/weddings', '/quinceaneras', '/engagements',
+      '/portraits', '/videography', '/portfolio', '/investment',
+      '/blog', '/reviews', '/faq', '/contact'];
+    all.forEach((p) => paths.add(p));
+    return paths;
+  }
+
+  switch (documentType) {
+    case 'settings':
+      ['/', '/about', '/weddings', '/quinceaneras', '/engagements',
+        '/portraits', '/videography', '/portfolio', '/investment',
+        '/blog', '/reviews', '/faq', '/contact'].forEach((p) => paths.add(p));
+      break;
+    case 'aboutPage':
+      paths.add('/about');
+      break;
+    case 'investmentPage':
+      paths.add('/investment');
+      break;
+    case 'faqPage':
+      paths.add('/faq');
+      break;
+    case 'engagementsPage':
+      paths.add('/engagements');
+      break;
+    case 'videographyPage':
+      paths.add('/videography');
+      break;
+    case 'service':
+      ['/weddings', '/quinceaneras', '/engagements', '/portraits', '/videography'].forEach((p) => paths.add(p));
+      break;
+    case 'gallery':
+    case 'testimonial':
+      ['/portfolio', '/reviews'].forEach((p) => paths.add(p));
+      break;
+    case 'blog':
+      paths.add('/blog');
+      break;
+    case 'page':
+      ['/about', '/weddings', '/quinceaneras', '/engagements',
+        '/portraits', '/videography', '/portfolio', '/investment',
+        '/blog', '/reviews', '/faq'].forEach((p) => paths.add(p));
+      break;
+    case 'homePage':
+      paths.add('/');
+      break;
+    case 'portfolioPage':
+      paths.add('/portfolio');
+      break;
+    case 'reviewsPage':
+      paths.add('/reviews');
+      break;
+    default:
+      ['/', '/about', '/weddings', '/quinceaneras', '/engagements',
+        '/portraits', '/videography', '/portfolio', '/investment',
+        '/blog', '/reviews', '/faq', '/contact'].forEach((p) => paths.add(p));
+      break;
+  }
+
+  return paths;
 }
