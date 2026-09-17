@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { SITE, LOCAL_CITIES } from '@/lib/constants';
 import { Container } from '@/components/shared/container';
 import { Mail, Phone } from 'lucide-react';
+import { hasSanityImageAsset, urlFor } from '../../../sanity/lib/client';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Footer({ settings }: { settings?: any }) {
@@ -22,6 +23,10 @@ export function Footer({ settings }: { settings?: any }) {
   const footerNote = settings?.footerNote || 'and surrounding areas.';
   const availabilityLabel = settings?.availabilityButtonLabel || 'Check Availability';
 
+  const logoUrl = hasSanityImageAsset(settings?.logo)
+    ? urlFor(settings.logo).width(200).url()
+    : '/Gerald Photo Video-w.png';
+
   return (
     <footer className="relative overflow-hidden bg-[#06112A] text-[#FAF7F2]">
       <Container className="py-3 lg:py-2">
@@ -29,11 +34,12 @@ export function Footer({ settings }: { settings?: any }) {
           <div className="flex h-full flex-col items-center justify-center text-center lg:pr-6">
             <Link href="/" className="inline-flex justify-center">
               <Image
-                src="/Gerald Photo Video-w.png"
+                src={logoUrl}
                 alt={name}
                 width={200}
                 height={48}
                 className="h-auto w-32 lg:w-32"
+                unoptimized={!logoUrl.startsWith('/')}
               />
             </Link>
             <p className="mt-1.5 max-w-[190px] text-center font-heading text-[11px] leading-snug text-[#FAF7F2]/72">

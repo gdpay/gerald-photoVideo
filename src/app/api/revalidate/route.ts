@@ -38,7 +38,9 @@ export async function POST(request: NextRequest) {
     if (documentType) {
       switch (documentType) {
         case 'settings':
-          // Site settings affect all pages (logo, metadata)
+          // Site settings affect all pages (logo, metadata, footer)
+          // Revalidate root layout so Navigation and Footer pick up changes
+          pathsToRevalidate.add('/');
           pathsToRevalidate.add('/about');
           pathsToRevalidate.add('/weddings');
           pathsToRevalidate.add('/quinceaneras');
