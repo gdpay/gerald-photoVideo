@@ -15,6 +15,7 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description: 'Connects this content to its page on the website (e.g. "weddings" for /weddings). Changing it disconnects the page.',
       options: {
         source: 'title',
         maxLength: 96,
