@@ -111,7 +111,9 @@ export const blogPostBySlugQuery = (slug: string) =>
   }`;
 
 // Settings / Site Config
-export const settingsQuery = `*[_type == "settings"][0] {
+// Targets the Studio's "Site Settings" singleton (documentId in sanity.config.ts) so an
+// older stray "settings" document can never be picked instead.
+export const settingsQuery = `*[_id == "siteSettings"][0] {
   title,
   tagline,
   description,

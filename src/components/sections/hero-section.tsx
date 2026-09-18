@@ -25,6 +25,7 @@ interface HeroSectionProps {
   primaryCtaText?: string;
   primaryCtaLink?: string;
   locationLabel?: string;
+  logoUrl?: string | null;
 }
 
 const fallbackImage =
@@ -91,6 +92,7 @@ export function HeroSection({
   primaryCtaText = 'Check Availability',
   primaryCtaLink = '/contact',
   locationLabel = 'Omaha, NE',
+  logoUrl,
 }: HeroSectionProps) {
   const heroSlides = useMemo(() => (slides.length > 0 ? slides : fallbackSlides), [slides]);
   const primaryHref = normalizeCtaLink(primaryCtaLink, primaryCtaText, '/contact');
@@ -172,7 +174,7 @@ export function HeroSection({
           >
             <div className="absolute bottom-0 right-0 text-right">
               <Image
-                src="/Gerald Photo Video-w.png"
+                src={logoUrl || '/Gerald Photo Video-w.png'}
                 alt={SITE.name}
                 width={150}
                 height={70}

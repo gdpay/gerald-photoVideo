@@ -9,7 +9,7 @@ import { SanityImage } from '@/components/shared/sanity-image';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
-import { client, hasSanityImageAsset } from '../../sanity/lib/client';
+import { client, hasSanityImageAsset, urlFor } from '../../sanity/lib/client';
 import {
   featuredServicesQuery,
   featuredTestimonialsQuery,
@@ -85,6 +85,9 @@ export default async function HomePage() {
   const heroPrimaryCtaText = homeHero?.sections?.ctaText || 'Check Availability';
   const heroPrimaryCtaLink = homeHero?.sections?.ctaLink || '/contact';
   const heroLocationLabel = homeHero?.sections?.locationLabel || 'Omaha, NE';
+  const logoUrl = hasSanityImageAsset(settings?.logo)
+    ? urlFor(settings.logo).width(200).url()
+    : null;
 
   const featuredFilm = homeData?.featuredFilm || {};
   const meetGerald = homeData?.meetGerald || {};
@@ -101,6 +104,7 @@ export default async function HomePage() {
         primaryCtaText={heroPrimaryCtaText}
         primaryCtaLink={heroPrimaryCtaLink}
         locationLabel={heroLocationLabel}
+        logoUrl={logoUrl}
       />
       <TrustBar stats={homeData?.trustStats?.length ? homeData.trustStats : undefined} />
 
