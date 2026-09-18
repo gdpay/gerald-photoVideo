@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { SITE, LOCAL_CITIES } from '@/lib/constants';
+import { toDialableNumber } from '@/lib/utils';
 import { Container } from '@/components/shared/container';
 import { Mail, Phone } from 'lucide-react';
 import { hasSanityImageAsset, urlFor } from '../../../sanity/lib/client';
@@ -12,7 +13,7 @@ export function Footer({ settings }: { settings?: any }) {
   const name = settings?.title || SITE.name;
   const email = settings?.email || SITE.email;
   const phone = settings?.phone || SITE.phone;
-  const phoneRaw = settings?.phone?.replace(/[^+\d]/g, '') || SITE.phoneRaw;
+  const phoneRaw = settings?.phone ? toDialableNumber(settings.phone) : SITE.phoneRaw;
   const socials = {
     instagram: settings?.socialLinks?.instagram || SITE.social.instagram,
     facebook: settings?.socialLinks?.facebook || SITE.social.facebook,

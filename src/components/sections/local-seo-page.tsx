@@ -8,7 +8,8 @@ import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
-import { getPageHeroData } from '@/lib/page-hero-data';
+import { client } from '../../../sanity/lib/client';
+import { cityPageQuery, featuredTestimonialsQuery, trustStatsQuery } from '../../../sanity/lib/queries';
 import { MapPin, Camera } from 'lucide-react';
 
 interface LocalSEOPageProps {
@@ -34,7 +35,19 @@ export function generateLocalSEOMetadata({ city, state, slug, services }: LocalS
 }
 
 export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
-  const hero = await getPageHeroData(`${slug}-wedding-photographer`);
+  const [data, trustStats, testimonials] = await Promise.all([
+    client.fetch(cityPageQuery(slug)).catch(() => null),
+    client.fetch(trustStatsQuery).catch(() => null),
+    client.fetch(featuredTestimonialsQuery).catch(() => []),
+  ]);
+  const services: string[] = data?.servicesList?.length
+    ? data.servicesList
+    : [
+        `Wedding Photography & Videography in ${city}`,
+        `Quinceañera Photography & Video in ${city}`,
+        `Engagement & Couple Portraits in ${city}`,
+        `Cinematic Wedding Films in ${city}`,
+      ];
 
   return (
     <>
@@ -43,10 +56,10 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
         { name: `${city} Wedding Photographer`, url: `/${slug}-wedding-photographer` },
       ]} />
       <PageHero
-        tagline={hero?.tagline}
-        title={hero?.heading || `${city} Wedding Photographer`}
-        subtitle={hero?.subheading || `Serving ${city}, ${state} and the surrounding areas with premium photography and videography services.`}
-        imageSource={hero?.backgroundImage}
+        tagline={data?.heroTagline}
+        title={data?.heroHeading || `${city} Wedding Photographer`}
+        subtitle={data?.heroSubheading || `Serving ${city}, ${state} and the surrounding areas with premium photography and videography services.`}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
@@ -56,13 +69,10 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
             <MapPin className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
               <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
-                Proudly Serving {city}, {state}
+                {data?.introHeading || `Proudly Serving ${city}, ${state}`}
               </h2>
               <p className="text-[#736D63] leading-relaxed">
-                {city} holds a special place in our hearts. We&apos;ve had the privilege of documenting countless 
-                beautiful weddings, quinceañeras, and engagement sessions in this wonderful community. 
-                From {city}&apos;s most beautiful venues to its hidden gems, we know exactly where to 
-                create stunning images for your celebration.
+                {data?.introText || `${city} holds a special place in our hearts. We've had the privilege of documenting countless beautiful weddings, quinceañeras, and engagement sessions in this wonderful community. From ${city}'s most beautiful venues to its hidden gems, we know exactly where to create stunning images for your celebration.`}
               </p>
             </div>
           </div>
@@ -71,38 +81,34 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
             <Camera className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
               <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
-                Our {city} Photography Services
+                {data?.servicesHeading || `Our ${city} Photography Services`}
               </h2>
               <ul className="space-y-2 text-[#736D63]">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
-                  Wedding Photography & Videography in {city}
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
-                  Quinceañera Photography & Video in {city}
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
-                  Engagement & Couple Portraits in {city}
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
-                  Cinematic Wedding Films in {city}
-                </li>
+                {services.map((service) => (
+                  <li key={service} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-[#C8A23D]/50 rounded-full" />
+                    {service}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </Container>
       </SectionWrapper>
 
-      <TrustBar />
-      <TestimonialCarousel />
+      <TrustBar stats={trustStats?.length ? trustStats : undefined} />
+      <TestimonialCarousel
+        testimonials={testimonials}
+        eyebrow={data?.testimonialsEyebrow}
+        heading={data?.testimonialsHeading}
+        buttonLabel={data?.testimonialsButtonLabel}
+        buttonLink={data?.testimonialsButtonLink}
+      />
 
       <CTASection
-        title={`Book Your ${city} Session`}
-        subtitle={`Let's create something beautiful together in ${city}, ${state}.`}
-        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
+        title={data?.ctaTitle || `Book Your ${city} Session`}
+        subtitle={data?.ctaSubtitle || `Let's create something beautiful together in ${city}, ${state}.`}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

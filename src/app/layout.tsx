@@ -11,7 +11,7 @@ import { AnalyticsConsentProvider } from '@/components/analytics/meta-pixel-prov
 import { ConsentBanner } from '@/components/analytics/consent-banner';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
-import { settingsQuery } from '../../sanity/lib/queries';
+import { reviewsRatingQuery, settingsQuery } from '../../sanity/lib/queries';
 import { hasSanityImageAsset, urlFor } from '../../sanity/lib/client';
 import './globals.css';
 
@@ -107,7 +107,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSettings();
+  const [settings, reviewsRating] = await Promise.all([
+    getSettings(),
+    client.fetch(reviewsRatingQuery).catch(() => null),
+  ]);
 
   const logoUrl = hasSanityImageAsset(settings?.logo)
     ? urlFor(settings.logo).width(200).url()
@@ -122,7 +125,9 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <LocalBusinessSchema />
+        <LocalBusinessSchema
+          rating={{ value: reviewsRating?.ratingValue, count: reviewsRating?.ratingCount }}
+        />
         <ProfessionalServiceSchema />
         <WebSiteSchema />
         <OrganizationSchema />

@@ -12,16 +12,17 @@ const dataset = process.env.SANITY_STUDIO_DATASET || process.env.NEXT_PUBLIC_SAN
 
 // One document each; its ID is the type name (settings uses "siteSettings").
 const singletonTypes = new Set([
-  'homePage', 'aboutPage', 'engagementsPage', 'portraitsPage', 'videographyPage',
-  'portfolioPage', 'investmentPage', 'reviewsPage', 'faqPage', 'settings',
+  'homePage', 'weddingsPage', 'quinceanerasPage', 'engagementsPage', 'portraitsPage', 'videographyPage',
+  'portfolioPage', 'investmentPage', 'aboutPage', 'reviewsPage', 'faqPage', 'blogPage', 'contactPage', 'settings',
 ]);
 
 // Edited only through the per-page sidebar items below: kept out of the generic lists, the global "+" menu
 // and "Duplicate", so a stray copy can never be picked up by the website instead of the real one.
-const pageTypes = new Set([...singletonTypes, 'page']);
+// City pages have one document each, with the ID "cityPage-<slug>" (e.g. cityPage-omaha).
+const pageTypes = new Set([...singletonTypes, 'cityPage']);
 
-const pageTemplateId = 'page-by-slug';
 const galleryTemplateId = 'gallery-by-service-type';
+const cityTemplateId = 'city-page';
 
 function structure(S: StructureBuilder, context: StructureResolverContext) {
   const folder = (id: string, title: string, items: ListItemBuilder[]) =>
@@ -30,58 +31,46 @@ function structure(S: StructureBuilder, context: StructureResolverContext) {
   const doc = (title: string, type: string, id = type) =>
     S.listItem().title(title).schemaType(type).child(S.document().schemaType(type).documentId(id));
 
-  // Opens the document matching `filter` directly. If there isn't one yet, opens a new one with a fixed ID,
-  // pre-filled by the template so the website picks it up as soon as it's published.
-  const findOrCreate = (
-    title: string,
-    type: string,
-    filter: string,
-    params: Record<string, string>,
-    template: { id: string; newDocumentId: string; params: Record<string, string> }
-  ) =>
+  const city = (title: string, slug: string, state: string) =>
     S.listItem()
       .title(title)
-      .schemaType(type)
+      .schemaType('cityPage')
+      .child(
+        S.document()
+          .schemaType('cityPage')
+          .documentId(`cityPage-${slug}`)
+          .initialValueTemplate(cityTemplateId, { city: title, state })
+      );
+
+  // Opens the gallery a page shows (matched by service type). If there isn't one yet, opens a new one with a
+  // fixed ID, pre-filled so the website picks it up as soon as it's published.
+  const galleryFor = (serviceType: string, galleryTitle: string) =>
+    S.listItem()
+      .title('Gallery')
+      .schemaType('gallery')
       .child(async () => {
         const [match] = await context
           .getClient({ apiVersion: '2024-01-01' })
-          .fetch<string[]>(`*[_type == $type && ${filter}]._id`, { type, ...params });
+          .fetch<string[]>('*[_type == "gallery" && serviceType == $serviceType]._id', { serviceType });
         return S.document()
-          .schemaType(type)
-          .documentId(match?.replace(/^(drafts|versions\.[^.]+)\./, '') ?? template.newDocumentId)
-          .initialValueTemplate(template.id, template.params);
+          .schemaType('gallery')
+          .documentId(match?.replace(/^(drafts|versions\.[^.]+)\./, '') ?? `gallery-${serviceType}`)
+          .initialValueTemplate(galleryTemplateId, { serviceType, title: galleryTitle });
       });
-
-  // Pages whose hero (and other sections) live in a generic "Page" document, matched by slug.
-  const pageBySlug = (title: string, slug: string, pageTitle: string) =>
-    findOrCreate(title, 'page', 'slug.current == $slug', { slug }, {
-      id: pageTemplateId,
-      newDocumentId: `page-${slug}`,
-      params: { slug, title: pageTitle },
-    });
-
-  // The gallery a page shows, matched by service type.
-  const galleryFor = (serviceType: string, galleryTitle: string) =>
-    findOrCreate('Gallery', 'gallery', 'serviceType == $serviceType', { serviceType }, {
-      id: galleryTemplateId,
-      newDocumentId: `gallery-${serviceType}`,
-      params: { serviceType, title: galleryTitle },
-    });
 
   return S.list()
     .title('Content')
     .items([
       folder('homePage', 'Home Page', [
-        pageBySlug('Hero Section', 'home', 'Home'),
+        doc('Page Content', 'homePage'),
         S.documentTypeListItem('heroSlide').title('Hero Slideshow'),
-        doc('Page Sections', 'homePage'),
       ]),
       folder('weddingsPage', 'Weddings Page', [
-        pageBySlug('Page Content', 'weddings', 'Weddings'),
+        doc('Page Content', 'weddingsPage'),
         galleryFor('weddings', 'Wedding Collection'),
       ]),
       folder('quinceanerasPage', 'Quinceañeras Page', [
-        pageBySlug('Page Content', 'quinceaneras', 'Quinceañeras'),
+        doc('Page Content', 'quinceanerasPage'),
         galleryFor('quinceaneras', 'Quinceañera Collection'),
       ]),
       folder('engagementsPage', 'Engagements Page', [
@@ -111,15 +100,15 @@ function structure(S: StructureBuilder, context: StructureResolverContext) {
       ]),
       doc('FAQ Page', 'faqPage').id('faqPage'),
       folder('blogPage', 'Blog Page', [
-        pageBySlug('Page Hero', 'blog', 'Blog'),
+        doc('Page Content', 'blogPage'),
         S.documentTypeListItem('blog').title('Blog Posts'),
       ]),
-      pageBySlug('Contact Page', 'contact', 'Contact').id('contactPage'),
+      doc('Contact Page', 'contactPage').id('contactPage'),
       folder('cityPages', 'City Pages', [
-        pageBySlug('Omaha', 'omaha-wedding-photographer', 'Omaha Wedding Photographer'),
-        pageBySlug('Lincoln', 'lincoln-wedding-photographer', 'Lincoln Wedding Photographer'),
-        pageBySlug('Council Bluffs', 'council-bluffs-wedding-photographer', 'Council Bluffs Wedding Photographer'),
-        pageBySlug('Des Moines', 'des-moines-wedding-photographer', 'Des Moines Wedding Photographer'),
+        city('Omaha', 'omaha', 'NE'),
+        city('Lincoln', 'lincoln', 'NE'),
+        city('Council Bluffs', 'council-bluffs', 'IA'),
+        city('Des Moines', 'des-moines', 'IA'),
       ]),
       S.divider(),
       doc('Site Settings', 'settings', 'siteSettings').id('siteSettings'),
@@ -140,20 +129,6 @@ export default defineConfig({
     templates: (prev) => [
       ...prev,
       {
-        id: pageTemplateId,
-        title: 'Page',
-        schemaType: 'page',
-        parameters: [
-          { name: 'slug', type: 'string' },
-          { name: 'title', type: 'string' },
-        ],
-        value: ({ slug, title }: { slug: string; title: string }) => ({
-          title,
-          slug: { _type: 'slug', current: slug },
-          sections: [{ _type: 'hero', _key: 'hero' }],
-        }),
-      },
-      {
         id: galleryTemplateId,
         title: 'Gallery Collection',
         schemaType: 'gallery',
@@ -163,6 +138,16 @@ export default defineConfig({
         ],
         value: ({ serviceType, title }: { serviceType: string; title: string }) => ({ title, serviceType }),
       },
+      {
+        id: cityTemplateId,
+        title: 'City Page',
+        schemaType: 'cityPage',
+        parameters: [
+          { name: 'city', type: 'string' },
+          { name: 'state', type: 'string' },
+        ],
+        value: ({ city, state }: { city: string; state: string }) => ({ city, state }),
+      },
     ],
   },
   document: {
@@ -170,7 +155,7 @@ export default defineConfig({
       creationContext.type === 'global'
         ? prev.filter(
             ({ templateId }) =>
-              !pageTypes.has(templateId) && templateId !== pageTemplateId && templateId !== galleryTemplateId
+              !pageTypes.has(templateId) && templateId !== galleryTemplateId && templateId !== cityTemplateId
           )
         : prev,
     actions: (prev, { schemaType }) =>

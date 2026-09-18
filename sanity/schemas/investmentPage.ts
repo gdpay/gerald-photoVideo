@@ -1,50 +1,31 @@
 import { defineType, defineField } from 'sanity';
+import { buttonFields, ctaFields, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'investmentPage',
   title: 'Investment Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('intro', 'Introduction'),
+    section('gallery', 'Gallery', 'The photos come from Investment Page › Gallery.'),
+    section('collections', 'Collections'),
+    section('addOns', 'A La Carte Add-Ons'),
+    section('payment', 'Payment Plans'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'Investment',
-    }),
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Investment',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Background image used behind the page hero.',
-    }),
-    defineField({
-      name: 'philosophyText',
-      title: 'Philosophy Text',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'philosophyNote',
-      title: 'Philosophy Note',
-      type: 'string',
-      initialValue: 'All collections are customizable. Contact us for a personalized quote.',
-    }),
+    defineField({ name: 'title', title: 'Page Title', type: 'string', hidden: true }),
+    ...heroFields(),
+    defineField({ name: 'philosophyText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
+    defineField({ name: 'philosophyNote', title: 'Small Note', type: 'string', fieldset: 'intro' }),
+    ...buttonFields('galleryButton', 'gallery'),
     defineField({
       name: 'collections',
-      title: 'Pricing Collections',
+      title: 'Collections',
       type: 'array',
+      fieldset: 'collections',
       of: [
         {
           type: 'object',
@@ -68,35 +49,16 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'addOnsHeading',
-      title: 'Add-Ons Heading',
-      type: 'string',
-      initialValue: 'A La Carte Add-Ons',
-    }),
-    defineField({
-      name: 'addOns',
-      title: 'Add-Ons',
-      type: 'array',
-      of: [{ type: 'string' }],
-    }),
-    defineField({
-      name: 'paymentHeading',
-      title: 'Payment Section Heading',
-      type: 'string',
-      initialValue: 'Flexible Payment Plans',
-    }),
-    defineField({
-      name: 'paymentText',
-      title: 'Payment Section Text',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    defineField({ name: 'popularBadgeLabel', title: '"Most Popular" Badge Text', type: 'string', fieldset: 'collections' }),
+    defineField({ name: 'priceIntroLabel', title: 'Text Above the Price', type: 'string', description: 'e.g. "Starting At".', fieldset: 'collections' }),
+    ...buttonFields('collectionButton', 'collections', 'Card Button'),
+    defineField({ name: 'addOnsHeading', title: 'Heading', type: 'string', fieldset: 'addOns' }),
+    defineField({ name: 'addOns', title: 'Add-Ons', type: 'array', of: [{ type: 'string' }], fieldset: 'addOns' }),
+    defineField({ name: 'paymentHeading', title: 'Heading', type: 'string', fieldset: 'payment' }),
+    defineField({ name: 'paymentText', title: 'Text', type: 'text', rows: 3, fieldset: 'payment' }),
+    ...buttonFields('paymentButton', 'payment', 'Link'),
+    ...ctaFields(),
+    seoField(),
   ],
   preview: {
     prepare() {

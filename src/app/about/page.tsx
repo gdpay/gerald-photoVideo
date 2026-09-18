@@ -73,6 +73,7 @@ export default async function AboutPage() {
         { name: 'About', url: '/about' },
       ]} />
       <PageHero
+        tagline={data?.heroTagline}
         title={data?.heroHeading || 'Our Story'}
         subtitle={data?.heroSubheading || "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans."}
         imageSource={data?.heroImage}
@@ -84,10 +85,10 @@ export default async function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-10 lg:gap-16 items-center">
             <div>
               <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-4">
-                Gerald Photo Video
+                {data?.storyEyebrow || 'Gerald Photo Video'}
               </p>
               <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-6">
-                Capturing the moments that become your story
+                {data?.storyHeading || 'Capturing the moments that become your story'}
               </h2>
               <div className="space-y-5 text-base md:text-lg text-[#736D63] leading-relaxed">
                 {paragraphs.map((p: string, i: number) => (
@@ -155,7 +156,7 @@ export default async function AboutPage() {
       <CTASection
         title={data?.ctaHeading || "We'd Love to Hear Your Story"}
         subtitle={data?.ctaSubheading || 'Get to know us better over a cup of coffee (or a video call).'}
-        primaryCTA={{ label: 'Read Our Story', href: '/contact' }}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Read Our Story', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

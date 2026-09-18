@@ -123,6 +123,7 @@ export default async function InvestmentPage() {
         { name: 'Investment', url: '/investment' },
       ]} />
       <PageHero
+        tagline={data?.heroTagline}
         title={data?.heroHeading || 'Investment'}
         subtitle={data?.heroSubheading || 'Every collection is as unique as your story. We create custom experiences tailored to your vision.'}
         imageSource={data?.heroImage}
@@ -140,7 +141,12 @@ export default async function InvestmentPage() {
         </Container>
       </SectionWrapper>
 
-      <GalleryPreview images={previewImages} layout="row" />
+      <GalleryPreview
+        images={previewImages}
+        layout="row"
+        buttonLabel={data?.galleryButtonLabel}
+        buttonHref={data?.galleryButtonLink}
+      />
 
       <SectionWrapper champagne>
         <Container>
@@ -156,7 +162,7 @@ export default async function InvestmentPage() {
               >
                 {collection.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#C8A23D] text-[#FAF7F2] text-xs font-body uppercase tracking-wider">
-                    Most Popular
+                    {data?.popularBadgeLabel || 'Most Popular'}
                   </div>
                 )}
 
@@ -165,7 +171,7 @@ export default async function InvestmentPage() {
 
                 <div className="text-center mb-8">
                   <span className="font-body text-xs uppercase tracking-wider text-[#A39D93]">
-                    Starting At
+                    {data?.priceIntroLabel || 'Starting At'}
                   </span>
                   <p className="font-heading text-3xl text-[#C8A23D] mt-1">{collection.priceLabel || 'Upon Request'}</p>
                   <p className="text-xs text-[#A39D93] mt-1">{collection.priceNote || 'Custom quote for your event'}</p>
@@ -183,10 +189,10 @@ export default async function InvestmentPage() {
                 <Button
                   variant={collection.popular ? 'primary' : 'secondary'}
                   size="md"
-                  href="/contact"
+                  href={data?.collectionButtonLink || '/contact'}
                   className="w-full"
                 >
-                  Request Details
+                  {data?.collectionButtonLabel || 'Request Details'}
                 </Button>
               </div>
             ))}
@@ -222,18 +228,18 @@ export default async function InvestmentPage() {
             {data?.paymentText || "We believe exceptional photography should be accessible. We offer flexible payment plans to make your investment manageable. A 30% deposit secures your date, with the balance due before your event."}
           </p>
           <a
-            href="/faq"
+            href={data?.paymentButtonLink || '/faq'}
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            View FAQs About Payments →
+            {data?.paymentButtonLabel || 'View FAQs About Payments →'}
           </a>
         </Container>
       </SectionWrapper>
 
       <CTASection
-        title="Let's Create Your Custom Collection"
-        subtitle="Tell us about your vision and we'll design the perfect collection for you."
-        primaryCTA={{ label: 'Get Your Custom Quote', href: '/contact' }}
+        title={data?.ctaTitle || "Let's Create Your Custom Collection"}
+        subtitle={data?.ctaSubtitle || "Tell us about your vision and we'll design the perfect collection for you."}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Get Your Custom Quote', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

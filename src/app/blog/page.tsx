@@ -5,10 +5,9 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
-import { getPageHeroData } from '@/lib/page-hero-data';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { client } from '../../../sanity/lib/client';
-import { blogPostsQuery } from '../../../sanity/lib/queries';
+import { blogPageQuery, blogPostsQuery } from '../../../sanity/lib/queries';
 import { SanityImage } from '@/components/shared/sanity-image';
 
 export const revalidate = 60;
@@ -46,7 +45,7 @@ interface BlogPost {
 
 export default async function BlogPage() {
   let blogPosts: BlogPost[] = [];
-  const hero = await getPageHeroData('blog');
+  const data = await client.fetch(blogPageQuery).catch(() => null);
 
   try {
     blogPosts = await client.fetch(blogPostsQuery);
@@ -61,10 +60,10 @@ export default async function BlogPage() {
         { name: 'Blog', url: '/blog' },
       ]} />
       <PageHero
-        tagline={hero?.tagline}
-        title={hero?.heading || 'Our Blog'}
-        subtitle={hero?.subheading || 'Real weddings, planning tips, and stories from Nebraska & Iowa.'}
-        imageSource={hero?.backgroundImage}
+        tagline={data?.heroTagline}
+        title={data?.heroHeading || 'Our Blog'}
+        subtitle={data?.heroSubheading || 'Real weddings, planning tips, and stories from Nebraska & Iowa.'}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80"
       />
 
@@ -115,7 +114,7 @@ export default async function BlogPage() {
                         </p>
                       )}
                       <span className="inline-flex items-center gap-1 mt-4 text-xs font-body uppercase tracking-wider text-[#C8A23D]/70 group-hover:text-[#C8A23D] transition-colors">
-                        Read More <ArrowRight className="h-3 w-3" />
+                        {data?.readMoreLabel || 'Read More'} <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
                   </article>

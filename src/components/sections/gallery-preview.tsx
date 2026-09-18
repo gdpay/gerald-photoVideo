@@ -20,9 +20,11 @@ export interface GalleryImage {
 interface GalleryPreviewProps {
   images?: GalleryImage[];
   layout?: 'mosaic' | 'row';
+  buttonLabel?: string;
+  buttonHref?: string;
 }
 
-export function GalleryPreview({ images, layout = 'mosaic' }: GalleryPreviewProps) {
+export function GalleryPreview({ images, layout = 'mosaic', buttonLabel, buttonHref }: GalleryPreviewProps) {
   // If no images provided, show nothing
   if (!images || images.length === 0) return null;
   const isRowLayout = layout === 'row';
@@ -82,8 +84,8 @@ export function GalleryPreview({ images, layout = 'mosaic' }: GalleryPreviewProp
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <Button variant="secondary" size="lg" href="/portfolio">
-            View Full Portfolio
+          <Button variant="secondary" size="lg" href={buttonHref || '/portfolio'}>
+            {buttonLabel || 'View Full Portfolio'}
           </Button>
         </motion.div>
       </Container>

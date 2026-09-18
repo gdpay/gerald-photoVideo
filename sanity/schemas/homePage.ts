@@ -1,15 +1,39 @@
 import { defineType, defineField } from 'sanity';
+import { buttonFields, eyebrowField, heroFields, section, seoField, testimonialsFields } from './shared';
+
+const collapsedGroup = { collapsible: true, collapsed: true };
 
 export default defineType({
   name: 'homePage',
   title: 'Home Page',
   type: 'document',
+  fieldsets: [
+    section(
+      'hero',
+      'Hero',
+      'The rotating background photos are in Home Page › Hero Slideshow. The background image here is only used when there are no slides.'
+    ),
+    section('trust', 'Stats Bar'),
+    section('services', 'Services', 'The cards come from the Service documents, and their photos from each Gallery Collection.'),
+    section('testimonials', 'Client Stories', 'Shows the reviews marked "Featured".'),
+    section('seo', 'SEO'),
+  ],
   fields: [
+    ...heroFields('hero', 'Small text above the heading. If empty, the Tagline from Site Settings is shown.'),
+    ...buttonFields('heroButton', 'hero'),
+    defineField({
+      name: 'heroLocationLabel',
+      title: 'Location Label',
+      type: 'string',
+      description: 'Shown under the logo on large screens, e.g. "Omaha, NE".',
+      fieldset: 'hero',
+    }),
     defineField({
       name: 'trustStats',
-      title: 'Trust Bar Stats',
-      description: 'The stat strip below the hero (e.g. 20+ Years Experience).',
+      title: 'Stats',
+      description: 'The stat strip below the hero (e.g. 20+ Years Experience). Also shown on the city pages.',
       type: 'array',
+      fieldset: 'trust',
       of: [
         {
           type: 'object',
@@ -43,28 +67,15 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'servicesEyebrow',
-      title: 'Services Section Eyebrow',
-      type: 'string',
-      initialValue: 'Explore',
-    }),
-    defineField({
-      name: 'servicesHeading',
-      title: 'Services Section Heading',
-      type: 'string',
-      initialValue: 'Every Love Story is Unique',
-    }),
-    defineField({
-      name: 'servicesLinkLabel',
-      title: 'Services "View Gallery" Label',
-      type: 'string',
-      initialValue: 'View Gallery',
-    }),
+    eyebrowField('servicesEyebrow', 'services'),
+    defineField({ name: 'servicesHeading', title: 'Heading', type: 'string', fieldset: 'services' }),
+    defineField({ name: 'servicesLinkLabel', title: '"View Gallery" Link Text', type: 'string', fieldset: 'services' }),
     defineField({
       name: 'featuredFilm',
-      title: 'Featured Film Section',
+      title: 'Featured Film',
       type: 'object',
+      options: collapsedGroup,
+      description: 'The section is only shown when a Video URL is set.',
       fields: [
         { name: 'eyebrow', type: 'string', title: 'Eyebrow', initialValue: 'Featured Wedding Film' },
         { name: 'heading', type: 'string', title: 'Heading', initialValue: 'A Day to Remember Forever' },
@@ -78,8 +89,9 @@ export default defineType({
     }),
     defineField({
       name: 'meetGerald',
-      title: 'Meet Gerald Section',
+      title: 'Meet Gerald',
       type: 'object',
+      options: collapsedGroup,
       fields: [
         { name: 'eyebrow', type: 'string', title: 'Eyebrow', initialValue: 'Meet Gerald' },
         { name: 'heading', type: 'string', title: 'Heading', initialValue: 'More Than Photos. We Preserve Legacy.' },
@@ -93,8 +105,9 @@ export default defineType({
     }),
     defineField({
       name: 'experience',
-      title: 'Why Couples Choose Us Section',
+      title: 'Why Couples Choose Us',
       type: 'object',
+      options: collapsedGroup,
       fields: [
         { name: 'eyebrow', type: 'string', title: 'Eyebrow', initialValue: 'Why Couples Choose Us' },
         { name: 'heading', type: 'string', title: 'Heading', initialValue: 'The Gerald Photo Video Experience' },
@@ -135,35 +148,8 @@ export default defineType({
         { name: 'buttonLink', type: 'string', title: 'Button Link', initialValue: '/about' },
       ],
     }),
-    defineField({
-      name: 'testimonialsEyebrow',
-      title: 'Testimonials Eyebrow',
-      type: 'string',
-      initialValue: 'Kind Words',
-    }),
-    defineField({
-      name: 'testimonialsHeading',
-      title: 'Testimonials Heading',
-      type: 'string',
-      initialValue: 'Stories From Our Clients',
-    }),
-    defineField({
-      name: 'testimonialsButtonLabel',
-      title: 'Testimonials Button Label',
-      type: 'string',
-      initialValue: 'Read More Reviews',
-    }),
-    defineField({
-      name: 'testimonialsButtonLink',
-      title: 'Testimonials Button Link',
-      type: 'string',
-      initialValue: '/reviews',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    ...testimonialsFields(),
+    seoField(),
   ],
   preview: {
     prepare() {

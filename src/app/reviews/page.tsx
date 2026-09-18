@@ -72,6 +72,8 @@ export default async function ReviewsPage() {
     getReviewsPageData(),
   ]);
   const reviewsList = testimonials.length > 0 ? testimonials : fallbackReviews;
+  const rating = reviewsData?.ratingValue ?? SITE.reviews.aggregate.rating;
+  const ratingCount = reviewsData?.ratingCount ?? SITE.reviews.aggregate.count;
 
   return (
     <>
@@ -80,6 +82,7 @@ export default async function ReviewsPage() {
         { name: 'Reviews', url: '/reviews' },
       ]} />
       <PageHero
+        tagline={reviewsData?.heroTagline}
         title={reviewsData?.heroHeading || 'Kind Words'}
         subtitle={reviewsData?.heroSubheading || "We're honored to be part of your celebrations. Here's what our clients say."}
         imageSource={reviewsData?.heroImage}
@@ -91,12 +94,12 @@ export default async function ReviewsPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-1 mb-4">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className={`h-6 w-6 ${i < Math.floor(SITE.reviews.aggregate.rating) ? 'fill-[#C8A23D] text-[#C8A23D]' : 'text-[#D4CEC4]'}`} />
+                <Star key={i} className={`h-6 w-6 ${i < Math.floor(rating) ? 'fill-[#C8A23D] text-[#C8A23D]' : 'text-[#D4CEC4]'}`} />
               ))}
             </div>
-            <div className="font-heading text-5xl text-[#0A1F44]">{SITE.reviews.aggregate.rating}</div>
-            <div className="text-[#736D63] mt-1">Average Rating</div>
-            <div className="text-sm text-[#A39D93] mt-1">Based on {SITE.reviews.aggregate.count}+ reviews</div>
+            <div className="font-heading text-5xl text-[#0A1F44]">{rating}</div>
+            <div className="text-[#736D63] mt-1">{reviewsData?.ratingLabel || 'Average Rating'}</div>
+            <div className="text-sm text-[#A39D93] mt-1">Based on {ratingCount}+ reviews</div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -129,9 +132,9 @@ export default async function ReviewsPage() {
       </SectionWrapper>
 
       <CTASection
-        title="Join Our Happy Clients"
-        subtitle="Ready to become part of the Gerald Photo Video family?"
-        primaryCTA={{ label: 'Book Your Session', href: '/contact' }}
+        title={reviewsData?.ctaTitle || 'Join Our Happy Clients'}
+        subtitle={reviewsData?.ctaSubtitle || 'Ready to become part of the Gerald Photo Video family?'}
+        primaryCTA={{ label: reviewsData?.ctaButtonLabel || 'Book Your Session', href: reviewsData?.ctaButtonLink || '/contact' }}
       />
     </>
   );

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { ThankYouTracker } from '@/components/analytics/thank-you-tracker';
 import { Heart } from 'lucide-react';
+import { client } from '../../../../sanity/lib/client';
+import { contactPageQuery } from '../../../../sanity/lib/queries';
 
 export const metadata: Metadata = generateMetadata({
   title: 'Thank You',
@@ -12,7 +14,9 @@ export const metadata: Metadata = generateMetadata({
   path: '/contact/thank-you',
 });
 
-export default function ThankYouPage() {
+export default async function ThankYouPage() {
+  const data = await client.fetch(contactPageQuery).catch(() => null);
+
   return (
     <>
       <ThankYouTracker />
@@ -20,21 +24,20 @@ export default function ThankYouPage() {
         <Container narrow className="text-center">
           <Heart className="h-12 w-12 text-[#C8A23D]/50 mx-auto mb-6" />
           <h1 className="font-heading text-4xl md:text-5xl text-[#0A1F44] mb-4">
-            Thank You!
+            {data?.thankYouHeading || 'Thank You!'}
           </h1>
           <p className="text-lg text-[#736D63] mb-4 max-w-md mx-auto">
-            We&apos;ve received your inquiry and will get back to you within 24 hours.
-            We can&apos;t wait to learn more about your vision!
+            {data?.thankYouText || "We've received your inquiry and will get back to you within 24 hours. We can't wait to learn more about your vision!"}
           </p>
           <p className="text-[#A39D93] text-sm mb-8">
-            In the meantime, feel free to browse our portfolio.
+            {data?.thankYouNote || 'In the meantime, feel free to browse our portfolio.'}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary" size="lg" href="/portfolio">
-              View Portfolio
+            <Button variant="primary" size="lg" href={data?.thankYouButtonLink || '/portfolio'}>
+              {data?.thankYouButtonLabel || 'View Portfolio'}
             </Button>
-            <Button variant="ghost" size="lg" href="/">
-              Back to Home
+            <Button variant="ghost" size="lg" href={data?.thankYouSecondButtonLink || '/'}>
+              {data?.thankYouSecondButtonLabel || 'Back to Home'}
             </Button>
           </div>
         </Container>

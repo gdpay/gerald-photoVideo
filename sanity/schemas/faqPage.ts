@@ -1,39 +1,24 @@
 import { defineType, defineField } from 'sanity';
+import { ctaFields, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'faqPage',
   title: 'FAQ Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('questions', 'Questions & Answers'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'FAQ',
-    }),
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Frequently Asked Questions',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-      initialValue: "Everything you need to know about working with us.",
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Background image used behind the page hero.',
-    }),
+    defineField({ name: 'title', title: 'Page Title', type: 'string', hidden: true }),
+    ...heroFields(),
     defineField({
       name: 'categories',
-      title: 'FAQ Categories',
+      title: 'Categories',
       type: 'array',
+      fieldset: 'questions',
       of: [
         {
           type: 'object',
@@ -63,11 +48,8 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    ...ctaFields(),
+    seoField(),
   ],
   preview: {
     prepare() {

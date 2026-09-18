@@ -40,6 +40,7 @@ function prepareImages(galleries: any[]) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface PortfolioPageData {
+  heroTagline?: string;
   heroHeading?: string;
   heroSubheading?: string;
   heroImage?: any;
@@ -79,6 +80,7 @@ export default async function PortfolioPage() {
       <PortfolioClient
         galleryImages={galleryImages}
         hero={{
+          tagline: portfolioData?.heroTagline,
           heading: portfolioData?.heroHeading,
           subheading: portfolioData?.heroSubheading,
           backgroundImage: portfolioData?.heroImage,

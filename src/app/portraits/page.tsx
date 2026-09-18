@@ -6,7 +6,6 @@ import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
-import { getPageHeroData } from '@/lib/page-hero-data';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, portraitsPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
@@ -63,8 +62,7 @@ function preparePortfolioFeatureImages(feature: any, gallery: any) {
 }
 
 export default async function PortraitsPage() {
-  const [hero, data, portraitsGallery] = await Promise.all([
-    getPageHeroData('portraits'),
+  const [data, portraitsGallery] = await Promise.all([
     client.fetch(portraitsPageQuery).catch(() => null),
     client.fetch(galleryByServiceTypeQuery('portraits')).catch(() => null),
   ]);
@@ -79,10 +77,10 @@ export default async function PortraitsPage() {
         { name: 'Portraits', url: '/portraits' },
       ]} />
       <PageHero
-        tagline={hero?.tagline}
-        title={data?.heroHeading || hero?.heading || 'Portrait Photography'}
-        subtitle={data?.heroSubheading || hero?.subheading || 'Timeless portraits that celebrate your unique beauty and personality.'}
-        imageSource={data?.heroImage || hero?.backgroundImage}
+        tagline={data?.heroTagline}
+        title={data?.heroHeading || 'Portrait Photography'}
+        subtitle={data?.heroSubheading || 'Timeless portraits that celebrate your unique beauty and personality.'}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=1920&q=80"
       />
 
@@ -147,7 +145,7 @@ export default async function PortraitsPage() {
       <CTASection
         title={data?.ctaTitle || 'Book Your Portrait Session'}
         subtitle={data?.ctaSubtitle || "Let's create beautiful portraits that celebrate you."}
-        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

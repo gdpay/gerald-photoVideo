@@ -10,7 +10,7 @@ import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { client } from '../../../../sanity/lib/client';
-import { blogPostBySlugQuery, blogPostsQuery } from '../../../../sanity/lib/queries';
+import { blogPageQuery, blogPostBySlugQuery, blogPostsQuery } from '../../../../sanity/lib/queries';
 import { SanityImage } from '@/components/shared/sanity-image';
 import { hasSanityImageAsset, urlFor } from '../../../../sanity/lib/client';
 
@@ -101,6 +101,8 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound();
 
+  const blogPage = await client.fetch(blogPageQuery).catch(() => null);
+
   return (
     <>
       <BreadcrumbSchema items={[
@@ -182,12 +184,14 @@ export default async function BlogPostPage({ params }: Props) {
 
       <SectionWrapper navy>
         <Container narrow className="text-center">
-          <h2 className="font-heading text-3xl text-[#FAF7F2] mb-4">Want Your Story Featured?</h2>
+          <h2 className="font-heading text-3xl text-[#FAF7F2] mb-4">
+            {blogPage?.postCtaTitle || 'Want Your Story Featured?'}
+          </h2>
           <p className="text-[#FAF7F2]/60 mb-8 max-w-md mx-auto">
-            Every love story is unique. Let us capture yours.
+            {blogPage?.postCtaSubtitle || 'Every love story is unique. Let us capture yours.'}
           </p>
-          <Button variant="primary" size="lg" href="/contact">
-            Book Your Session
+          <Button variant="primary" size="lg" href={blogPage?.postCtaButtonLink || '/contact'}>
+            {blogPage?.postCtaButtonLabel || 'Book Your Session'}
           </Button>
         </Container>
       </SectionWrapper>

@@ -1,0 +1,66 @@
+import { defineType, defineField } from 'sanity';
+import {
+  buttonFields,
+  cardsField,
+  ctaFields,
+  eyebrowField,
+  heroFields,
+  section,
+  seoField,
+  stepsField,
+  testimonialsFields,
+} from './shared';
+
+export default defineType({
+  name: 'weddingsPage',
+  title: 'Weddings Page',
+  type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('intro', 'Introduction'),
+    section('gallery', 'Gallery', 'The photos come from Weddings Page › Gallery.'),
+    section('steps', 'The Wedding Experience'),
+    section('highlights', "What's Included"),
+    section('film', 'Featured Film'),
+    section('testimonials', 'Client Stories', 'Shows the reviews marked "Featured".'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
+  fields: [
+    ...heroFields(),
+    eyebrowField('introEyebrow', 'intro'),
+    defineField({ name: 'introText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
+    ...buttonFields('galleryButton', 'gallery'),
+    eyebrowField('stepsEyebrow', 'steps'),
+    defineField({ name: 'stepsHeading', title: 'Heading', type: 'string', fieldset: 'steps' }),
+    defineField({ name: 'stepsSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'steps' }),
+    stepsField('steps', 'steps'),
+    eyebrowField('highlightsEyebrow', 'highlights'),
+    defineField({ name: 'highlightsHeading', title: 'Heading', type: 'string', fieldset: 'highlights' }),
+    defineField({ name: 'highlightsSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'highlights' }),
+    cardsField('highlights', 'highlights'),
+    ...buttonFields('highlightsButton', 'highlights'),
+    eyebrowField('filmEyebrow', 'film'),
+    defineField({ name: 'filmHeading', title: 'Heading', type: 'string', fieldset: 'film' }),
+    defineField({ name: 'filmText', title: 'Text', type: 'text', rows: 3, fieldset: 'film' }),
+    ...buttonFields('filmButton', 'film'),
+    defineField({ name: 'filmVideoUrl', title: 'Video URL', type: 'url', description: 'Vimeo or YouTube link.', fieldset: 'film' }),
+    defineField({ name: 'filmVideoTitle', title: 'Video Title', type: 'string', fieldset: 'film' }),
+    defineField({
+      name: 'filmVideoPoster',
+      title: 'Video Thumbnail',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Image shown before the video plays.',
+      fieldset: 'film',
+    }),
+    ...testimonialsFields(),
+    ...ctaFields({ secondaryButton: true }),
+    seoField(),
+  ],
+  preview: {
+    prepare() {
+      return { title: 'Weddings Page' };
+    },
+  },
+});

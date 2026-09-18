@@ -99,6 +99,7 @@ export default async function VideographyPage() {
         uploadDate: '2025-01-01',
       }} />
       <PageHero
+        tagline={data?.heroTagline}
         title={data?.heroHeading || 'Cinematic Videography'}
         subtitle={data?.heroSubheading || 'Wedding films that let you relive every laugh, every tear, and every dance.'}
         imageSource={data?.heroImage}
@@ -118,10 +119,10 @@ export default async function VideographyPage() {
         <Container>
           <div className="text-center mb-12">
             <p className="text-sm uppercase tracking-[0.18em] text-[#C8A23D] mb-3">
-              Cinematic Films
+              {data?.filmsEyebrow || 'Cinematic Films'}
             </p>
             <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44]">
-              Featured Films
+              {data?.filmsHeading || 'Featured Films'}
             </h2>
           </div>
           {showcaseVideos.length > 0 ? (
@@ -191,7 +192,11 @@ export default async function VideographyPage() {
       </SectionWrapper>
 
       {galleryImages.length > 0 && (
-        <GalleryPreview images={galleryImages} />
+        <GalleryPreview
+          images={galleryImages}
+          buttonLabel={data?.galleryButtonLabel}
+          buttonHref={data?.galleryButtonLink}
+        />
       )}
 
 
@@ -228,18 +233,18 @@ export default async function VideographyPage() {
             {data?.comboText || 'Book both photography and videography together for a seamless experience and preferred pricing. One team, two perspectives, one unforgettable collection.'}
           </p>
           <a
-            href="/contact"
+            href={data?.comboButtonLink || '/contact'}
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            Check Availability
+            {data?.comboButtonLabel || 'Check Availability'}
           </a>
         </Container>
       </SectionWrapper>
 
       <CTASection
-        title="Book Your Wedding Film"
-        subtitle="Let's create a cinematic keepsake you'll treasure for generations."
-        primaryCTA={{ label: 'Check Availability', href: '/contact' }}
+        title={data?.ctaTitle || 'Book Your Wedding Film'}
+        subtitle={data?.ctaSubtitle || "Let's create a cinematic keepsake you'll treasure for generations."}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

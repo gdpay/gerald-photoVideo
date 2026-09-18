@@ -15,7 +15,6 @@ import {
   featuredTestimonialsQuery,
   galleriesQuery,
   heroSlidesQuery,
-  homeHeroQuery,
   homePageQuery,
   settingsQuery,
 } from '../../sanity/lib/queries';
@@ -56,35 +55,34 @@ const fallbackExperienceFeatures = [
 ];
 
 export default async function HomePage() {
-    const [services, galleries, testimonials, heroSlides, homeHero, homeData, settings] = await Promise.all([
+    const [services, galleries, testimonials, heroSlides, homeData, settings] = await Promise.all([
     client.fetch(featuredServicesQuery).catch(() => []),
     client.fetch(galleriesQuery).catch(() => []),
     client.fetch(featuredTestimonialsQuery).catch(() => []),
     client.fetch(heroSlidesQuery).catch(() => []),
-    client.fetch(homeHeroQuery).catch(() => null),
     client.fetch(homePageQuery).catch(() => null),
     client.fetch(settingsQuery).catch(() => null),
   ]);
   const sanityHeroSlides = heroSlides.length > 0
     ? heroSlides
-    : homeHero?.sections?.backgroundImage
+    : homeData?.heroImage
       ? [
           {
             _id: 'home-hero-background',
-            image: homeHero.sections.backgroundImage,
+            image: homeData.heroImage,
             category: 'WEDDINGS',
             alt: 'Gerald Photo Video hero background',
           },
         ]
       : [];
-  const heroTitle = homeHero?.sections?.heading || "for Life's Most Beautiful Moments";
+  const heroTitle = homeData?.heroHeading || "for Life's Most Beautiful Moments";
   const heroSubtitle =
-    homeHero?.sections?.subheading ||
+    homeData?.heroSubheading ||
     'Luxury wedding, quinceanera & engagement photography and videography for couples and families in Nebraska & Iowa.';
-  const heroTagline = homeHero?.sections?.tagline || settings?.tagline;
-  const heroPrimaryCtaText = homeHero?.sections?.ctaText || 'Check Availability';
-  const heroPrimaryCtaLink = homeHero?.sections?.ctaLink || '/contact';
-  const heroLocationLabel = homeHero?.sections?.locationLabel || 'Omaha, NE';
+  const heroTagline = homeData?.heroTagline || settings?.tagline;
+  const heroPrimaryCtaText = homeData?.heroButtonLabel || 'Check Availability';
+  const heroPrimaryCtaLink = homeData?.heroButtonLink || '/contact';
+  const heroLocationLabel = homeData?.heroLocationLabel || 'Omaha, NE';
   const logoUrl = hasSanityImageAsset(settings?.logo)
     ? urlFor(settings.logo).width(200).url()
     : null;

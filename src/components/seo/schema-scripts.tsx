@@ -1,6 +1,6 @@
 import { SITE } from '@/lib/constants';
 
-export function LocalBusinessSchema() {
+export function LocalBusinessSchema({ rating }: { rating?: { value?: number; count?: number } | null } = {}) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -42,8 +42,8 @@ export function LocalBusinessSchema() {
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: SITE.reviews.aggregate.rating,
-      reviewCount: SITE.reviews.aggregate.count,
+      ratingValue: rating?.value ?? SITE.reviews.aggregate.rating,
+      reviewCount: rating?.count ?? SITE.reviews.aggregate.count,
       bestRating: '5',
     },
   };

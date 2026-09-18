@@ -1,101 +1,31 @@
 import { defineType, defineField } from 'sanity';
+import { buttonFields, ctaFields, eyebrowField, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'videographyPage',
   title: 'Videography Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('intro', 'Introduction'),
+    section('films', 'Featured Films', 'The first three films are shown here. They also appear in the Portfolio › Videography tab.'),
+    section('gallery', 'Gallery', 'The photos come from Videography Page › Gallery. The section is hidden until that gallery has photos.'),
+    section('features', 'Our Film Offerings'),
+    section('combo', 'Photo + Video Combo'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'Videography',
-    }),
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Cinematic Videography',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Background image used behind the page hero.',
-    }),
-    defineField({
-      name: 'introText',
-      title: 'Introduction Text',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'featuredVideo',
-      title: 'Featured Video',
-      type: 'object',
-      description: 'Main video displayed on the videography page. Add a Vimeo or YouTube link.',
-      fields: [
-        defineField({
-          name: 'title',
-          title: 'Video Title',
-          type: 'string',
-          initialValue: 'Featured Film',
-        }),
-        defineField({
-          name: 'url',
-          title: 'Video Link',
-          type: 'url',
-          description: 'Paste a Vimeo or YouTube URL.',
-        }),
-        defineField({
-          name: 'description',
-          title: 'Description',
-          type: 'text',
-          rows: 2,
-        }),
-        defineField({
-          name: 'poster',
-          title: 'Thumbnail / Poster Image',
-          type: 'image',
-          options: { hotspot: true },
-        }),
-      ],
-    }),
-    defineField({
-      name: 'featuresHeading',
-      title: 'Features Heading',
-      type: 'string',
-      initialValue: 'Our Film Offerings',
-    }),
-    defineField({
-      name: 'features',
-      title: 'Film Features',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'label', type: 'string', title: 'Feature Name' },
-            { name: 'description', type: 'text', title: 'Description', rows: 2 },
-            { name: 'icon', type: 'string', title: 'Icon Name', description: 'Lucide icon: Film, Camera, Drone, Music, Heart, Clock' },
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'description' },
-          },
-        },
-      ],
-    }),
+    defineField({ name: 'title', title: 'Page Title', type: 'string', hidden: true }),
+    ...heroFields(),
+    defineField({ name: 'introText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
+    eyebrowField('filmsEyebrow', 'films'),
+    defineField({ name: 'filmsHeading', title: 'Heading', type: 'string', fieldset: 'films' }),
     defineField({
       name: 'videos',
-      title: 'Showcase Videos',
+      title: 'Films',
       type: 'array',
-      description: 'Vimeo or YouTube video URLs displayed on the videography page.',
+      fieldset: 'films',
       of: [
         {
           type: 'object',
@@ -112,22 +42,49 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'comboHeading',
-      title: 'Combo Section Heading',
-      type: 'string',
-      initialValue: 'Photo + Video Combo',
+      name: 'featuredVideo',
+      title: 'Main Film (for search engines)',
+      type: 'object',
+      fieldset: 'films',
+      description: 'Describes your main film to Google. It is also shown on the page if the Films list is empty.',
+      fields: [
+        defineField({ name: 'title', title: 'Video Title', type: 'string', initialValue: 'Featured Film' }),
+        defineField({ name: 'url', title: 'Video Link', type: 'url', description: 'Paste a Vimeo or YouTube URL.' }),
+        defineField({ name: 'description', title: 'Description', type: 'text', rows: 2 }),
+        defineField({ name: 'poster', title: 'Thumbnail / Poster Image', type: 'image', options: { hotspot: true } }),
+      ],
     }),
+    ...buttonFields('galleryButton', 'gallery'),
+    defineField({ name: 'featuresHeading', title: 'Heading', type: 'string', fieldset: 'features' }),
     defineField({
-      name: 'comboText',
-      title: 'Combo Section Text',
-      type: 'text',
-      rows: 2,
+      name: 'features',
+      title: 'Offerings',
+      type: 'array',
+      fieldset: 'features',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Feature Name' },
+            { name: 'description', type: 'text', title: 'Description', rows: 2 },
+            {
+              name: 'icon',
+              type: 'string',
+              title: 'Icon',
+              options: { list: ['Film', 'Camera', 'Drone', 'Music', 'Heart', 'Clock'] },
+            },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'description' },
+          },
+        },
+      ],
     }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    defineField({ name: 'comboHeading', title: 'Heading', type: 'string', fieldset: 'combo' }),
+    defineField({ name: 'comboText', title: 'Text', type: 'text', rows: 2, fieldset: 'combo' }),
+    ...buttonFields('comboButton', 'combo', 'Link'),
+    ...ctaFields(),
+    seoField(),
   ],
   preview: {
     prepare() {

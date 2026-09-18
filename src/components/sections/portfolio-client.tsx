@@ -12,7 +12,6 @@ import { VideoEmbed } from '@/components/shared/video-embed';
 import { staggerContainer, staggerItem } from '@/lib/animations';
 import { cn } from '@/lib/utils';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { PageHeroData } from '@/lib/page-hero-data';
 import { urlFor } from '../../../sanity/lib/client';
 
 const categories = ['All', 'Weddings', 'Quinceañeras', 'Engagements', 'Portraits', 'Videography'] as const;
@@ -40,6 +39,7 @@ interface GalleryImage {
 interface PortfolioClientProps {
   galleryImages: GalleryImage[];
   hero?: {
+    tagline?: string;
     heading?: string;
     subheading?: string;
     backgroundImage?: any;
@@ -113,6 +113,7 @@ export function PortfolioClient({
   return (
     <>
       <PageHero
+        tagline={hero?.tagline}
         title={hero?.heading || 'Our Portfolio'}
         subtitle={hero?.subheading || 'A curated collection of our favorite moments.'}
         imageSource={hero?.backgroundImage}

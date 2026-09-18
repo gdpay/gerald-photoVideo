@@ -1,63 +1,30 @@
 import { defineType, defineField } from 'sanity';
+import { buttonFields, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'portfolioPage',
   title: 'Portfolio Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('gallery', 'Gallery', 'Photos come from the Gallery Collections; films come from Videography Page › Featured Films.'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Our Portfolio',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-      initialValue: 'A curated collection of our favorite moments.',
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-    }),
+    ...heroFields(),
     defineField({
       name: 'videographyEyebrow',
-      title: 'Videography Section Eyebrow',
+      title: 'Videography Tab Heading',
       type: 'string',
-      initialValue: 'Cinematic Films',
+      description: 'Small heading above the films in the Videography tab.',
+      fieldset: 'gallery',
     }),
-    defineField({
-      name: 'ctaHeading',
-      title: 'CTA Heading',
-      type: 'string',
-      initialValue: 'Ready to Create Your Own Gallery?',
-    }),
-    defineField({
-      name: 'ctaSubheading',
-      title: 'CTA Subheading',
-      type: 'string',
-      initialValue: "Let's work together to create images you'll love.",
-    }),
-    defineField({
-      name: 'ctaButtonLabel',
-      title: 'CTA Button Label',
-      type: 'string',
-      initialValue: 'Get Started',
-    }),
-    defineField({
-      name: 'ctaButtonLink',
-      title: 'CTA Button Link',
-      type: 'string',
-      initialValue: '/contact',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    // Existing content uses ctaHeading / ctaSubheading, so those names are kept here.
+    defineField({ name: 'ctaHeading', title: 'Heading', type: 'string', fieldset: 'cta' }),
+    defineField({ name: 'ctaSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'cta' }),
+    ...buttonFields('ctaButton', 'cta'),
+    seoField(),
   ],
   preview: {
     prepare() {

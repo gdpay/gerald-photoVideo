@@ -128,42 +128,6 @@ export const settingsQuery = `*[_id == "siteSettings"][0] {
   favicon
 }`;
 
-// Pages
-export const pageBySlugQuery = (slug: string) =>
-  `*[_type == "page" && slug.current == "${slug}"][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    seo,
-    sections
-  }`;
-
-export const pageHeroBySlugQuery = (slug: string) =>
-  `*[_type == "page" && slug.current == "${slug}"][0] {
-    title,
-    sections[_type == "hero"][0] {
-      tagline,
-      heading,
-      subheading,
-      backgroundImage,
-      ctaText,
-      ctaLink,
-      locationLabel
-    }
-  }`;
-
-// Home page hero
-export const homeHeroQuery = `*[_type == "page" && slug.current == "home"][0] {
-  sections[_type == "hero"][0] {
-    tagline,
-    heading,
-    subheading,
-    backgroundImage,
-    ctaText,
-    ctaLink,
-    locationLabel
-  }
-}`;
 
 // Featured services for homepage
 export const featuredServicesQuery = `*[_type == "service"] | order(title asc) {
@@ -176,17 +140,6 @@ export const featuredServicesQuery = `*[_type == "service"] | order(title asc) {
   features
 }`;
 
-// Home page CTA section
-export const homeCtaQuery = `*[_type == "page" && slug.current == "home"][0] {
-  sections[_type == "cta"][0] {
-    heading,
-    subheading,
-    backgroundImage,
-    buttonText,
-    buttonLink
-  }
-}`;
-
 // Hero Slides
 export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
   _id,
@@ -197,6 +150,13 @@ export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
 
 // Home Page (editable homepage sections)
 export const homePageQuery = `*[_type == "homePage"][0] {
+  heroTagline,
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  heroButtonLabel,
+  heroButtonLink,
+  heroLocationLabel,
   trustStats,
   servicesEyebrow,
   servicesHeading,
@@ -234,11 +194,61 @@ export const homePageQuery = `*[_type == "homePage"][0] {
   testimonialsButtonLink
 }`;
 
-// About Page
-export const aboutPageQuery = `*[_type == "aboutPage"][0] {
+// Stats bar (edited on the Home Page, also shown on the city pages)
+export const trustStatsQuery = `*[_type == "homePage"][0].trustStats`;
+
+// Weddings and Quinceañeras pages share the same sections
+const servicePageFields = `
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
+  introEyebrow,
+  introText,
+  galleryButtonLabel,
+  galleryButtonLink,
+  stepsEyebrow,
+  stepsHeading,
+  stepsSubheading,
+  steps,
+  highlightsEyebrow,
+  highlightsHeading,
+  highlightsSubheading,
+  highlights,
+  highlightsButtonLabel,
+  highlightsButtonLink,
+  filmEyebrow,
+  filmHeading,
+  filmText,
+  filmButtonLabel,
+  filmButtonLink,
+  filmVideoUrl,
+  filmVideoTitle,
+  filmVideoPoster,
+  testimonialsEyebrow,
+  testimonialsHeading,
+  testimonialsButtonLabel,
+  testimonialsButtonLink,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink,
+  ctaSecondaryButtonLabel,
+  ctaSecondaryButtonLink
+`;
+
+export const weddingsPageQuery = `*[_id == "weddingsPage"][0] {${servicePageFields}}`;
+
+export const quinceanerasPageQuery = `*[_id == "quinceanerasPage"][0] {${servicePageFields}}`;
+
+// About Page
+export const aboutPageQuery = `*[_type == "aboutPage"][0] {
+  heroTagline,
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  storyEyebrow,
+  storyHeading,
   storyParagraphs,
   storyImage {
     asset->,
@@ -249,33 +259,54 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   communityHeading,
   communityText,
   ctaHeading,
-  ctaSubheading
+  ctaSubheading,
+  ctaButtonLabel,
+  ctaButtonLink
 }`;
 
 // Investment Page
 export const investmentPageQuery = `*[_type == "investmentPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
   philosophyText,
   philosophyNote,
+  galleryButtonLabel,
+  galleryButtonLink,
   collections,
+  popularBadgeLabel,
+  priceIntroLabel,
+  collectionButtonLabel,
+  collectionButtonLink,
   addOnsHeading,
   addOns,
   paymentHeading,
-  paymentText
+  paymentText,
+  paymentButtonLabel,
+  paymentButtonLink,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink
 }`;
 
 // FAQ Page
 export const faqPageQuery = `*[_type == "faqPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
-  categories
+  categories,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink
 }`;
 
 // Engagements Page
 export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
@@ -286,11 +317,15 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
   steps,
   ctaTitle,
   ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink,
   locationsHeading,
   locationsSubheading,
   locations,
   bundleHeading,
   bundleText,
+  bundleButtonLabel,
+  bundleButtonLink,
   portfolioFeature {
     images[] {
       asset->,
@@ -304,6 +339,7 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
 
 // Portraits Page
 export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
@@ -314,6 +350,8 @@ export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
   steps,
   ctaTitle,
   ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink,
   portfolioFeature {
     images[] {
       asset->,
@@ -327,10 +365,13 @@ export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
 
 // Videography Page
 export const videographyPageQuery = `*[_type == "videographyPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
   introText,
+  filmsEyebrow,
+  filmsHeading,
   featuredVideo {
     title,
     url,
@@ -342,6 +383,8 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
       alt
     }
   },
+  galleryButtonLabel,
+  galleryButtonLink,
   featuresHeading,
   features,
   videos[] {
@@ -356,11 +399,18 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
     }
   },
   comboHeading,
-  comboText
+  comboText,
+  comboButtonLabel,
+  comboButtonLink,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink
 }`;
 
 // Portfolio Page
 export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
   heroImage,
@@ -373,10 +423,84 @@ export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
 
 // Reviews Page
 export const reviewsPageQuery = `*[_type == "reviewsPage"][0] {
+  heroTagline,
   heroHeading,
   heroSubheading,
-  heroImage
+  heroImage,
+  ratingValue,
+  ratingCount,
+  ratingLabel,
+  ctaTitle,
+  ctaSubtitle,
+  ctaButtonLabel,
+  ctaButtonLink
 }`;
+
+// Average rating (edited on the Reviews Page, also used for Google's structured data)
+export const reviewsRatingQuery = `*[_id == "reviewsPage"][0] {
+  ratingValue,
+  ratingCount
+}`;
+
+// Blog Page (list page, plus the call to action at the bottom of every post)
+export const blogPageQuery = `*[_id == "blogPage"][0] {
+  heroTagline,
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  readMoreLabel,
+  postCtaTitle,
+  postCtaSubtitle,
+  postCtaButtonLabel,
+  postCtaButtonLink
+}`;
+
+// Contact Page (also holds the thank-you page shown after the form is sent)
+export const contactPageQuery = `*[_id == "contactPage"][0] {
+  heroTagline,
+  heroHeading,
+  heroSubheading,
+  heroImage,
+  detailsHeading,
+  phoneTitle,
+  phoneNote,
+  emailTitle,
+  emailNote,
+  instagramTitle,
+  instagramHandle,
+  instagramNote,
+  serviceAreaTitle,
+  serviceAreaNote,
+  bookingNote,
+  thankYouHeading,
+  thankYouText,
+  thankYouNote,
+  thankYouButtonLabel,
+  thankYouButtonLink,
+  thankYouSecondButtonLabel,
+  thankYouSecondButtonLink
+}`;
+
+// City landing pages (/<slug>-wedding-photographer)
+export const cityPageQuery = (slug: string) =>
+  `*[_id == "cityPage-${slug}"][0] {
+    heroTagline,
+    heroHeading,
+    heroSubheading,
+    heroImage,
+    introHeading,
+    introText,
+    servicesHeading,
+    servicesList,
+    testimonialsEyebrow,
+    testimonialsHeading,
+    testimonialsButtonLabel,
+    testimonialsButtonLink,
+    ctaTitle,
+    ctaSubtitle,
+    ctaButtonLabel,
+    ctaButtonLink
+  }`;
 
 // Reviews Page (testimonials with ordering)
 export const allTestimonialsQuery = `*[_type == "testimonial"] | order(order asc) {

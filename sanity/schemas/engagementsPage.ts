@@ -1,112 +1,43 @@
 import { defineType, defineField } from 'sanity';
+import {
+  buttonFields,
+  cardsField,
+  ctaFields,
+  heroFields,
+  portfolioFeatureField,
+  section,
+  seoField,
+  stepsField,
+} from './shared';
 
 export default defineType({
   name: 'engagementsPage',
   title: 'Engagements Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('intro', 'Introduction'),
+    section('highlights', 'Engagement Sessions'),
+    section('locations', 'Popular Locations'),
+    section('steps', 'The Engagement Experience'),
+    section('bundle', 'Engagement + Wedding Bundle'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'Engagements',
-    }),
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Engagement Portraits',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Background image used behind the page hero.',
-    }),
-    defineField({
-      name: 'introText',
-      title: 'Introduction Text',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'highlightsHeading',
-      title: 'Highlights Heading',
-      type: 'string',
-      initialValue: 'Engagement Sessions',
-    }),
-    defineField({
-      name: 'highlights',
-      title: 'Highlights',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'label', type: 'string', title: 'Title' },
-            { name: 'description', type: 'text', title: 'Description', rows: 2 },
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'description' },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'stepsHeading',
-      title: 'Steps Section Heading',
-      type: 'string',
-      initialValue: 'The Engagement Experience',
-    }),
-    defineField({
-      name: 'steps',
-      title: 'Experience Steps',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'title', type: 'string', title: 'Step Title' },
-            { name: 'description', type: 'text', title: 'Description', rows: 2 },
-          ],
-          preview: {
-            select: { title: 'title', subtitle: 'description' },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'ctaTitle',
-      title: 'CTA Title',
-      type: 'string',
-      initialValue: 'Capture This Season of Love',
-    }),
-    defineField({
-      name: 'ctaSubtitle',
-      title: 'CTA Subtitle',
-      type: 'string',
-    }),
-    defineField({
-      name: 'locationsHeading',
-      title: 'Locations Heading',
-      type: 'string',
-      initialValue: 'Popular Locations',
-    }),
-    defineField({
-      name: 'locationsSubheading',
-      title: 'Locations Subheading',
-      type: 'string',
-    }),
+    defineField({ name: 'title', title: 'Page Title', type: 'string', hidden: true }),
+    ...heroFields(),
+    defineField({ name: 'introText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
+    portfolioFeatureField('Engagements'),
+    defineField({ name: 'highlightsHeading', title: 'Heading', type: 'string', fieldset: 'highlights' }),
+    cardsField('highlights', 'highlights'),
+    defineField({ name: 'locationsHeading', title: 'Heading', type: 'string', fieldset: 'locations' }),
+    defineField({ name: 'locationsSubheading', title: 'Text', type: 'string', fieldset: 'locations' }),
     defineField({
       name: 'locations',
       title: 'Locations',
       type: 'array',
+      fieldset: 'locations',
       of: [
         {
           type: 'object',
@@ -115,65 +46,17 @@ export default defineType({
             { name: 'area', type: 'string', title: 'Area', description: 'e.g. "Omaha, NE"' },
             { name: 'description', type: 'text', title: 'Description', rows: 2 },
           ],
-          preview: {
-            select: { title: 'name', subtitle: 'area' },
-          },
+          preview: { select: { title: 'name', subtitle: 'area' } },
         },
       ],
     }),
-    defineField({
-      name: 'bundleHeading',
-      title: 'Bundle Section Heading',
-      type: 'string',
-      initialValue: 'Book Your Engagement + Wedding Together',
-    }),
-    defineField({
-      name: 'bundleText',
-      title: 'Bundle Section Text',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'portfolioFeature',
-      title: 'Portfolio Feature Section',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'images',
-          title: 'Images',
-          type: 'array',
-          description: 'Add up to three images for the wide portfolio preview section.',
-          validation: (rule) => rule.max(3),
-          of: [
-            {
-              type: 'image',
-              options: { hotspot: true },
-              fields: [
-                { name: 'alt', type: 'string', title: 'Alt Text' },
-                { name: 'caption', type: 'string', title: 'Caption' },
-              ],
-            },
-          ],
-        }),
-        defineField({
-          name: 'buttonLabel',
-          title: 'Button Label',
-          type: 'string',
-          initialValue: 'View Full Portfolio',
-        }),
-        defineField({
-          name: 'buttonLink',
-          title: 'Button Link',
-          type: 'string',
-          initialValue: '/portfolio',
-        }),
-      ],
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    defineField({ name: 'stepsHeading', title: 'Heading', type: 'string', fieldset: 'steps' }),
+    stepsField('steps', 'steps'),
+    defineField({ name: 'bundleHeading', title: 'Heading', type: 'string', fieldset: 'bundle' }),
+    defineField({ name: 'bundleText', title: 'Text', type: 'text', rows: 2, fieldset: 'bundle' }),
+    ...buttonFields('bundleButton', 'bundle', 'Link'),
+    ...ctaFields(),
+    seoField(),
   ],
   preview: {
     prepare() {

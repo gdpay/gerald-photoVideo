@@ -21,11 +21,26 @@ interface FAQCategory {
 }
 
 interface FAQHero {
+  tagline?: string;
   title: string;
   subtitle?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   imageSource?: any;
 }
+
+interface FAQCta {
+  title: string;
+  subtitle: string;
+  buttonLabel: string;
+  buttonLink: string;
+}
+
+const fallbackCta: FAQCta = {
+  title: 'Still Have Questions?',
+  subtitle: "We're happy to answer anything else you'd like to know.",
+  buttonLabel: 'Contact Us',
+  buttonLink: '/contact',
+};
 
 const fallbackData: FAQCategory[] = [
   {
@@ -77,6 +92,7 @@ export default function FAQPage() {
     title: 'Frequently Asked Questions',
     subtitle: 'Everything you need to know about working with us.',
   });
+  const [cta, setCta] = useState<FAQCta>(fallbackCta);
 
   useEffect(() => {
     fetch('/api/faq')
@@ -86,9 +102,16 @@ export default function FAQPage() {
           setFaqData(data.categories);
         }
         setHero({
+          tagline: data?.heroTagline,
           title: data?.heroHeading || 'Frequently Asked Questions',
           subtitle: data?.heroSubheading || 'Everything you need to know about working with us.',
           imageSource: data?.heroImage,
+        });
+        setCta({
+          title: data?.ctaTitle || fallbackCta.title,
+          subtitle: data?.ctaSubtitle || fallbackCta.subtitle,
+          buttonLabel: data?.ctaButtonLabel || fallbackCta.buttonLabel,
+          buttonLink: data?.ctaButtonLink || fallbackCta.buttonLink,
         });
       })
       .catch(() => {});
@@ -104,6 +127,7 @@ export default function FAQPage() {
       ]} />
       <FAQSchema faqs={flatFaqs} />
       <PageHero
+        tagline={hero.tagline}
         title={hero.title}
         subtitle={hero.subtitle}
         imageSource={hero.imageSource}
@@ -161,9 +185,9 @@ export default function FAQPage() {
       </SectionWrapper>
 
       <CTASection
-        title="Still Have Questions?"
-        subtitle="We're happy to answer anything else you'd like to know."
-        primaryCTA={{ label: 'Contact Us', href: '/contact' }}
+        title={cta.title}
+        subtitle={cta.subtitle}
+        primaryCTA={{ label: cta.buttonLabel, href: cta.buttonLink }}
       />
     </>
   );

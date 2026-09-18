@@ -1,64 +1,60 @@
 import { defineType, defineField } from 'sanity';
+import { buttonFields, eyebrowField, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'aboutPage',
   title: 'About Page',
   type: 'document',
+  fieldsets: [
+    section('hero', 'Hero'),
+    section('story', 'Our Story'),
+    section('values', 'Values'),
+    section('community', 'Community'),
+    section('cta', 'Call to Action'),
+    section('seo', 'SEO'),
+  ],
   fields: [
-    defineField({
-      name: 'title',
-      title: 'Page Title',
-      type: 'string',
-      initialValue: 'About',
-    }),
-    defineField({
-      name: 'heroHeading',
-      title: 'Hero Heading',
-      type: 'string',
-      initialValue: 'Our Story',
-    }),
-    defineField({
-      name: 'heroSubheading',
-      title: 'Hero Subheading',
-      type: 'string',
-      initialValue: "We're not just photographers — we're storytellers, memory-keepers, and your biggest fans.",
-    }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero Background Image',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Background image used behind the page hero.',
-    }),
+    defineField({ name: 'title', title: 'Page Title', type: 'string', hidden: true }),
+    ...heroFields(),
+    eyebrowField('storyEyebrow', 'story'),
+    defineField({ name: 'storyHeading', title: 'Heading', type: 'string', fieldset: 'story' }),
     defineField({
       name: 'storyParagraphs',
-      title: 'Story Paragraphs',
+      title: 'Paragraphs',
       type: 'array',
       of: [{ type: 'text' }],
-      description: 'Each item becomes a paragraph in the story section.',
+      description: 'Each item becomes a paragraph.',
+      fieldset: 'story',
     }),
     defineField({
       name: 'storyImage',
-      title: 'Story Image',
+      title: 'Photo',
       type: 'image',
       options: { hotspot: true },
-      description: 'Portrait or brand image shown beside the story text.',
+      description: 'Portrait or brand photo shown beside the story.',
       fields: [
         { name: 'alt', type: 'string', title: 'Alt Text' },
         { name: 'caption', type: 'string', title: 'Caption' },
       ],
+      fieldset: 'story',
     }),
     defineField({
       name: 'values',
       title: 'Values',
       type: 'array',
+      fieldset: 'values',
       of: [
         {
           type: 'object',
           fields: [
             { name: 'title', type: 'string', title: 'Title' },
             { name: 'description', type: 'text', title: 'Description', rows: 2 },
-            { name: 'icon', type: 'string', title: 'Icon Name', description: 'Lucide icon: Heart, Camera, Star, etc.' },
+            {
+              name: 'icon',
+              type: 'string',
+              title: 'Icon',
+              options: { list: ['Heart', 'Camera', 'Star', 'Users', 'Award', 'Sparkles'] },
+            },
           ],
           preview: {
             select: { title: 'title', subtitle: 'description' },
@@ -66,34 +62,13 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'communityHeading',
-      title: 'Community Section Heading',
-      type: 'string',
-      initialValue: 'Proudly Serving Nebraska & Iowa',
-    }),
-    defineField({
-      name: 'communityText',
-      title: 'Community Section Text',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'ctaHeading',
-      title: 'CTA Heading',
-      type: 'string',
-      initialValue: "We'd Love to Hear Your Story",
-    }),
-    defineField({
-      name: 'ctaSubheading',
-      title: 'CTA Subheading',
-      type: 'string',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO Settings',
-      type: 'seo',
-    }),
+    defineField({ name: 'communityHeading', title: 'Heading', type: 'string', fieldset: 'community' }),
+    defineField({ name: 'communityText', title: 'Text', type: 'text', rows: 3, fieldset: 'community' }),
+    // Existing content uses ctaHeading / ctaSubheading, so those names are kept here.
+    defineField({ name: 'ctaHeading', title: 'Heading', type: 'string', fieldset: 'cta' }),
+    defineField({ name: 'ctaSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'cta' }),
+    ...buttonFields('ctaButton', 'cta'),
+    seoField(),
   ],
   preview: {
     prepare() {

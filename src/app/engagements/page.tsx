@@ -115,6 +115,7 @@ export default async function EngagementsPage() {
         { name: 'Engagements', url: '/engagements' },
       ]} />
       <PageHero
+        tagline={data?.heroTagline}
         title={data?.heroHeading || 'Engagement Portraits'}
         subtitle={data?.heroSubheading || "Your love story deserves a beautiful beginning. Let's create portraits that capture the excitement of this chapter."}
         imageSource={data?.heroImage}
@@ -213,10 +214,10 @@ export default async function EngagementsPage() {
             {data?.bundleText || "Save when you bundle your engagement session with your wedding coverage. It's the perfect way to start your journey with us."}
           </p>
           <a
-            href="/contact"
+            href={data?.bundleButtonLink || '/contact'}
             className="inline-flex items-center gap-2 text-[#C8A23D] hover:text-[#A8842E] transition-colors font-body text-sm uppercase tracking-wider"
           >
-            Check Availability →
+            {data?.bundleButtonLabel || 'Check Availability →'}
           </a>
         </Container>
       </SectionWrapper>
@@ -224,7 +225,7 @@ export default async function EngagementsPage() {
       <CTASection
         title={data?.ctaTitle || 'Capture This Season of Love'}
         subtitle={data?.ctaSubtitle || "Let's plan an engagement session that reflects your unique story."}
-        primaryCTA={{ label: 'Book Your Session', href: '/contact' }}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Book Your Session', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

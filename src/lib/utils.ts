@@ -13,6 +13,12 @@ export function formatPhoneNumber(phone: string): string {
   return phone;
 }
 
+// Digits for a tel: link; a 10-digit number is treated as US and gets the +1 country code.
+export function toDialableNumber(phone: string): string {
+  const cleaned = phone.replace(/[^+\d]/g, '');
+  return /^\d{10}$/.test(cleaned) ? `+1${cleaned}` : cleaned;
+}
+
 export function formatDate(date: string | Date): string {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
