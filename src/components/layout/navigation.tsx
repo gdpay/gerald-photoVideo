@@ -42,81 +42,84 @@ export function Navigation({ logoUrl }: NavigationProps) {
   }, [isOpen]);
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 border-b border-[#C8A23D]/25',
-        isScrolled
-          ? 'bg-[#06112A]/96 backdrop-blur-xl shadow-lg'
-          : 'bg-[#06112A]'
-      )}
-      style={{
-        transition: 'padding 0.4s ease, background 0.4s ease',
-        padding: isScrolled ? '10px 0' : '16px 0',
-      }}
-    >
-      <Container>
-        <nav className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="relative z-10">
-            <Image
-              src={logoUrl || '/Gerald Photo Video-w.png'}
-              alt={SITE.name}
-              width={220}
-              height={52}
-              className={cn(
-                'w-auto transition-all duration-400',
-                logoUrl ? 'brightness-0 invert' : '',
-                isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'
-              )}
-              priority
-            />
-          </Link>
+    <>
+      <header
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 border-b border-[#C8A23D]/25',
+          isScrolled
+            ? 'bg-[#06112A]/96 backdrop-blur-xl shadow-lg'
+            : 'bg-[#06112A]'
+        )}
+        style={{
+          transition: 'padding 0.4s ease, background 0.4s ease',
+          padding: isScrolled ? '10px 0' : '16px 0',
+        }}
+      >
+        <Container>
+          <nav className="flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="relative z-10">
+              <Image
+                src={logoUrl || '/Gerald Photo Video-w.png'}
+                alt={SITE.name}
+                width={220}
+                height={52}
+                className={cn(
+                  'w-auto transition-all duration-400',
+                  logoUrl ? 'brightness-0 invert' : '',
+                  isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'
+                )}
+                priority
+              />
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2">
-            {desktopNavItems.map((item) => {
-              const isActive = item.href === '/portfolio'
-                ? pathname.startsWith('/portfolio')
-                : pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
-                    isActive
-                      ? 'text-[#C8A23D] after:w-8'
-                      : 'text-[#FAF7F2]/78 after:w-0 hover:text-[#C8A23D] hover:after:w-8'
-                  )}
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-2">
+              {desktopNavItems.map((item) => {
+                const isActive = item.href === '/portfolio'
+                  ? pathname.startsWith('/portfolio')
+                  : pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
+                      isActive
+                        ? 'text-[#C8A23D] after:w-8'
+                        : 'text-[#FAF7F2]/78 after:w-0 hover:text-[#C8A23D] hover:after:w-8'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+              <div className="ml-4">
+                <Button
+                  variant="outline-light"
+                  size="md"
+                  href="/contact"
+                  className="h-11 border-[#C8A23D] px-6 text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
                 >
-                  {item.label}
-                </Link>
-              );
-            })}
-            <div className="ml-4">
-              <Button
-                variant="outline-light"
-                size="md"
-                href="/contact"
-                className="h-11 border-[#C8A23D] px-6 text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
-              >
-                Check Availability
-              </Button>
+                  Check Availability
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden relative z-10 p-2 text-[#FAF7F2] hover:text-[#C8A23D] transition-colors"
-            aria-label={isOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </nav>
-      </Container>
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="lg:hidden relative z-10 p-2 text-[#FAF7F2] hover:text-[#C8A23D] transition-colors"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            >
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </nav>
+        </Container>
+      </header>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation. Kept outside <header>: the header's backdrop-blur (once scrolled)
+          makes it the containing block for fixed children, which clipped this overlay to the header's height. */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -124,7 +127,7 @@ export function Navigation({ logoUrl }: NavigationProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-0 bg-[#0A1F44]/98 backdrop-blur-xl z-0 pt-20"
+            className="fixed inset-0 top-0 bg-[#0A1F44]/98 backdrop-blur-xl z-45 pt-20"
           >
             <div className="flex flex-col h-full p-6 pb-24 overflow-y-auto">
               <div className="flex-1 space-y-1">
@@ -172,6 +175,6 @@ export function Navigation({ logoUrl }: NavigationProps) {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
