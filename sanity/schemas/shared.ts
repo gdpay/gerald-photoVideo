@@ -1,7 +1,22 @@
 import { defineField } from 'sanity';
+import { IconInput } from '../components/IconInput';
+import { ICONS, ICON_NAMES, type IconName } from '../../src/lib/icons';
 
 // Building blocks for the page documents. Each page groups its fields into
 // collapsible sections listed in the same order as they appear on the website.
+
+// An icon chosen from the site's icon set with a visual picker.
+export const iconField = (name = 'icon', title = 'Icon', fieldset?: string) =>
+  defineField({
+    name,
+    title,
+    type: 'string',
+    options: { list: ICON_NAMES },
+    components: { input: IconInput },
+    fieldset,
+  });
+
+export const iconPreview = (icon?: string) => (icon ? ICONS[icon as IconName] : undefined);
 
 export const section = (name: string, title: string, description?: string) => ({
   name,
@@ -37,11 +52,22 @@ export const buttonFields = (prefix: string, fieldset: string, title = 'Button')
 export const eyebrowField = (name: string, fieldset: string) =>
   defineField({ name, title: 'Eyebrow', type: 'string', description: 'Small text above the heading.', fieldset });
 
+export const ctaImageField = () =>
+  defineField({
+    name: 'ctaImage',
+    title: 'Background Image',
+    type: 'image',
+    options: { hotspot: true },
+    description: 'Optional. Shown faintly behind the text.',
+    fieldset: 'cta',
+  });
+
 export const ctaFields = ({ secondaryButton = false } = {}) => [
   defineField({ name: 'ctaTitle', title: 'Heading', type: 'string', fieldset: 'cta' }),
   defineField({ name: 'ctaSubtitle', title: 'Text', type: 'text', rows: 2, fieldset: 'cta' }),
   ...buttonFields('ctaButton', 'cta'),
   ...(secondaryButton ? buttonFields('ctaSecondaryButton', 'cta', 'Second Button') : []),
+  ctaImageField(),
 ];
 
 export const testimonialsFields = () => [
@@ -50,7 +76,7 @@ export const testimonialsFields = () => [
   ...buttonFields('testimonialsButton', 'testimonials'),
 ];
 
-// List of { label, description } cards (icons are assigned by position on the website).
+// List of { icon, label, description } cards.
 export const cardsField = (name: string, fieldset: string, title = 'Cards') =>
   defineField({
     name,
@@ -61,10 +87,14 @@ export const cardsField = (name: string, fieldset: string, title = 'Cards') =>
       {
         type: 'object',
         fields: [
+          iconField(),
           { name: 'label', type: 'string', title: 'Title' },
           { name: 'description', type: 'text', title: 'Description', rows: 2 },
         ],
-        preview: { select: { title: 'label', subtitle: 'description' } },
+        preview: {
+          select: { title: 'label', subtitle: 'description', icon: 'icon' },
+          prepare: ({ title, subtitle, icon }) => ({ title, subtitle, media: iconPreview(icon) }),
+        },
       },
     ],
   });

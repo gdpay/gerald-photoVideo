@@ -18,30 +18,10 @@ import {
   homePageQuery,
   settingsQuery,
 } from '../../sanity/lib/queries';
-import {
-  Album,
-  Camera,
-  Clock,
-  HeartHandshake,
-  Images,
-  MapPin,
-  Play,
-  Sparkles,
-  Users,
-} from 'lucide-react';
+import { Camera, Play } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 export const revalidate = 60;
-
-const iconMap: Record<string, React.ElementType> = {
-  Camera,
-  Sparkles,
-  HeartHandshake,
-  Users,
-  Images,
-  Album,
-  Clock,
-  MapPin,
-};
 
 const fallbackExperienceFeatures = [
   { icon: 'Camera', label: 'Photography & Videography Under One Team' },
@@ -205,7 +185,7 @@ export default async function HomePage() {
               </h2>
               <div className="mt-9 grid gap-x-10 gap-y-6 sm:grid-cols-2">
                 {experienceFeatures.map((feature: { icon?: string; label: string }) => {
-                  const Icon = iconMap[feature.icon || ''] || Camera;
+                  const Icon = getIcon(feature.icon, Camera);
                   return (
                     <div key={feature.label} className="flex items-start gap-4">
                       <Icon className="mt-0.5 h-6 w-6 shrink-0 text-[#C8A23D]" strokeWidth={1.5} />

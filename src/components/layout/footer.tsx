@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SITE, LOCAL_CITIES } from '@/lib/constants';
 import { toDialableNumber } from '@/lib/utils';
+import { getIcon } from '@/lib/icons';
 import { Container } from '@/components/shared/container';
 import { Mail, Phone } from 'lucide-react';
 import { hasSanityImageAsset, urlFor } from '../../../sanity/lib/client';
@@ -20,9 +21,11 @@ export function Footer({ settings }: { settings?: any }) {
     tiktok: settings?.socialLinks?.tiktok || SITE.social.tiktok,
     youtube: settings?.socialLinks?.youtube || SITE.social.youtube,
   };
-  const footerTagline = settings?.footerTagline || 'Timeless photography and cinematic films for life&apos;s most beautiful moments.';
+  const footerTagline = settings?.footerTagline || "Timeless photography and cinematic films for life's most beautiful moments.";
   const footerNote = settings?.footerNote || 'and surrounding areas.';
   const availabilityLabel = settings?.availabilityButtonLabel || 'Check Availability';
+  const EmailIcon = getIcon(settings?.footerEmailIcon, Mail);
+  const PhoneIcon = getIcon(settings?.footerPhoneIcon, Phone);
 
   const logoUrl = hasSanityImageAsset(settings?.logo)
     ? urlFor(settings.logo).width(200).url()
@@ -50,7 +53,7 @@ export function Footer({ settings }: { settings?: any }) {
 
           <div className="flex h-full flex-col justify-center lg:border-l lg:border-[#9C7A35] lg:px-6">
             <h4 className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-[#FAF7F2]">
-              Serving {settings?.addressRegion || 'Nebraska & Iowa'}
+              {settings?.footerServingLabel || 'Serving'} {settings?.addressRegion || 'Nebraska & Iowa'}
             </h4>
             <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-0.5 font-body text-[11px] text-[#FAF7F2]/82 xl:flex-nowrap">
               {LOCAL_CITIES.slice(0, 4).map((city, index) => (
@@ -67,7 +70,7 @@ export function Footer({ settings }: { settings?: any }) {
 
           <div className="flex h-full flex-col items-center justify-center lg:px-5">
             <h4 className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-[#FAF7F2]">
-              Connect
+              {settings?.footerConnectHeading || 'Connect'}
             </h4>
             <div className="mt-1.5 flex items-center justify-center gap-2">
               <a href={socials.instagram} target="_blank" rel="noopener noreferrer" className="text-[#FAF7F2] transition hover:text-[#C8A23D]" aria-label="Instagram">
@@ -95,15 +98,15 @@ export function Footer({ settings }: { settings?: any }) {
 
           <div className="flex h-full flex-col items-center justify-center lg:border-l lg:border-[#9C7A35] lg:px-5">
             <h4 className="font-body text-[10px] font-bold uppercase tracking-[0.14em] text-[#FAF7F2]">
-              Get In Touch
+              {settings?.footerContactHeading || 'Get In Touch'}
             </h4>
             <div className="mt-1.5 flex flex-col items-start gap-1 font-body text-[11px] text-[#E3D6B8]">
               <a href={`mailto:${email}`} className="flex items-center gap-2 transition hover:text-[#C8A23D]">
-                <Mail className="h-3 w-3 text-[#FAF7F2]" />
+                <EmailIcon className="h-3 w-3 text-[#FAF7F2]" />
                 {email}
               </a>
               <a href={`tel:${phoneRaw}`} className="flex items-center gap-2 transition hover:text-[#C8A23D]">
-                <Phone className="h-3 w-3 text-[#FAF7F2]" />
+                <PhoneIcon className="h-3 w-3 text-[#FAF7F2]" />
                 {phone}
               </a>
             </div>
@@ -111,7 +114,7 @@ export function Footer({ settings }: { settings?: any }) {
 
           <div className="flex h-full items-center lg:justify-end lg:pl-4">
             <Link
-              href="/contact"
+              href={settings?.availabilityButtonLink || '/contact'}
               className="inline-flex h-8 items-center justify-center border border-[#C8A23D] px-5 font-body text-[9px] font-bold uppercase tracking-[0.15em] text-[#C8A23D] transition hover:bg-[#C8A23D] hover:text-[#06112A]"
             >
               {availabilityLabel}
@@ -123,7 +126,7 @@ export function Footer({ settings }: { settings?: any }) {
       <div className="border-t border-[#9C7A35]/45">
         <Container className="flex min-h-5 items-center justify-center py-1">
           <p className="font-body text-[8px] text-[#FAF7F2]/70">
-            &copy; {currentYear} {name}. All Rights Reserved.
+            &copy; {currentYear} {name}. {settings?.copyrightText || 'All Rights Reserved.'}
           </p>
         </Container>
       </div>

@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, heroFields, section, seoField } from './shared';
+import { buttonFields, ctaImageField, heroFields, section, seoField } from './shared';
 
 export default defineType({
   name: 'portfolioPage',
@@ -14,6 +14,21 @@ export default defineType({
   fields: [
     ...heroFields(),
     defineField({
+      name: 'tabLabels',
+      title: 'Filter Tab Labels',
+      type: 'object',
+      description: 'The names on the category buttons above the photos.',
+      fieldset: 'gallery',
+      fields: [
+        { name: 'all', type: 'string', title: 'All' },
+        { name: 'weddings', type: 'string', title: 'Weddings' },
+        { name: 'quinceaneras', type: 'string', title: 'Quinceañeras' },
+        { name: 'engagements', type: 'string', title: 'Engagements' },
+        { name: 'portraits', type: 'string', title: 'Portraits' },
+        { name: 'videography', type: 'string', title: 'Videography' },
+      ],
+    }),
+    defineField({
       name: 'videographyEyebrow',
       title: 'Videography Tab Heading',
       type: 'string',
@@ -24,6 +39,7 @@ export default defineType({
     defineField({ name: 'ctaHeading', title: 'Heading', type: 'string', fieldset: 'cta' }),
     defineField({ name: 'ctaSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'cta' }),
     ...buttonFields('ctaButton', 'cta'),
+    ctaImageField(),
     seoField(),
   ],
   preview: {

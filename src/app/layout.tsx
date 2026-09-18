@@ -13,6 +13,7 @@ import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
 import { reviewsRatingQuery, settingsQuery } from '../../sanity/lib/queries';
 import { hasSanityImageAsset, urlFor } from '../../sanity/lib/client';
+import { faviconUrl } from '@/lib/favicon';
 import './globals.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,9 +28,7 @@ async function getSettings(): Promise<any> {
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
 
-  const faviconUrl = hasSanityImageAsset(settings?.favicon)
-    ? urlFor(settings.favicon).width(64).url()
-    : null;
+  const icon = (size: number) => faviconUrl(settings?.favicon, size);
 
   const name = settings?.title || SITE.name;
 
@@ -93,9 +92,16 @@ export async function generateMetadata(): Promise<Metadata> {
         'max-snippet': -1,
       },
     },
-    icons: {
-      icon: faviconUrl || '/favicon.ico',
-    },
+    // Without a Sanity favicon, browsers fall back to /favicon.ico (src/app/favicon.ico/route.ts).
+    icons: icon(32)
+      ? {
+          icon: [
+            { url: icon(32)!, sizes: '32x32', type: 'image/png' },
+            { url: icon(192)!, sizes: '192x192', type: 'image/png' },
+          ],
+          apple: [{ url: icon(180)!, sizes: '180x180', type: 'image/png' }],
+        }
+      : undefined,
     verification: {
       google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined,
     },
@@ -134,13 +140,35 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen bg-[#FAF7F2] text-[#0A1F44] antialiased">
         <AnalyticsConsentProvider>
-          <Navigation logoUrl={logoUrl} />
+          <Navigation
+            logoUrl={logoUrl}
+            navItems={settings?.navItems}
+            buttonLabel={settings?.headerButtonLabel}
+            buttonLink={settings?.headerButtonLink}
+            callLabel={settings?.mobileCallLabel}
+            phone={settings?.phone}
+          />
           <main className="min-h-screen">{children}</main>
           <Footer settings={settings} />
-          <StickyCTA />
+          <StickyCTA
+            phone={settings?.phone}
+            callIcon={settings?.stickyCallIcon}
+            callLabel={settings?.stickyCallLabel}
+            buttonIcon={settings?.stickyButtonIcon}
+            buttonLabel={settings?.stickyButtonLabel}
+            buttonLink={settings?.stickyButtonLink}
+          />
           <GoogleAnalytics />
           <MetaPixel />
-          <ConsentBanner />
+          <ConsentBanner
+            icon={settings?.cookieIcon}
+            title={settings?.cookieTitle}
+            text={settings?.cookieText}
+            acceptLabel={settings?.cookieAcceptLabel}
+            rejectLabel={settings?.cookieRejectLabel}
+            policyLabel={settings?.cookiePolicyLabel}
+            policyLink={settings?.cookiePolicyLink}
+          />
         </AnalyticsConsentProvider>
       </body>
     </html>

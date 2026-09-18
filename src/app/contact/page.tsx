@@ -7,6 +7,7 @@ import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
 import { toDialableNumber } from '@/lib/utils';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { contactPageQuery, settingsQuery } from '../../../sanity/lib/queries';
 import { Phone, Mail, Clock, MessageCircle } from 'lucide-react';
@@ -35,6 +36,10 @@ export default async function ContactPage() {
   const email = settings?.email || SITE.email;
   const instagramUrl = settings?.socialLinks?.instagram || SITE.social.instagram;
   const region = settings?.addressRegion || SITE.address.region;
+  const PhoneIcon = getIcon(data?.phoneIcon, Phone);
+  const EmailIcon = getIcon(data?.emailIcon, Mail);
+  const InstagramIcon = getIcon(data?.instagramIcon, MessageCircle);
+  const ServiceAreaIcon = getIcon(data?.serviceAreaIcon, Clock);
 
   return (
     <>
@@ -69,7 +74,7 @@ export default async function ContactPage() {
                   href={`tel:${phoneRaw}`}
                   className="flex items-start gap-4 p-4 border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
                 >
-                  <Phone className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
+                  <PhoneIcon className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-body font-medium text-[#0A1F44] text-sm">{data?.phoneTitle || 'Call Us'}</h3>
                     <p className="text-[#736D63] text-sm group-hover:text-[#C8A23D] transition-colors">{phone}</p>
@@ -81,7 +86,7 @@ export default async function ContactPage() {
                   href={`mailto:${email}`}
                   className="flex items-start gap-4 p-4 border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
                 >
-                  <Mail className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
+                  <EmailIcon className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-body font-medium text-[#0A1F44] text-sm">{data?.emailTitle || 'Email Us'}</h3>
                     <p className="text-[#736D63] text-sm group-hover:text-[#C8A23D] transition-colors">{email}</p>
@@ -95,7 +100,7 @@ export default async function ContactPage() {
                   rel="noopener noreferrer"
                   className="flex items-start gap-4 p-4 border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors group"
                 >
-                  <MessageCircle className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
+                  <InstagramIcon className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-body font-medium text-[#0A1F44] text-sm">{data?.instagramTitle || 'DM Us'}</h3>
                     <p className="text-[#736D63] text-sm group-hover:text-[#C8A23D] transition-colors">{data?.instagramHandle || '@geraldphotovideo'}</p>
@@ -104,7 +109,7 @@ export default async function ContactPage() {
                 </a>
 
                 <div className="flex items-start gap-4 p-4 border border-[#E5E0D8]">
-                  <Clock className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
+                  <ServiceAreaIcon className="h-5 w-5 text-[#C8A23D] shrink-0 mt-0.5" />
                   <div>
                     <h3 className="font-body font-medium text-[#0A1F44] text-sm">{data?.serviceAreaTitle || 'Service Area'}</h3>
                     <p className="text-[#736D63] text-sm">{region}</p>

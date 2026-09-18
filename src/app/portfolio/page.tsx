@@ -49,6 +49,8 @@ interface PortfolioPageData {
   ctaSubheading?: string;
   ctaButtonLabel?: string;
   ctaButtonLink?: string;
+  ctaImage?: any;
+  tabLabels?: Record<string, string | undefined>;
 }
 
 export default async function PortfolioPage() {
@@ -92,7 +94,9 @@ export default async function PortfolioPage() {
           subheading: portfolioData?.ctaSubheading,
           buttonLabel: portfolioData?.ctaButtonLabel,
           buttonLink: portfolioData?.ctaButtonLink,
+          image: portfolioData?.ctaImage,
         }}
+        tabLabels={portfolioData?.tabLabels}
       />
     </>
   );

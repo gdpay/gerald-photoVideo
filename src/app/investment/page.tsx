@@ -7,6 +7,7 @@ import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { Button } from '@/components/ui/button';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { investmentPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Check, Heart } from 'lucide-react';
@@ -115,6 +116,8 @@ export default async function InvestmentPage() {
   const addOns = data?.addOns?.length ? data.addOns : fallbackAddOns;
   const galleryImages = prepareGalleryImages(investmentGallery);
   const previewImages = galleryImages.length > 0 ? galleryImages : fallbackGalleryImages;
+  const FeatureIcon = getIcon(data?.featureIcon, Check);
+  const PaymentIcon = getIcon(data?.paymentIcon, Heart);
 
   return (
     <>
@@ -180,7 +183,7 @@ export default async function InvestmentPage() {
                 <ul className="space-y-3 mb-8">
                   {(collection.features || []).map((feature: string) => (
                     <li key={feature} className="flex items-start gap-3 text-sm text-[#736D63]">
-                      <Check className="h-4 w-4 text-[#C8A23D] shrink-0 mt-0.5" />
+                      <FeatureIcon className="h-4 w-4 text-[#C8A23D] shrink-0 mt-0.5" />
                       {feature}
                     </li>
                   ))}
@@ -220,7 +223,7 @@ export default async function InvestmentPage() {
 
       <SectionWrapper champagne>
         <Container narrow className="text-center">
-          <Heart className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
+          <PaymentIcon className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.paymentHeading || 'Flexible Payment Plans'}
           </h2>
@@ -237,6 +240,7 @@ export default async function InvestmentPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || "Let's Create Your Custom Collection"}
         subtitle={data?.ctaSubtitle || "Tell us about your vision and we'll design the perfect collection for you."}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Get Your Custom Quote', href: data?.ctaButtonLink || '/contact' }}

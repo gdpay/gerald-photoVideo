@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { cn, toDialableNumber } from '@/lib/utils';
 import { NAV_ITEMS, SITE } from '@/lib/constants';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
@@ -13,16 +13,27 @@ import Image from 'next/image';
 
 interface NavigationProps {
   logoUrl?: string | null;
+  navItems?: { label?: string; link?: string }[] | null;
+  buttonLabel?: string;
+  buttonLink?: string;
+  callLabel?: string;
+  phone?: string;
 }
 
-const desktopNavItems = NAV_ITEMS.filter((item) =>
+const defaultNavItems: { label: string; href: string }[] = NAV_ITEMS.filter((item) =>
   ['/', '/weddings', '/quinceaneras', '/engagements', '/portfolio', '/investment', '/about', '/blog', '/contact'].includes(item.href)
 );
 
-export function Navigation({ logoUrl }: NavigationProps) {
+export function Navigation({ logoUrl, navItems, buttonLabel, buttonLink, callLabel, phone }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const sanityNavItems = (navItems || [])
+    .filter((item) => item?.label && item?.link)
+    .map((item) => ({ label: item.label as string, href: item.link as string }));
+  const menuItems = sanityNavItems.length > 0 ? sanityNavItems : defaultNavItems;
+  const ctaLabel = buttonLabel || 'Check Availability';
+  const ctaHref = buttonLink || '/contact';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,13 +86,13 @@ export function Navigation({ logoUrl }: NavigationProps) {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-2">
-              {desktopNavItems.map((item) => {
+              {menuItems.map((item) => {
                 const isActive = item.href === '/portfolio'
                   ? pathname.startsWith('/portfolio')
                   : pathname === item.href;
                 return (
                   <Link
-                    key={item.href}
+                    key={`${item.label}-${item.href}`}
                     href={item.href}
                     className={cn(
                       'relative px-3 py-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 after:absolute after:bottom-0 after:left-3 after:h-px after:bg-[#C8A23D] after:transition-all after:duration-300',
@@ -98,10 +109,10 @@ export function Navigation({ logoUrl }: NavigationProps) {
                 <Button
                   variant="outline-light"
                   size="md"
-                  href="/contact"
+                  href={ctaHref}
                   className="h-11 border-[#C8A23D] px-6 text-[#C8A23D] hover:bg-[#C8A23D] hover:text-[#06112A]"
                 >
-                  Check Availability
+                  {ctaLabel}
                 </Button>
               </div>
             </div>
@@ -131,13 +142,13 @@ export function Navigation({ logoUrl }: NavigationProps) {
           >
             <div className="flex flex-col h-full p-6 pb-24 overflow-y-auto">
               <div className="flex-1 space-y-1">
-                {desktopNavItems.map((item, i) => {
+                {menuItems.map((item, i) => {
                   const isActive = item.href === '/portfolio'
                     ? pathname.startsWith('/portfolio')
                     : pathname === item.href;
                   return (
                     <motion.div
-                      key={item.href}
+                      key={`${item.label}-${item.href}`}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.05 }}
@@ -159,16 +170,16 @@ export function Navigation({ logoUrl }: NavigationProps) {
               </div>
               <div className="space-y-3 pt-6 border-t border-[#FAF7F2]/10">
                 <a
-                  href={`tel:${SITE.phoneRaw}`}
+                  href={`tel:${phone ? toDialableNumber(phone) : SITE.phoneRaw}`}
                   className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#8A1C3E] text-white rounded-lg font-body text-sm uppercase tracking-wider"
                 >
-                  Call {SITE.phone}
+                  {callLabel || 'Call'} {phone || SITE.phone}
                 </a>
                 <Link
-                  href="/contact"
+                  href={ctaHref}
                   className="block w-full py-3 px-4 bg-[#C8A23D] text-[#FAF7F2] rounded-lg font-body text-sm uppercase tracking-wider text-center"
                 >
-                  Check Availability
+                  {ctaLabel}
                 </Link>
               </div>
             </div>

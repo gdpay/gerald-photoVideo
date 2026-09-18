@@ -69,6 +69,7 @@ export function ServicesGrid({ services, galleries, eyebrow = 'Explore', heading
 
     return {
       ...service,
+      title: sanityService?.title || service.title,
       heroImage: galleryImage || sanityService?.heroImage,
       imageAlt: sanityGallery?.coverImage?.alt || sanityGallery?.images?.[0]?.alt || service.title,
       tagline: sanityService?.tagline || serviceTaglines[serviceId],

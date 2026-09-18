@@ -6,6 +6,7 @@ import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, portraitsPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
@@ -41,6 +42,7 @@ const fallbackSteps = [
 ];
 
 interface HighlightItem {
+  icon?: string;
   label: string;
   description?: string;
   desc?: string;
@@ -105,7 +107,7 @@ export default async function PortraitsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((item, index) => {
-              const Icon = highlightIcons[index % highlightIcons.length];
+              const Icon = getIcon(item.icon, highlightIcons[index % highlightIcons.length]);
               return (
                 <div
                   key={item.label}
@@ -143,6 +145,7 @@ export default async function PortraitsPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || 'Book Your Portrait Session'}
         subtitle={data?.ctaSubtitle || "Let's create beautiful portraits that celebrate you."}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}

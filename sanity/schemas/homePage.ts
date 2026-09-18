@@ -1,5 +1,14 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, eyebrowField, heroFields, section, seoField, testimonialsFields } from './shared';
+import {
+  buttonFields,
+  eyebrowField,
+  heroFields,
+  iconField,
+  iconPreview,
+  section,
+  seoField,
+  testimonialsFields,
+} from './shared';
 
 const collapsedGroup = { collapsible: true, collapsed: true };
 
@@ -120,26 +129,11 @@ export default defineType({
               type: 'object',
               fields: [
                 { name: 'label', type: 'string', title: 'Label' },
-                {
-                  name: 'icon',
-                  type: 'string',
-                  title: 'Icon',
-                  options: {
-                    list: [
-                      { title: 'Camera', value: 'Camera' },
-                      { title: 'Sparkles', value: 'Sparkles' },
-                      { title: 'HeartHandshake', value: 'HeartHandshake' },
-                      { title: 'Users', value: 'Users' },
-                      { title: 'Images', value: 'Images' },
-                      { title: 'Album', value: 'Album' },
-                      { title: 'Clock', value: 'Clock' },
-                      { title: 'MapPin', value: 'MapPin' },
-                    ],
-                  },
-                },
+                iconField(),
               ],
               preview: {
-                select: { title: 'label', subtitle: 'icon' },
+                select: { title: 'label', icon: 'icon' },
+                prepare: ({ title, icon }) => ({ title, media: iconPreview(icon) }),
               },
             },
           ],

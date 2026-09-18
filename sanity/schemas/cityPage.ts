@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity';
-import { ctaFields, heroFields, section, seoField, testimonialsFields } from './shared';
+import { ctaFields, heroFields, iconField, section, seoField, testimonialsFields } from './shared';
 
 // One document per local landing page (e.g. /omaha-wedding-photographer).
 export default defineType({
@@ -18,8 +18,10 @@ export default defineType({
     defineField({ name: 'city', title: 'City', type: 'string', readOnly: true }),
     defineField({ name: 'state', title: 'State', type: 'string', readOnly: true }),
     ...heroFields(),
+    iconField('introIcon', 'Icon', 'intro'),
     defineField({ name: 'introHeading', title: 'Heading', type: 'string', fieldset: 'intro' }),
     defineField({ name: 'introText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
+    iconField('servicesIcon', 'Icon', 'services'),
     defineField({ name: 'servicesHeading', title: 'Heading', type: 'string', fieldset: 'services' }),
     defineField({ name: 'servicesList', title: 'Services', type: 'array', of: [{ type: 'string' }], fieldset: 'services' }),
     ...testimonialsFields(),

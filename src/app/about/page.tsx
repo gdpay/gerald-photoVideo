@@ -7,20 +7,12 @@ import { SanityImage } from '@/components/shared/sanity-image';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { aboutPageQuery } from '../../../sanity/lib/queries';
-import { Camera, Heart, Star, Users, Award, Sparkles } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export const revalidate = 60;
-
-const iconMap: Record<string, React.ElementType> = {
-  Heart,
-  Camera,
-  Star,
-  Users,
-  Award,
-  Sparkles,
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getAboutData(): Promise<any> {
@@ -127,7 +119,7 @@ export default async function AboutPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value: { icon?: string; title: string; description: string }) => {
-              const Icon = iconMap[value.icon || 'Heart'] || Heart;
+              const Icon = getIcon(value.icon, Heart);
               return (
                 <div key={value.title} className="text-center">
                   <div className="flex items-center justify-center w-14 h-14 mx-auto mb-4 rounded-full bg-[#C8A23D]/10 border border-[#C8A23D]/20">
@@ -154,6 +146,7 @@ export default async function AboutPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaHeading || "We'd Love to Hear Your Story"}
         subtitle={data?.ctaSubheading || 'Get to know us better over a cup of coffee (or a video call).'}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Read Our Story', href: data?.ctaButtonLink || '/contact' }}

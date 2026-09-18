@@ -58,6 +58,8 @@ interface PortfolioPageData {
   ctaSubheading?: string;
   ctaButtonLabel?: string;
   ctaButtonLink?: string;
+  ctaImage?: any;
+  tabLabels?: Record<string, string | undefined>;
 }
 
 export default async function PortfolioCategoryPage({ params }: { params: { category: string } }) {
@@ -107,7 +109,9 @@ export default async function PortfolioCategoryPage({ params }: { params: { cate
           subheading: portfolioData?.ctaSubheading,
           buttonLabel: portfolioData?.ctaButtonLabel,
           buttonLink: portfolioData?.ctaButtonLink,
+          image: portfolioData?.ctaImage,
         }}
+        tabLabels={portfolioData?.tabLabels}
         initialCategory={CATEGORY_LABELS[category] || category}
       />
     </>

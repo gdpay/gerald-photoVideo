@@ -132,6 +132,7 @@ export default async function ReviewsPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={reviewsData?.ctaImage}
         title={reviewsData?.ctaTitle || 'Join Our Happy Clients'}
         subtitle={reviewsData?.ctaSubtitle || 'Ready to become part of the Gerald Photo Video family?'}
         primaryCTA={{ label: reviewsData?.ctaButtonLabel || 'Book Your Session', href: reviewsData?.ctaButtonLink || '/contact' }}

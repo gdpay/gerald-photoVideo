@@ -1,5 +1,14 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, eyebrowField, heroFields, section, seoField } from './shared';
+import {
+  buttonFields,
+  ctaImageField,
+  eyebrowField,
+  heroFields,
+  iconField,
+  iconPreview,
+  section,
+  seoField,
+} from './shared';
 
 export default defineType({
   name: 'aboutPage',
@@ -47,17 +56,13 @@ export default defineType({
         {
           type: 'object',
           fields: [
+            iconField(),
             { name: 'title', type: 'string', title: 'Title' },
             { name: 'description', type: 'text', title: 'Description', rows: 2 },
-            {
-              name: 'icon',
-              type: 'string',
-              title: 'Icon',
-              options: { list: ['Heart', 'Camera', 'Star', 'Users', 'Award', 'Sparkles'] },
-            },
           ],
           preview: {
-            select: { title: 'title', subtitle: 'description' },
+            select: { title: 'title', subtitle: 'description', icon: 'icon' },
+            prepare: ({ title, subtitle, icon }) => ({ title, subtitle, media: iconPreview(icon) }),
           },
         },
       ],
@@ -68,6 +73,7 @@ export default defineType({
     defineField({ name: 'ctaHeading', title: 'Heading', type: 'string', fieldset: 'cta' }),
     defineField({ name: 'ctaSubheading', title: 'Text', type: 'text', rows: 2, fieldset: 'cta' }),
     ...buttonFields('ctaButton', 'cta'),
+    ctaImageField(),
     seoField(),
   ],
   preview: {

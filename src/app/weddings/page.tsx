@@ -8,6 +8,7 @@ import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, featuredTestimonialsQuery, weddingsPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Video, Users, Clock, Heart, MapPin, ArrowRight } from 'lucide-react';
@@ -60,6 +61,7 @@ const fallbackSteps = [
 ];
 
 interface HighlightItem {
+  icon?: string;
   label: string;
   description?: string;
 }
@@ -181,7 +183,7 @@ export default async function WeddingsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((item, index) => {
-              const Icon = highlightIcons[index % highlightIcons.length];
+              const Icon = getIcon(item.icon, highlightIcons[index % highlightIcons.length]);
               return (
                 <div
                   key={item.label}
@@ -244,6 +246,7 @@ export default async function WeddingsPage() {
 
       {/* Check Availability CTA */}
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || "Let's Capture Your Love Story"}
         subtitle={data?.ctaSubtitle || 'Reach out to check availability and learn more about our wedding collections. We would love to hear from you.'}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}

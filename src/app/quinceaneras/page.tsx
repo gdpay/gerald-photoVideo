@@ -8,6 +8,7 @@ import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, featuredTestimonialsQuery, quinceanerasPageQuery } from '../../../sanity/lib/queries';
 import { Crown, Users, Sparkles, Heart, Star, Music } from 'lucide-react';
@@ -59,6 +60,7 @@ const fallbackSteps = [
 ];
 
 interface HighlightItem {
+  icon?: string;
   label: string;
   description?: string;
 }
@@ -180,7 +182,7 @@ export default async function QuinceanerasPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {traditions.map((item, index) => {
-              const Icon = traditionIcons[index % traditionIcons.length];
+              const Icon = getIcon(item.icon, traditionIcons[index % traditionIcons.length]);
               return (
                 <div
                   key={item.label}
@@ -237,6 +239,7 @@ export default async function QuinceanerasPage() {
 
       {/* Check Availability CTA */}
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || "Plan Her Dream Celebration"}
         subtitle={data?.ctaSubtitle || "Let's discuss how we can capture every beautiful moment of her special day. We would love to be part of this milestone."}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}

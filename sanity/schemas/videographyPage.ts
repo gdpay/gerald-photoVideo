@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, ctaFields, eyebrowField, heroFields, section, seoField } from './shared';
+import { buttonFields, ctaFields, eyebrowField, heroFields, iconField, iconPreview, section, seoField } from './shared';
 
 export default defineType({
   name: 'videographyPage',
@@ -65,17 +65,13 @@ export default defineType({
         {
           type: 'object',
           fields: [
+            iconField(),
             { name: 'label', type: 'string', title: 'Feature Name' },
             { name: 'description', type: 'text', title: 'Description', rows: 2 },
-            {
-              name: 'icon',
-              type: 'string',
-              title: 'Icon',
-              options: { list: ['Film', 'Camera', 'Drone', 'Music', 'Heart', 'Clock'] },
-            },
           ],
           preview: {
-            select: { title: 'label', subtitle: 'description' },
+            select: { title: 'label', subtitle: 'description', icon: 'icon' },
+            prepare: ({ title, subtitle, icon }) => ({ title, subtitle, media: iconPreview(icon) }),
           },
         },
       ],

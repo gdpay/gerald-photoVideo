@@ -4,8 +4,21 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Phone, MessageCircle } from 'lucide-react';
 import { SITE } from '@/lib/constants';
+import { getIcon } from '@/lib/icons';
+import { toDialableNumber } from '@/lib/utils';
 
-export function StickyCTA() {
+interface StickyCTAProps {
+  phone?: string;
+  callLabel?: string;
+  callIcon?: string;
+  buttonLabel?: string;
+  buttonLink?: string;
+  buttonIcon?: string;
+}
+
+export function StickyCTA({ phone, callLabel, callIcon, buttonLabel, buttonLink, buttonIcon }: StickyCTAProps) {
+  const CallIcon = getIcon(callIcon, Phone);
+  const ButtonIcon = getIcon(buttonIcon, MessageCircle);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -22,18 +35,18 @@ export function StickyCTA() {
     <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden animate-fade-in-up">
       <div className="flex items-stretch bg-[#0A1F44]/98 backdrop-blur-xl border-t border-[#C8A23D]/20">
         <a
-          href={`tel:${SITE.phoneRaw}`}
+          href={`tel:${phone ? toDialableNumber(phone) : SITE.phoneRaw}`}
           className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-body uppercase tracking-wider text-white bg-[#8A1C3E] hover:bg-[#6E1532] transition-colors"
         >
-          <Phone className="h-4 w-4" />
-          Call Now
+          <CallIcon className="h-4 w-4" />
+          {callLabel || 'Call Now'}
         </a>
         <Link
-          href="/contact"
+          href={buttonLink || '/contact'}
           className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-body uppercase tracking-wider text-[#FAF7F2] bg-[#C8A23D] hover:bg-[#A8842E] transition-colors"
         >
-          <MessageCircle className="h-4 w-4" />
-          Check Availability
+          <ButtonIcon className="h-4 w-4" />
+          {buttonLabel || 'Check Availability'}
         </Link>
       </div>
     </div>

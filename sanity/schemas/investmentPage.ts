@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, ctaFields, heroFields, section, seoField } from './shared';
+import { buttonFields, ctaFields, heroFields, iconField, section, seoField } from './shared';
 
 export default defineType({
   name: 'investmentPage',
@@ -49,11 +49,13 @@ export default defineType({
         },
       ],
     }),
+    iconField('featureIcon', 'Icon Before Each Feature', 'collections'),
     defineField({ name: 'popularBadgeLabel', title: '"Most Popular" Badge Text', type: 'string', fieldset: 'collections' }),
     defineField({ name: 'priceIntroLabel', title: 'Text Above the Price', type: 'string', description: 'e.g. "Starting At".', fieldset: 'collections' }),
     ...buttonFields('collectionButton', 'collections', 'Card Button'),
     defineField({ name: 'addOnsHeading', title: 'Heading', type: 'string', fieldset: 'addOns' }),
     defineField({ name: 'addOns', title: 'Add-Ons', type: 'array', of: [{ type: 'string' }], fieldset: 'addOns' }),
+    iconField('paymentIcon', 'Icon', 'payment'),
     defineField({ name: 'paymentHeading', title: 'Heading', type: 'string', fieldset: 'payment' }),
     defineField({ name: 'paymentText', title: 'Text', type: 'text', rows: 3, fieldset: 'payment' }),
     ...buttonFields('paymentButton', 'payment', 'Link'),

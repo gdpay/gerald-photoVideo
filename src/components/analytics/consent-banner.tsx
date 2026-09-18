@@ -5,8 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAnalyticsConsent } from './meta-pixel-provider';
 import type { ConsentState } from '@/lib/analytics/types';
 import { Shield, X } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
-export function ConsentBanner() {
+interface ConsentBannerProps {
+  icon?: string;
+  title?: string;
+  text?: string;
+  acceptLabel?: string;
+  rejectLabel?: string;
+  policyLabel?: string;
+  policyLink?: string;
+}
+
+export function ConsentBanner({ icon, title, text, acceptLabel, rejectLabel, policyLabel, policyLink }: ConsentBannerProps) {
+  const Icon = getIcon(icon, Shield);
   const [isVisible, setIsVisible] = useState(false);
   const { consent, setConsent } = useAnalyticsConsent();
 
@@ -57,36 +69,34 @@ export function ConsentBanner() {
             <div className="p-6">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 mt-0.5">
-                  <Shield className="h-5 w-5 text-[#C8A23D]" />
+                  <Icon className="h-5 w-5 text-[#C8A23D]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-[#FAF7F2] font-heading text-lg mb-2">
-                    Cookie Preferences
+                    {title || 'Cookie Preferences'}
                   </h3>
                   <p className="text-[#D4CEC4] text-sm leading-relaxed mb-4">
-                    We use cookies to enhance your experience and analyze site traffic.
-                    Analytics cookies help us understand how visitors interact with our website,
-                    while marketing cookies enable personalized advertisements on Facebook and Instagram.
-                    You can choose which cookies to accept.
+                    {text ||
+                      'We use cookies to enhance your experience and analyze site traffic. Analytics cookies help us understand how visitors interact with our website, while marketing cookies enable personalized advertisements on Facebook and Instagram. You can choose which cookies to accept.'}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     <button
                       onClick={handleAcceptAll}
                       className="px-5 py-2 bg-[#C8A23D] text-[#0A1F44] text-sm font-body uppercase tracking-wider hover:bg-[#A8842E] transition-colors"
                     >
-                      Accept All
+                      {acceptLabel || 'Accept All'}
                     </button>
                     <button
                       onClick={handleRejectAll}
                       className="px-5 py-2 border border-[#736D63] text-[#D4CEC4] text-sm font-body uppercase tracking-wider hover:border-[#C8A23D] hover:text-[#C8A23D] transition-colors"
                     >
-                      Reject All
+                      {rejectLabel || 'Reject All'}
                     </button>
                     <a
-                      href="/privacy"
+                      href={policyLink || '/privacy'}
                       className="px-5 py-2 text-[#A39D93] text-sm font-body uppercase tracking-wider hover:text-[#C8A23D] transition-colors"
                     >
-                      Privacy Policy
+                      {policyLabel || 'Privacy Policy'}
                     </a>
                   </div>
                 </div>

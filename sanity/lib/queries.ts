@@ -122,8 +122,31 @@ export const settingsQuery = `*[_id == "siteSettings"][0] {
   socialLinks,
   addressRegion,
   footerTagline,
+  footerServingLabel,
   footerNote,
+  footerConnectHeading,
+  footerContactHeading,
+  footerEmailIcon,
+  footerPhoneIcon,
   availabilityButtonLabel,
+  availabilityButtonLink,
+  copyrightText,
+  navItems,
+  headerButtonLabel,
+  headerButtonLink,
+  mobileCallLabel,
+  stickyCallIcon,
+  stickyCallLabel,
+  stickyButtonIcon,
+  stickyButtonLabel,
+  stickyButtonLink,
+  cookieIcon,
+  cookieTitle,
+  cookieText,
+  cookieAcceptLabel,
+  cookieRejectLabel,
+  cookiePolicyLabel,
+  cookiePolicyLink,
   logo,
   favicon
 }`;
@@ -234,7 +257,8 @@ const servicePageFields = `
   ctaButtonLabel,
   ctaButtonLink,
   ctaSecondaryButtonLabel,
-  ctaSecondaryButtonLink
+  ctaSecondaryButtonLink,
+  ctaImage
 `;
 
 export const weddingsPageQuery = `*[_id == "weddingsPage"][0] {${servicePageFields}}`;
@@ -261,7 +285,8 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   ctaHeading,
   ctaSubheading,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // Investment Page
@@ -275,12 +300,14 @@ export const investmentPageQuery = `*[_type == "investmentPage"][0] {
   galleryButtonLabel,
   galleryButtonLink,
   collections,
+  featureIcon,
   popularBadgeLabel,
   priceIntroLabel,
   collectionButtonLabel,
   collectionButtonLink,
   addOnsHeading,
   addOns,
+  paymentIcon,
   paymentHeading,
   paymentText,
   paymentButtonLabel,
@@ -288,7 +315,8 @@ export const investmentPageQuery = `*[_type == "investmentPage"][0] {
   ctaTitle,
   ctaSubtitle,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // FAQ Page
@@ -301,7 +329,8 @@ export const faqPageQuery = `*[_type == "faqPage"][0] {
   ctaTitle,
   ctaSubtitle,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // Engagements Page
@@ -319,9 +348,12 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
+  ctaImage,
   locationsHeading,
   locationsSubheading,
+  locationsIcon,
   locations,
+  bundleIcon,
   bundleHeading,
   bundleText,
   bundleButtonLabel,
@@ -352,6 +384,7 @@ export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
+  ctaImage,
   portfolioFeature {
     images[] {
       asset->,
@@ -405,7 +438,8 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
   ctaTitle,
   ctaSubtitle,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // Portfolio Page
@@ -414,11 +448,13 @@ export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
   heroHeading,
   heroSubheading,
   heroImage,
+  tabLabels,
   videographyEyebrow,
   ctaHeading,
   ctaSubheading,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // Reviews Page
@@ -433,7 +469,8 @@ export const reviewsPageQuery = `*[_type == "reviewsPage"][0] {
   ctaTitle,
   ctaSubtitle,
   ctaButtonLabel,
-  ctaButtonLink
+  ctaButtonLink,
+  ctaImage
 }`;
 
 // Average rating (edited on the Reviews Page, also used for Google's structured data)
@@ -462,16 +499,21 @@ export const contactPageQuery = `*[_id == "contactPage"][0] {
   heroSubheading,
   heroImage,
   detailsHeading,
+  phoneIcon,
   phoneTitle,
   phoneNote,
+  emailIcon,
   emailTitle,
   emailNote,
+  instagramIcon,
   instagramTitle,
   instagramHandle,
   instagramNote,
+  serviceAreaIcon,
   serviceAreaTitle,
   serviceAreaNote,
   bookingNote,
+  thankYouIcon,
   thankYouHeading,
   thankYouText,
   thankYouNote,
@@ -488,8 +530,10 @@ export const cityPageQuery = (slug: string) =>
     heroHeading,
     heroSubheading,
     heroImage,
+    introIcon,
     introHeading,
     introText,
+    servicesIcon,
     servicesHeading,
     servicesList,
     testimonialsEyebrow,
@@ -499,7 +543,8 @@ export const cityPageQuery = (slug: string) =>
     ctaTitle,
     ctaSubtitle,
     ctaButtonLabel,
-    ctaButtonLink
+    ctaButtonLink,
+    ctaImage
   }`;
 
 // Reviews Page (testimonials with ordering)

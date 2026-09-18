@@ -1,46 +1,11 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '@/components/sections/page-hero';
-import { SectionWrapper } from '@/components/shared/section-wrapper';
-import { Container } from '@/components/shared/container';
 import { CTASection } from '@/components/sections/cta-section';
+import { FAQAccordion, type FAQCategory } from '@/components/sections/faq-accordion';
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/schema-scripts';
-import { ChevronDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { client } from '../../../sanity/lib/client';
+import { faqPageQuery } from '../../../sanity/lib/queries';
 
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface FAQCategory {
-  category: string;
-  questions: FAQItem[];
-}
-
-interface FAQHero {
-  tagline?: string;
-  title: string;
-  subtitle?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  imageSource?: any;
-}
-
-interface FAQCta {
-  title: string;
-  subtitle: string;
-  buttonLabel: string;
-  buttonLink: string;
-}
-
-const fallbackCta: FAQCta = {
-  title: 'Still Have Questions?',
-  subtitle: "We're happy to answer anything else you'd like to know.",
-  buttonLabel: 'Contact Us',
-  buttonLink: '/contact',
-};
+export const revalidate = 60;
 
 const fallbackData: FAQCategory[] = [
   {
@@ -85,39 +50,9 @@ const fallbackData: FAQCategory[] = [
   },
 ];
 
-export default function FAQPage() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [faqData, setFaqData] = useState<FAQCategory[]>(fallbackData);
-  const [hero, setHero] = useState<FAQHero>({
-    title: 'Frequently Asked Questions',
-    subtitle: 'Everything you need to know about working with us.',
-  });
-  const [cta, setCta] = useState<FAQCta>(fallbackCta);
-
-  useEffect(() => {
-    fetch('/api/faq')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.categories?.length) {
-          setFaqData(data.categories);
-        }
-        setHero({
-          tagline: data?.heroTagline,
-          title: data?.heroHeading || 'Frequently Asked Questions',
-          subtitle: data?.heroSubheading || 'Everything you need to know about working with us.',
-          imageSource: data?.heroImage,
-        });
-        setCta({
-          title: data?.ctaTitle || fallbackCta.title,
-          subtitle: data?.ctaSubtitle || fallbackCta.subtitle,
-          buttonLabel: data?.ctaButtonLabel || fallbackCta.buttonLabel,
-          buttonLink: data?.ctaButtonLink || fallbackCta.buttonLink,
-        });
-      })
-      .catch(() => {});
-  }, []);
-
-  const flatFaqs = faqData.flatMap((cat) => cat.questions);
+export default async function FAQPage() {
+  const data = await client.fetch(faqPageQuery).catch(() => null);
+  const categories: FAQCategory[] = data?.categories?.length ? data.categories : fallbackData;
 
   return (
     <>
@@ -125,69 +60,22 @@ export default function FAQPage() {
         { name: 'Home', url: '/' },
         { name: 'FAQ', url: '/faq' },
       ]} />
-      <FAQSchema faqs={flatFaqs} />
+      <FAQSchema faqs={categories.flatMap((cat) => cat.questions)} />
       <PageHero
-        tagline={hero.tagline}
-        title={hero.title}
-        subtitle={hero.subtitle}
-        imageSource={hero.imageSource}
+        tagline={data?.heroTagline}
+        title={data?.heroHeading || 'Frequently Asked Questions'}
+        subtitle={data?.heroSubheading || 'Everything you need to know about working with us.'}
+        imageSource={data?.heroImage}
         imageUrl="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80"
       />
 
-      <SectionWrapper>
-        <Container narrow>
-          {faqData.map((category) => (
-            <div key={category.category} className="mb-12 last:mb-0">
-              <h2 className="font-heading text-2xl text-[#C8A23D] mb-6">{category.category}</h2>
-              <div className="space-y-2">
-                {category.questions.map((item, idx) => {
-                  const globalIndex = flatFaqs.indexOf(item);
-                  const isOpen = openIndex === globalIndex;
-                  return (
-                    <div
-                      key={idx}
-                      className="border border-[#E5E0D8] overflow-hidden"
-                    >
-                      <button
-                        onClick={() => setOpenIndex(isOpen ? null : globalIndex)}
-                        className="w-full flex items-center justify-between p-5 text-left text-[#0A1F44]/80 hover:text-[#C8A23D] transition-colors"
-                      >
-                        <span className="font-body font-medium">{item.question}</span>
-                        <ChevronDown
-                          className={cn(
-                            'h-4 w-4 shrink-0 text-[#A39D93] transition-transform duration-300',
-                            isOpen && 'rotate-180'
-                          )}
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                          >
-                            <p className="px-5 pb-5 text-sm text-[#736D63] leading-relaxed">
-                              {item.answer}
-                            </p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </Container>
-      </SectionWrapper>
+      <FAQAccordion categories={categories} />
 
       <CTASection
-        title={cta.title}
-        subtitle={cta.subtitle}
-        primaryCTA={{ label: cta.buttonLabel, href: cta.buttonLink }}
+        imageSource={data?.ctaImage}
+        title={data?.ctaTitle || 'Still Have Questions?'}
+        subtitle={data?.ctaSubtitle || "We're happy to answer anything else you'd like to know."}
+        primaryCTA={{ label: data?.ctaButtonLabel || 'Contact Us', href: data?.ctaButtonLink || '/contact' }}
       />
     </>
   );

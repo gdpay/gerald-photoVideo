@@ -4,6 +4,7 @@ import {
   cardsField,
   ctaFields,
   heroFields,
+  iconField,
   portfolioFeatureField,
   section,
   seoField,
@@ -33,6 +34,7 @@ export default defineType({
     cardsField('highlights', 'highlights'),
     defineField({ name: 'locationsHeading', title: 'Heading', type: 'string', fieldset: 'locations' }),
     defineField({ name: 'locationsSubheading', title: 'Text', type: 'string', fieldset: 'locations' }),
+    iconField('locationsIcon', 'Icon on Each Location', 'locations'),
     defineField({
       name: 'locations',
       title: 'Locations',
@@ -52,6 +54,7 @@ export default defineType({
     }),
     defineField({ name: 'stepsHeading', title: 'Heading', type: 'string', fieldset: 'steps' }),
     stepsField('steps', 'steps'),
+    iconField('bundleIcon', 'Icon', 'bundle'),
     defineField({ name: 'bundleHeading', title: 'Heading', type: 'string', fieldset: 'bundle' }),
     defineField({ name: 'bundleText', title: 'Text', type: 'text', rows: 2, fieldset: 'bundle' }),
     ...buttonFields('bundleButton', 'bundle', 'Link'),

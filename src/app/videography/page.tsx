@@ -7,20 +7,12 @@ import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema, VideoSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { videographyPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
-import { Film, Camera, Drone, Music, Heart, Clock } from 'lucide-react';
+import { Film } from 'lucide-react';
 
 export const revalidate = 60;
-
-const iconMap: Record<string, React.ElementType> = {
-  Film,
-  Camera,
-  Drone,
-  Music,
-  Heart,
-  Clock,
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getVideographyData(): Promise<any> {
@@ -208,7 +200,7 @@ export default async function VideographyPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((item: { icon?: string; label: string; description: string }) => {
-              const Icon = iconMap[item.icon || 'Film'] || Film;
+              const Icon = getIcon(item.icon, Film);
               return (
                 <div
                   key={item.label}
@@ -242,6 +234,7 @@ export default async function VideographyPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || 'Book Your Wedding Film'}
         subtitle={data?.ctaSubtitle || "Let's create a cinematic keepsake you'll treasure for generations."}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}

@@ -52,7 +52,11 @@ interface PortfolioClientProps {
     subheading?: string;
     buttonLabel?: string;
     buttonLink?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    image?: any;
   };
+  // Tab names from Sanity, keyed by category slug ("all", "weddings", ...)
+  tabLabels?: Record<string, string | undefined> | null;
   initialCategory?: string;
 }
 
@@ -62,6 +66,7 @@ export function PortfolioClient({
   videographyVideos = [],
   videographyEyebrow = 'Cinematic Films',
   cta = {},
+  tabLabels,
   initialCategory,
 }: PortfolioClientProps) {
   const pathname = usePathname();
@@ -135,7 +140,7 @@ export function PortfolioClient({
                     : 'text-[#736D63] border border-[#D4CEC4] hover:border-[#C8A23D]/50 hover:text-[#C8A23D]'
                 )}
               >
-                {cat}
+                {tabLabels?.[categorySlugMap[cat] || 'all'] || cat}
               </button>
             ))}
           </div>
@@ -274,6 +279,7 @@ export function PortfolioClient({
       </AnimatePresence>
 
       <CTASection
+        imageSource={cta.image}
         title={cta.heading || 'Ready to Create Your Own Gallery?'}
         subtitle={cta.subheading || "Let's work together to create images you'll love."}
         primaryCTA={{ label: cta.buttonLabel || 'Get Started', href: cta.buttonLink || '/contact' }}

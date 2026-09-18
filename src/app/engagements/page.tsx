@@ -6,6 +6,7 @@ import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { engagementsPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
@@ -80,6 +81,7 @@ const fallbackSteps = [
 ];
 
 interface HighlightItem {
+  icon?: string;
   label: string;
   description?: string;
   desc?: string;
@@ -107,6 +109,8 @@ export default async function EngagementsPage() {
   const highlights: HighlightItem[] = data?.highlights?.length ? data.highlights : fallbackHighlights;
   const steps: StepItem[] = data?.steps?.length ? data.steps : fallbackSteps;
   const portfolioFeatureImages = preparePortfolioFeatureImages(data?.portfolioFeature, engagementGallery);
+  const LocationIcon = getIcon(data?.locationsIcon, MapPin);
+  const BundleIcon = getIcon(data?.bundleIcon, Heart);
 
   return (
     <>
@@ -143,7 +147,7 @@ export default async function EngagementsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((item, index) => {
-              const Icon = highlightIcons[index % highlightIcons.length];
+              const Icon = getIcon(item.icon, highlightIcons[index % highlightIcons.length]);
               return (
                 <div
                   key={item.label}
@@ -173,7 +177,7 @@ export default async function EngagementsPage() {
                 key={loc.name}
                 className="p-6 bg-[#FAF7F2] border border-[#E5E0D8] hover:border-[#C8A23D]/30 transition-colors"
               >
-                <MapPin className="h-5 w-5 text-[#C8A23D] mb-3" />
+                <LocationIcon className="h-5 w-5 text-[#C8A23D] mb-3" />
                 <h3 className="font-heading text-xl text-[#0A1F44] mb-1">{loc.name}</h3>
                 <p className="text-sm text-[#A39D93] mb-2">{loc.area || loc.location}</p>
                 <p className="text-sm text-[#736D63]">{loc.description}</p>
@@ -206,7 +210,7 @@ export default async function EngagementsPage() {
 
       <SectionWrapper>
         <Container narrow className="text-center">
-          <Heart className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
+          <BundleIcon className="h-8 w-8 text-[#C8A23D]/50 mx-auto mb-4" />
           <h2 className="font-heading text-3xl md:text-4xl text-[#0A1F44] mb-4">
             {data?.bundleHeading || 'Book Your Engagement + Wedding Together'}
           </h2>
@@ -223,6 +227,7 @@ export default async function EngagementsPage() {
       </SectionWrapper>
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || 'Capture This Season of Love'}
         subtitle={data?.ctaSubtitle || "Let's plan an engagement session that reflects your unique story."}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Book Your Session', href: data?.ctaButtonLink || '/contact' }}

@@ -11,6 +11,7 @@ import { SITE } from '@/lib/constants';
 import { client } from '../../../sanity/lib/client';
 import { cityPageQuery, featuredTestimonialsQuery, trustStatsQuery } from '../../../sanity/lib/queries';
 import { MapPin, Camera } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 interface LocalSEOPageProps {
   city: string;
@@ -48,6 +49,8 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
         `Engagement & Couple Portraits in ${city}`,
         `Cinematic Wedding Films in ${city}`,
       ];
+  const IntroIcon = getIcon(data?.introIcon, MapPin);
+  const ServicesIcon = getIcon(data?.servicesIcon, Camera);
 
   return (
     <>
@@ -66,7 +69,7 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
       <SectionWrapper>
         <Container narrow>
           <div className="flex items-start gap-4 mb-8">
-            <MapPin className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
+            <IntroIcon className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
               <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
                 {data?.introHeading || `Proudly Serving ${city}, ${state}`}
@@ -78,7 +81,7 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
           </div>
 
           <div className="flex items-start gap-4">
-            <Camera className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
+            <ServicesIcon className="h-6 w-6 text-[#C8A23D] shrink-0 mt-1" />
             <div>
               <h2 className="font-heading text-2xl text-[#0A1F44] mb-2">
                 {data?.servicesHeading || `Our ${city} Photography Services`}
@@ -106,6 +109,7 @@ export async function LocalSEOPage({ city, state, slug }: LocalSEOPageProps) {
       />
 
       <CTASection
+        imageSource={data?.ctaImage}
         title={data?.ctaTitle || `Book Your ${city} Session`}
         subtitle={data?.ctaSubtitle || `Let's create something beautiful together in ${city}, ${state}.`}
         primaryCTA={{ label: data?.ctaButtonLabel || 'Check Availability', href: data?.ctaButtonLink || '/contact' }}

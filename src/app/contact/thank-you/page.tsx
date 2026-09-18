@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { generateMetadata } from '@/lib/seo-metadata';
 import { ThankYouTracker } from '@/components/analytics/thank-you-tracker';
 import { Heart } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 import { client } from '../../../../sanity/lib/client';
 import { contactPageQuery } from '../../../../sanity/lib/queries';
 
@@ -16,13 +17,14 @@ export const metadata: Metadata = generateMetadata({
 
 export default async function ThankYouPage() {
   const data = await client.fetch(contactPageQuery).catch(() => null);
+  const Icon = getIcon(data?.thankYouIcon, Heart);
 
   return (
     <>
       <ThankYouTracker />
       <SectionWrapper className="min-h-[80vh] flex items-center">
         <Container narrow className="text-center">
-          <Heart className="h-12 w-12 text-[#C8A23D]/50 mx-auto mb-6" />
+          <Icon className="h-12 w-12 text-[#C8A23D]/50 mx-auto mb-6" />
           <h1 className="font-heading text-4xl md:text-5xl text-[#0A1F44] mb-4">
             {data?.thankYouHeading || 'Thank You!'}
           </h1>
