@@ -1,5 +1,15 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, ctaFields, eyebrowField, heroFields, iconField, iconPreview, section, seoField } from './shared';
+import {
+  buttonFields,
+  ctaFields,
+  eyebrowField,
+  galleryImagesField,
+  heroFields,
+  iconField,
+  iconPreview,
+  section,
+  seoField,
+} from './shared';
 
 export default defineType({
   name: 'videographyPage',
@@ -54,6 +64,7 @@ export default defineType({
         defineField({ name: 'poster', title: 'Thumbnail / Poster Image', type: 'image', options: { hotspot: true } }),
       ],
     }),
+    galleryImagesField('Videography'),
     ...buttonFields('galleryButton', 'gallery'),
     defineField({ name: 'featuresHeading', title: 'Heading', type: 'string', fieldset: 'features' }),
     defineField({

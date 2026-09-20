@@ -14,6 +14,13 @@ export default defineType({
   fields: [
     ...heroFields(),
     defineField({ name: 'readMoreLabel', title: '"Read More" Link Text', type: 'string', fieldset: 'posts' }),
+    defineField({
+      name: 'postBackLabel',
+      title: '"Back to Blog" Link Text',
+      type: 'string',
+      description: 'Shown at the top of every post.',
+      fieldset: 'posts',
+    }),
     defineField({ name: 'postCtaTitle', title: 'Heading', type: 'string', fieldset: 'postCta' }),
     defineField({ name: 'postCtaSubtitle', title: 'Text', type: 'text', rows: 2, fieldset: 'postCta' }),
     ...buttonFields('postCtaButton', 'postCta'),

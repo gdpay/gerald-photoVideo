@@ -2,16 +2,20 @@
 
 import Script from 'next/script';
 
-export function HoneyBookContactWidget() {
+const DEFAULT_PLACEMENT_ID = '6114bdf5ebea570007a102fd';
+
+export function HoneyBookContactWidget({ placementId }: { placementId?: string }) {
+  const pid = placementId || DEFAULT_PLACEMENT_ID;
+
   return (
     <>
-      <div className="hb-p-6114bdf5ebea570007a102fd-1" />
+      <div className={`hb-p-${pid}-1`} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         height="1"
         width="1"
         style={{ display: 'none' }}
-        src="https://www.honeybook.com/p.png?pid=6114bdf5ebea570007a102fd"
+        src={`https://www.honeybook.com/p.png?pid=${pid}`}
         alt=""
       />
       <Script id="honeybook-contact-widget" strategy="afterInteractive">
@@ -25,7 +29,7 @@ export function HoneyBookContactWidget() {
             t.src = n;
             e = b.getElementsByTagName(s)[0];
             e.parentNode.insertBefore(t,e);
-          })(window,document,"script","https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js","6114bdf5ebea570007a102fd");
+          })(window,document,"script","https://widget.honeybook.com/assets_users_production/websiteplacements/placement-controller.min.js","${pid.replace(/[^a-zA-Z0-9]/g, '')}");
         `}
       </Script>
     </>

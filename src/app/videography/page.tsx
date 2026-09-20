@@ -24,13 +24,12 @@ async function getVideographyData(): Promise<any> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 3);
+function prepareGalleryImages(images: any[] | undefined, fallbackAlt?: string) {
+  if (!images?.length) return [];
   const spans = ['large', 'tall', 'wide'] as const;
-  return images.map((img: any, i: number) => ({
+  return images.slice(0, 3).map((img: any, i: number) => ({
     source: img,
-    alt: img.alt || gallery.title,
+    alt: img.alt || fallbackAlt,
     span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
   }));
 }
@@ -72,7 +71,10 @@ export default async function VideographyPage() {
   ]);
 
   const features = data?.features?.length ? data.features : fallbackFeatures;
-  const galleryImages = prepareGalleryImages(videographyGallery);
+  const galleryImages = prepareGalleryImages(
+    data?.galleryImages?.length ? data.galleryImages : videographyGallery?.images,
+    videographyGallery?.title
+  );
   const featuredVideo = data?.featuredVideo?.url ? data.featuredVideo : fallbackFeaturedVideo;
   const showcaseVideos = data?.videos?.length ? data.videos.filter((v: any) => v?.url) : [];
 

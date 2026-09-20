@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: Props) {
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-[#A39D93] hover:text-[#C8A23D] transition-colors mb-8"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to Blog
+            <ArrowLeft className="h-4 w-4" /> {blogPage?.postBackLabel || 'Back to Blog'}
           </Link>
 
           <div className="flex items-center gap-4 mb-4">

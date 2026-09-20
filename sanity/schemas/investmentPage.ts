@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity';
-import { buttonFields, ctaFields, heroFields, iconField, section, seoField } from './shared';
+import { buttonFields, ctaFields, galleryImagesField, heroFields, iconField, section, seoField } from './shared';
 
 export default defineType({
   name: 'investmentPage',
@@ -20,6 +20,7 @@ export default defineType({
     ...heroFields(),
     defineField({ name: 'philosophyText', title: 'Text', type: 'text', rows: 4, fieldset: 'intro' }),
     defineField({ name: 'philosophyNote', title: 'Small Note', type: 'string', fieldset: 'intro' }),
+    galleryImagesField('Investment'),
     ...buttonFields('galleryButton', 'gallery'),
     defineField({
       name: 'collections',

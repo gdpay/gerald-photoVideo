@@ -123,7 +123,9 @@ export const settingsQuery = `*[_id == "siteSettings"][0] {
   addressRegion,
   footerTagline,
   footerServingLabel,
+  footerCities,
   footerNote,
+  contactFormId,
   footerConnectHeading,
   footerContactHeading,
   footerEmailIcon,
@@ -147,6 +149,13 @@ export const settingsQuery = `*[_id == "siteSettings"][0] {
   cookieRejectLabel,
   cookiePolicyLabel,
   cookiePolicyLink,
+  notFoundHeading,
+  notFoundText,
+  notFoundButtonLabel,
+  notFoundButtonLink,
+  notFoundSecondButtonLabel,
+  notFoundSecondButtonLink,
+  notFoundLinksHeading,
   logo,
   favicon
 }`;
@@ -228,6 +237,11 @@ const servicePageFields = `
   heroImage,
   introEyebrow,
   introText,
+  galleryImages[] {
+    asset->,
+    alt,
+    caption
+  },
   galleryButtonLabel,
   galleryButtonLink,
   stepsEyebrow,
@@ -297,6 +311,11 @@ export const investmentPageQuery = `*[_type == "investmentPage"][0] {
   heroImage,
   philosophyText,
   philosophyNote,
+  galleryImages[] {
+    asset->,
+    alt,
+    caption
+  },
   galleryButtonLabel,
   galleryButtonLink,
   collections,
@@ -416,6 +435,11 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
       alt
     }
   },
+  galleryImages[] {
+    asset->,
+    alt,
+    caption
+  },
   galleryButtonLabel,
   galleryButtonLink,
   featuresHeading,
@@ -486,6 +510,7 @@ export const blogPageQuery = `*[_id == "blogPage"][0] {
   heroSubheading,
   heroImage,
   readMoreLabel,
+  postBackLabel,
   postCtaTitle,
   postCtaSubtitle,
   postCtaButtonLabel,

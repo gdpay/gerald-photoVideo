@@ -24,6 +24,12 @@ export function Footer({ settings }: { settings?: any }) {
   const footerTagline = settings?.footerTagline || "Timeless photography and cinematic films for life's most beautiful moments.";
   const footerNote = settings?.footerNote || 'and surrounding areas.';
   const availabilityLabel = settings?.availabilityButtonLabel || 'Check Availability';
+  const sanityCities: { label: string; link: string }[] = (settings?.footerCities || [])
+    .filter((city: { label?: string; link?: string }) => city?.label && city?.link)
+    .map((city: { label: string; link: string }) => ({ label: city.label, link: city.link }));
+  const cities = sanityCities.length > 0
+    ? sanityCities
+    : LOCAL_CITIES.slice(0, 4).map((city) => ({ label: city.name, link: `/${city.slug}-wedding-photographer` }));
   const EmailIcon = getIcon(settings?.footerEmailIcon, Mail);
   const PhoneIcon = getIcon(settings?.footerPhoneIcon, Phone);
 
@@ -56,12 +62,12 @@ export function Footer({ settings }: { settings?: any }) {
               {settings?.footerServingLabel || 'Serving'} {settings?.addressRegion || 'Nebraska & Iowa'}
             </h4>
             <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-0.5 font-body text-[11px] text-[#FAF7F2]/82 xl:flex-nowrap">
-              {LOCAL_CITIES.slice(0, 4).map((city, index) => (
-                <span key={city.slug} className="inline-flex items-center gap-2 whitespace-nowrap">
-                  <Link href={`/${city.slug}-wedding-photographer`} className="transition hover:text-[#C8A23D]">
-                    {city.name}
+              {cities.map((city, index) => (
+                <span key={`${city.label}-${city.link}`} className="inline-flex items-center gap-2 whitespace-nowrap">
+                  <Link href={city.link} className="transition hover:text-[#C8A23D]">
+                    {city.label}
                   </Link>
-                  {index < 3 && <span className="h-1 w-1 rounded-full bg-[#C8A23D]" aria-hidden="true" />}
+                  {index < cities.length - 1 && <span className="h-1 w-1 rounded-full bg-[#C8A23D]" aria-hidden="true" />}
                 </span>
               ))}
             </div>

@@ -1,5 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { SITE } from '@/lib/constants';
+import { client } from '../../sanity/lib/client';
+import { settingsQuery } from '../../sanity/lib/queries';
 
 export const alt = 'Gerald Photo Video — Wedding & Quinceañera Photographer Nebraska & Iowa';
 export const size = {
@@ -9,6 +11,10 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const settings = await client.fetch(settingsQuery).catch(() => null);
+  const name = settings?.title || SITE.name;
+  const tagline = settings?.tagline || SITE.tagline;
+
   return new ImageResponse(
     (
       <div
@@ -60,11 +66,7 @@ export default async function Image() {
             gap: 0,
           }}
         >
-          <span>Gerald</span>
-          <span style={{ color: '#C8A23D' }}> </span>
-          <span>Photo</span>
-          <span> </span>
-          <span>Video</span>
+          <span>{name}</span>
         </div>
         {/* Tagline */}
         <div
@@ -79,7 +81,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          {SITE.tagline}
+          {tagline}
         </div>
         {/* Separator */}
         <div

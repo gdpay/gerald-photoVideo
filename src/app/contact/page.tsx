@@ -61,7 +61,7 @@ export default async function ContactPage() {
             {/* Form */}
             <div className="lg:col-span-3">
               <div className="overflow-hidden border border-[#E5E0D8] bg-[#FAF7F2]">
-                <HoneyBookContactWidget />
+                <HoneyBookContactWidget placementId={settings?.contactFormId} />
               </div>
             </div>
 

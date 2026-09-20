@@ -11,11 +11,14 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 // Server-side client (has access to SANITY_API_TOKEN)
 // Disables Sanity CDN so ISR revalidations always fetch fresh data.
 // Next.js page-level caching (ISR) handles performance instead.
+// "published" keeps unpublished drafts off the website: with a token and the default perspective,
+// queries return drafts too, so a page could show (or hide) content that was never published.
 export const client = createClient({
   projectId,
   dataset,
   apiVersion: '2024-01-01',
   useCdn: false,
+  perspective: 'published',
   token: process.env.SANITY_API_TOKEN,
 });
 
@@ -25,6 +28,7 @@ export const clientReadOnly = createClient({
   dataset,
   apiVersion: '2024-01-01',
   useCdn: true,
+  perspective: 'published',
 });
 
 const builder = createImageUrlBuilder(client);

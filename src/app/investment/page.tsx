@@ -95,13 +95,12 @@ const fallbackGalleryImages = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
-  const images = gallery.images.slice(0, 3);
+function prepareGalleryImages(images: any[] | undefined, fallbackAlt?: string) {
+  if (!images?.length) return [];
   const spans = ['large', 'tall', 'wide'] as const;
-  return images.map((img: any, i: number) => ({
+  return images.slice(0, 3).map((img: any, i: number) => ({
     source: img,
-    alt: img.alt || gallery.title,
+    alt: img.alt || fallbackAlt,
     span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
   }));
 }
@@ -114,7 +113,10 @@ export default async function InvestmentPage() {
 
   const collections = data?.collections?.length ? data.collections : fallbackCollections;
   const addOns = data?.addOns?.length ? data.addOns : fallbackAddOns;
-  const galleryImages = prepareGalleryImages(investmentGallery);
+  const galleryImages = prepareGalleryImages(
+    data?.galleryImages?.length ? data.galleryImages : investmentGallery?.images,
+    investmentGallery?.title
+  );
   const previewImages = galleryImages.length > 0 ? galleryImages : fallbackGalleryImages;
   const FeatureIcon = getIcon(data?.featureIcon, Check);
   const PaymentIcon = getIcon(data?.paymentIcon, Heart);

@@ -72,14 +72,13 @@ interface StepItem {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function prepareGalleryImages(gallery: any) {
-  if (!gallery?.images) return [];
+function prepareGalleryImages(images: any[] | undefined, fallbackAlt?: string) {
+  if (!images?.length) return [];
   // Curate: use fewer images (max 3), only the strongest ones
-  const images = gallery.images.slice(0, 3);
   const spans = ['large', 'tall', 'wide'];
-  return images.map((img: any, i: number) => ({
+  return images.slice(0, 3).map((img: any, i: number) => ({
     source: img,
-    alt: img.alt || gallery.title,
+    alt: img.alt || fallbackAlt,
     span: spans[i % spans.length] as 'large' | 'tall' | 'wide' | undefined,
   }));
 }
@@ -90,7 +89,10 @@ export default async function WeddingsPage() {
     client.fetch(weddingsPageQuery).catch(() => null),
     client.fetch(featuredTestimonialsQuery).catch(() => []),
   ]);
-  const galleryImages = prepareGalleryImages(gallery);
+  const galleryImages = prepareGalleryImages(
+    data?.galleryImages?.length ? data.galleryImages : gallery?.images,
+    gallery?.title
+  );
   const steps: StepItem[] = data?.steps?.length ? data.steps : fallbackSteps;
   const highlights: HighlightItem[] = data?.highlights?.length ? data.highlights : fallbackHighlights;
 

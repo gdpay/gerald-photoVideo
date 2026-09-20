@@ -14,6 +14,7 @@ export default defineType({
     section('stickyBar', 'Phone Bottom Bar', 'The bar pinned to the bottom of the screen on phones.'),
     section('footer', 'Footer'),
     section('cookies', 'Cookie Banner'),
+    section('notFound', '"Page Not Found" Page', 'Shown when a visitor opens a link that does not exist.'),
   ],
   fields: [
     defineField({
@@ -51,6 +52,13 @@ export default defineType({
       type: 'image',
       description: 'The small icon in the browser tab. A square image works best.',
       fieldset: 'branding',
+    }),
+    defineField({
+      name: 'contactFormId',
+      title: 'Contact Form ID',
+      type: 'string',
+      description: 'HoneyBook placement ID for the form on the contact page.',
+      fieldset: 'contact',
     }),
     defineField({ name: 'phone', title: 'Phone Number', type: 'string', fieldset: 'contact' }),
     defineField({ name: 'email', title: 'Email Address', type: 'string', fieldset: 'contact' }),
@@ -118,6 +126,23 @@ export default defineType({
       fieldset: 'footer',
     }),
     defineField({
+      name: 'footerCities',
+      title: 'City Links',
+      type: 'array',
+      description: 'The cities listed in the footer, in order.',
+      fieldset: 'footer',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'City' },
+            { name: 'link', type: 'string', title: 'Link', description: 'A page on this site like /omaha-wedding-photographer.' },
+          ],
+          preview: { select: { title: 'label', subtitle: 'link' } },
+        },
+      ],
+    }),
+    defineField({
       name: 'footerNote',
       title: 'Footer Note',
       type: 'string',
@@ -156,6 +181,17 @@ export default defineType({
     defineField({ name: 'cookieAcceptLabel', title: '"Accept" Button Text', type: 'string', fieldset: 'cookies' }),
     defineField({ name: 'cookieRejectLabel', title: '"Reject" Button Text', type: 'string', fieldset: 'cookies' }),
     ...buttonFields('cookiePolicy', 'cookies', 'Privacy Policy'),
+    defineField({ name: 'notFoundHeading', title: 'Heading', type: 'string', fieldset: 'notFound' }),
+    defineField({ name: 'notFoundText', title: 'Text', type: 'text', rows: 2, fieldset: 'notFound' }),
+    ...buttonFields('notFoundButton', 'notFound'),
+    ...buttonFields('notFoundSecondButton', 'notFound', 'Second Button'),
+    defineField({
+      name: 'notFoundLinksHeading',
+      title: 'Links Heading',
+      type: 'string',
+      description: 'Above the list of links, which uses the menu links above.',
+      fieldset: 'notFound',
+    }),
   ],
   preview: {
     prepare() {

@@ -118,6 +118,27 @@ export const stepsField = (name: string, fieldset: string) =>
     ],
   });
 
+// The three photos shown in a page's gallery strip.
+export const galleryImagesField = (galleryName: string) =>
+  defineField({
+    name: 'galleryImages',
+    title: 'Photos',
+    type: 'array',
+    fieldset: 'gallery',
+    description: `Up to three photos. If empty, the first photos from ${galleryName} Page › Gallery are used.`,
+    validation: (rule) => rule.max(3),
+    of: [
+      {
+        type: 'image',
+        options: { hotspot: true },
+        fields: [
+          { name: 'alt', type: 'string', title: 'Alt Text' },
+          { name: 'caption', type: 'string', title: 'Caption' },
+        ],
+      },
+    ],
+  });
+
 // The wide three-photo strip with a portfolio button (Engagements and Portraits pages).
 export const portfolioFeatureField = (galleryName: string) =>
   defineField({
