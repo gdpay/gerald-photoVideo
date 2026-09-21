@@ -3,15 +3,19 @@ import { client } from '../../../sanity/lib/client';
 import { galleriesQuery, videographyPageQuery, portfolioPageQuery } from '../../../sanity/lib/queries';
 import { PortfolioClient } from '@/components/sections/portfolio-client';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as genMeta } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = genMeta({
-  title: 'Portfolio',
-  description: 'A curated collection of our favorite wedding, quinceañera, and engagement moments.',
-  path: '/portfolio',
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(portfolioPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'Portfolio',
+    description: 'A curated collection of our favorite wedding, quinceañera, and engagement moments.',
+    path: '/portfolio',
+  });
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   weddings: 'Weddings',

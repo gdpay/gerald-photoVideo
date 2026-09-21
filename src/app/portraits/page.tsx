@@ -5,24 +5,28 @@ import { Container } from '@/components/shared/container';
 import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, portraitsPageQuery } from '../../../sanity/lib/queries';
 import { Camera, Sparkles, Heart, Sun, MapPin, Users } from 'lucide-react';
 
-export const metadata: Metadata = generateMetadata({
-  title: 'Portrait Photography',
-  description:
-    'Timeless portrait photography in Nebraska and Iowa. Individual, family, and senior portraits that celebrate your unique beauty and personality.',
-  path: '/portraits',
-  keywords: [
-    'portrait photographer Omaha',
-    'family portraits Nebraska',
-    'senior portraits Iowa',
-    'professional portrait photography',
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(portraitsPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'Portrait Photography',
+    description:
+      'Timeless portrait photography in Nebraska and Iowa. Individual, family, and senior portraits that celebrate your unique beauty and personality.',
+    path: '/portraits',
+    keywords: [
+      'portrait photographer Omaha',
+      'family portraits Nebraska',
+      'senior portraits Iowa',
+      'professional portrait photography',
+    ],
+  });
+}
 
 const highlightIcons = [Camera, Users, Sparkles, Heart, Sun, MapPin];
 

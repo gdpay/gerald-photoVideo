@@ -6,7 +6,7 @@ import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
 import { Button } from '@/components/ui/button';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { investmentPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
@@ -24,7 +24,9 @@ async function getInvestmentData(): Promise<any> {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generatePageMetadata({
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(investmentPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
     title: 'Investment',
     description:
       'Premium wedding, quinceañera, and engagement photography investment. Custom collections designed for your unique celebration in Nebraska and Iowa.',

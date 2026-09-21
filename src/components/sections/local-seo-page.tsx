@@ -6,7 +6,7 @@ import { TrustBar } from '@/components/sections/trust-bar';
 import { TestimonialCarousel } from '@/components/sections/testimonial-carousel';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
 import { client } from '../../../sanity/lib/client';
 import { cityPageQuery, featuredTestimonialsQuery, trustStatsQuery } from '../../../sanity/lib/queries';
@@ -20,10 +20,13 @@ interface LocalSEOPageProps {
   services: string[];
 }
 
-export function generateLocalSEOMetadata({ city, state, slug, services }: LocalSEOPageProps): Metadata {
+export async function generateLocalSEOMetadata({ city, state, slug, services }: LocalSEOPageProps): Promise<Metadata> {
   const serviceList = services.join(', ');
-  return generateMetadata({
-    title: `${city} ${services[0]} | ${SITE.name}`,
+  // The city page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(cityPageQuery(slug)).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    // No site name here — the root layout's title template already appends it.
+    title: `${city} ${services[0]}`,
     description: `Premier ${serviceList.toLowerCase()} serving ${city}, ${state} and surrounding areas. Professional photography and videography tailored to your celebration.`,
     path: `/${slug}-wedding-photographer`,
     keywords: [

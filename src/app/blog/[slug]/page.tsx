@@ -7,7 +7,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { Button } from '@/components/ui/button';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { client } from '../../../../sanity/lib/client';
 import { blogPageQuery, blogPostBySlugQuery, blogPostsQuery } from '../../../../sanity/lib/queries';
@@ -76,7 +76,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const post = await client.fetch(blogPostBySlugQuery(slug));
     if (!post) return {};
-    return generatePageMetadata({
+    // The post's own "SEO" section wins; anything left blank falls back to the post itself.
+    return generateMetadataFromSeo(post.seo, {
       title: post.title,
       description: post.excerpt || `Read about ${post.title} — a beautiful celebration captured by Gerald Photo Video.`,
       path: `/blog/${slug}`,

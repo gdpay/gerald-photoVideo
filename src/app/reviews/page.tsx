@@ -4,7 +4,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
 import { client } from '../../../sanity/lib/client';
 import { allTestimonialsQuery, reviewsPageQuery } from '../../../sanity/lib/queries';
@@ -31,7 +31,9 @@ async function getReviewsPageData(): Promise<any> {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generatePageMetadata({
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(reviewsPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
     title: 'Reviews',
     description:
       'Read what couples and families say about Gerald Photo Video. 4.5★ average rating from 46+ reviews across Facebook and The Knot.',

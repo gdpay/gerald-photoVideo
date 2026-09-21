@@ -1,11 +1,29 @@
+import type { Metadata } from 'next';
 import { PageHero } from '@/components/sections/page-hero';
 import { CTASection } from '@/components/sections/cta-section';
 import { FAQAccordion, type FAQCategory } from '@/components/sections/faq-accordion';
 import { BreadcrumbSchema, FAQSchema } from '@/components/seo/schema-scripts';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { client } from '../../../sanity/lib/client';
 import { faqPageQuery } from '../../../sanity/lib/queries';
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(faqPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'FAQ',
+    description:
+      'Answers to common questions about booking, photography, videography, and delivery for weddings and quinceañeras in Nebraska and Iowa.',
+    path: '/faq',
+    keywords: [
+      'wedding photography FAQ',
+      'wedding photographer questions Omaha',
+      'quinceañera photography questions',
+    ],
+  });
+}
 
 const fallbackData: FAQCategory[] = [
   {

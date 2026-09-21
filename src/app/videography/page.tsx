@@ -6,7 +6,7 @@ import { VideoEmbed } from '@/components/shared/video-embed';
 import { GalleryPreview } from '@/components/sections/gallery-preview';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema, VideoSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { videographyPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
@@ -35,7 +35,9 @@ function prepareGalleryImages(images: any[] | undefined, fallbackAlt?: string) {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generatePageMetadata({
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(videographyPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
     title: 'Cinematic Videography',
     description:
       'Professional wedding videography and cinematic films in Nebraska and Iowa. Highlight reels, full ceremony edits, and drone footage.',

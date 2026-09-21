@@ -20,8 +20,29 @@ import {
 } from '../../sanity/lib/queries';
 import { Camera, Play } from 'lucide-react';
 import { getIcon } from '@/lib/icons';
+import type { Metadata } from 'next';
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  // Home Page › SEO. Left blank, the site-wide title and description from the
+  // root layout are used, so the homepage keeps its full branded title.
+  const seo = await client.fetch(homePageQuery).then((d) => d?.seo).catch(() => null);
+  if (!seo) return {};
+
+  const metadata: Metadata = {};
+  // `absolute` stops the layout appending the site name a second time.
+  if (seo.metaTitle) metadata.title = { absolute: seo.metaTitle };
+  if (seo.metaDescription) metadata.description = seo.metaDescription;
+  if (seo.keywords?.length) metadata.keywords = seo.keywords.join(', ');
+  if (seo.ogImage?.asset?.url) {
+    metadata.openGraph = { images: [{ url: seo.ogImage.asset.url, width: 1200, height: 630 }] };
+    metadata.twitter = { card: 'summary_large_image', images: [seo.ogImage.asset.url] };
+  }
+  if (seo.noIndex) metadata.robots = { index: false, follow: false };
+
+  return metadata;
+}
 
 const fallbackExperienceFeatures = [
   { icon: 'Camera', label: 'Photography & Videography Under One Team' },

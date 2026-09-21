@@ -1,3 +1,15 @@
+// Shared SEO projection. Every page has an "SEO" section in the Studio; this is what
+// makes those fields reach the page's <title>, description and social share image.
+export const seoFields = `
+  "seo": seo {
+    metaTitle,
+    metaDescription,
+    keywords,
+    noIndex,
+    ogImage { asset-> { url } }
+  }
+`;
+
 // Services
 export const servicesQuery = `*[_type == "service"] | order(title asc) {
   _id,
@@ -107,7 +119,7 @@ export const blogPostBySlugQuery = (slug: string) =>
     coverImage,
     excerpt,
     content,
-    seo
+    ${seoFields}
   }`;
 
 // Settings / Site Config
@@ -181,7 +193,7 @@ export const heroSlidesQuery = `*[_type == "heroSlide"] | order(order asc) {
 }`;
 
 // Home Page (editable homepage sections)
-export const homePageQuery = `*[_type == "homePage"][0] {
+export const homePageQuery = `*[_id == "homePage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -223,11 +235,12 @@ export const homePageQuery = `*[_type == "homePage"][0] {
   testimonialsEyebrow,
   testimonialsHeading,
   testimonialsButtonLabel,
-  testimonialsButtonLink
+  testimonialsButtonLink,
+  ${seoFields}
 }`;
 
 // Stats bar (edited on the Home Page, also shown on the city pages)
-export const trustStatsQuery = `*[_type == "homePage"][0].trustStats`;
+export const trustStatsQuery = `*[_id == "homePage"][0].trustStats`;
 
 // Weddings and Quinceañeras pages share the same sections
 const servicePageFields = `
@@ -272,7 +285,8 @@ const servicePageFields = `
   ctaButtonLink,
   ctaSecondaryButtonLabel,
   ctaSecondaryButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 `;
 
 export const weddingsPageQuery = `*[_id == "weddingsPage"][0] {${servicePageFields}}`;
@@ -280,7 +294,7 @@ export const weddingsPageQuery = `*[_id == "weddingsPage"][0] {${servicePageFiel
 export const quinceanerasPageQuery = `*[_id == "quinceanerasPage"][0] {${servicePageFields}}`;
 
 // About Page
-export const aboutPageQuery = `*[_type == "aboutPage"][0] {
+export const aboutPageQuery = `*[_id == "aboutPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -300,11 +314,12 @@ export const aboutPageQuery = `*[_type == "aboutPage"][0] {
   ctaSubheading,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // Investment Page
-export const investmentPageQuery = `*[_type == "investmentPage"][0] {
+export const investmentPageQuery = `*[_id == "investmentPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -335,11 +350,12 @@ export const investmentPageQuery = `*[_type == "investmentPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // FAQ Page
-export const faqPageQuery = `*[_type == "faqPage"][0] {
+export const faqPageQuery = `*[_id == "faqPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -349,11 +365,12 @@ export const faqPageQuery = `*[_type == "faqPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // Engagements Page
-export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
+export const engagementsPageQuery = `*[_id == "engagementsPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -385,11 +402,12 @@ export const engagementsPageQuery = `*[_type == "engagementsPage"][0] {
     },
     buttonLabel,
     buttonLink
-  }
+  },
+  ${seoFields}
 }`;
 
 // Portraits Page
-export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
+export const portraitsPageQuery = `*[_id == "portraitsPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -412,11 +430,12 @@ export const portraitsPageQuery = `*[_type == "portraitsPage"][0] {
     },
     buttonLabel,
     buttonLink
-  }
+  },
+  ${seoFields}
 }`;
 
 // Videography Page
-export const videographyPageQuery = `*[_type == "videographyPage"][0] {
+export const videographyPageQuery = `*[_id == "videographyPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -463,11 +482,12 @@ export const videographyPageQuery = `*[_type == "videographyPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // Portfolio Page
-export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
+export const portfolioPageQuery = `*[_id == "portfolioPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -478,11 +498,12 @@ export const portfolioPageQuery = `*[_type == "portfolioPage"][0] {
   ctaSubheading,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // Reviews Page
-export const reviewsPageQuery = `*[_type == "reviewsPage"][0] {
+export const reviewsPageQuery = `*[_id == "reviewsPage"][0] {
   heroTagline,
   heroHeading,
   heroSubheading,
@@ -494,7 +515,8 @@ export const reviewsPageQuery = `*[_type == "reviewsPage"][0] {
   ctaSubtitle,
   ctaButtonLabel,
   ctaButtonLink,
-  ctaImage
+  ctaImage,
+  ${seoFields}
 }`;
 
 // Average rating (edited on the Reviews Page, also used for Google's structured data)
@@ -514,7 +536,8 @@ export const blogPageQuery = `*[_id == "blogPage"][0] {
   postCtaTitle,
   postCtaSubtitle,
   postCtaButtonLabel,
-  postCtaButtonLink
+  postCtaButtonLink,
+  ${seoFields}
 }`;
 
 // Contact Page (also holds the thank-you page shown after the form is sent)
@@ -545,7 +568,8 @@ export const contactPageQuery = `*[_id == "contactPage"][0] {
   thankYouButtonLabel,
   thankYouButtonLink,
   thankYouSecondButtonLabel,
-  thankYouSecondButtonLink
+  thankYouSecondButtonLink,
+  ${seoFields}
 }`;
 
 // City landing pages (/<slug>-wedding-photographer)
@@ -569,7 +593,8 @@ export const cityPageQuery = (slug: string) =>
     ctaSubtitle,
     ctaButtonLabel,
     ctaButtonLink,
-    ctaImage
+    ctaImage,
+    ${seoFields}
   }`;
 
 // Reviews Page (testimonials with ordering)

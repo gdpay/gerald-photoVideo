@@ -4,7 +4,7 @@ import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { HoneyBookContactWidget } from '@/components/forms/honeybook-contact-widget';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { SITE } from '@/lib/constants';
 import { toDialableNumber } from '@/lib/utils';
 import { getIcon } from '@/lib/icons';
@@ -12,18 +12,22 @@ import { client } from '../../../sanity/lib/client';
 import { contactPageQuery, settingsQuery } from '../../../sanity/lib/queries';
 import { Phone, Mail, Clock, MessageCircle } from 'lucide-react';
 
-export const metadata: Metadata = generateMetadata({
-  title: 'Contact Us',
-  description:
-    'Book your wedding, quinceañera, or engagement photography session. Contact Gerald Photo Video serving Nebraska and Iowa. We respond within 24 hours.',
-  path: '/contact',
-  keywords: [
-    'book wedding photographer Omaha',
-    'contact photographer Nebraska',
-    'engagement photographer booking',
-    'Gerald Photo Video contact',
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(contactPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'Contact Us',
+    description:
+      'Book your wedding, quinceañera, or engagement photography session. Contact Gerald Photo Video serving Nebraska and Iowa. We respond within 24 hours.',
+    path: '/contact',
+    keywords: [
+      'book wedding photographer Omaha',
+      'contact photographer Nebraska',
+      'engagement photographer booking',
+      'Gerald Photo Video contact',
+    ],
+  });
+}
 
 export default async function ContactPage() {
   const [data, settings] = await Promise.all([

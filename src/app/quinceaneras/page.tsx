@@ -7,7 +7,7 @@ import { CTASection } from '@/components/sections/cta-section';
 import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, featuredTestimonialsQuery, quinceanerasPageQuery } from '../../../sanity/lib/queries';
@@ -16,18 +16,22 @@ import { Button } from '@/components/ui/button';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = generateMetadata({
-  title: "Quinceañera Photography & Videography",
-  description:
-    "Professional quinceañera photography and videography in Nebraska and Iowa. Celebrating your daughter's journey with stunning portraits and cinematic films.",
-  path: '/quinceaneras',
-  keywords: [
-    "quinceañera photographer Omaha",
-    "quinceañera videography Nebraska",
-    "quince photographer Iowa",
-    "fifteenth birthday photographer",
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(quinceanerasPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: "Quinceañera Photography & Videography",
+    description:
+      "Professional quinceañera photography and videography in Nebraska and Iowa. Celebrating your daughter's journey with stunning portraits and cinematic films.",
+    path: '/quinceaneras',
+    keywords: [
+      "quinceañera photographer Omaha",
+      "quinceañera videography Nebraska",
+      "quince photographer Iowa",
+      "fifteenth birthday photographer",
+    ],
+  });
+}
 
 const traditionIcons = [Crown, Heart, Star, Music, Users, Sparkles];
 

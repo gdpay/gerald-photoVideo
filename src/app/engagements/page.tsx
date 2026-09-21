@@ -5,7 +5,7 @@ import { Container } from '@/components/shared/container';
 import { PortfolioFeature } from '@/components/sections/portfolio-feature';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { engagementsPageQuery, galleryByServiceTypeQuery } from '../../../sanity/lib/queries';
@@ -34,7 +34,9 @@ function preparePortfolioFeatureImages(feature: any, gallery: any) {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generatePageMetadata({
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(engagementsPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
     title: 'Engagement Photography',
     description:
       'Romantic engagement photography in Nebraska and Iowa. Capture the excitement of your new chapter with stunning couple portraits.',

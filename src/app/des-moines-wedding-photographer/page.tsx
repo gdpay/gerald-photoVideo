@@ -1,6 +1,6 @@
 import { LocalSEOPage, generateLocalSEOMetadata } from '@/components/sections/local-seo-page';
 
-export const metadata = generateLocalSEOMetadata({
+export const generateMetadata = () => generateLocalSEOMetadata({
   city: 'Des Moines',
   state: 'IA',
   slug: 'des-moines',

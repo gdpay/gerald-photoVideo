@@ -4,7 +4,7 @@ import { PageHero } from '@/components/sections/page-hero';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Container } from '@/components/shared/container';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { client } from '../../../sanity/lib/client';
 import { blogPageQuery, blogPostsQuery } from '../../../sanity/lib/queries';
@@ -12,17 +12,21 @@ import { SanityImage } from '@/components/shared/sanity-image';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = generateMetadata({
-  title: 'Blog',
-  description: 'Real wedding stories, planning tips, and venue guides from Gerald Photo Video. Serving Nebraska and Iowa.',
-  path: '/blog',
-  keywords: [
-    'wedding blog Omaha',
-    'real wedding stories Nebraska',
-    'wedding planning tips Iowa',
-    'Omaha wedding venues',
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(blogPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'Blog',
+    description: 'Real wedding stories, planning tips, and venue guides from Gerald Photo Video. Serving Nebraska and Iowa.',
+    path: '/blog',
+    keywords: [
+      'wedding blog Omaha',
+      'real wedding stories Nebraska',
+      'wedding planning tips Iowa',
+      'Omaha wedding venues',
+    ],
+  });
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatDate(dateString: string) {

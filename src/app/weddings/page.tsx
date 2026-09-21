@@ -7,7 +7,7 @@ import { CTASection } from '@/components/sections/cta-section';
 import { PageHero } from '@/components/sections/page-hero';
 import { VideoEmbed } from '@/components/shared/video-embed';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { galleryByServiceTypeQuery, featuredTestimonialsQuery, weddingsPageQuery } from '../../../sanity/lib/queries';
@@ -16,19 +16,23 @@ import { Button } from '@/components/ui/button';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = generateMetadata({
-  title: 'Wedding Photography & Videography',
-  description:
-    'Cinematic wedding photography and videography for couples in Nebraska and Iowa. Capturing your love story with artistry and heart.',
-  path: '/weddings',
-  keywords: [
-    'wedding photographer Omaha',
-    'Nebraska wedding photographer',
-    'Iowa wedding photographer',
-    'luxury wedding photography',
-    'cinematic wedding videography',
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(weddingsPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
+    title: 'Wedding Photography & Videography',
+    description:
+      'Cinematic wedding photography and videography for couples in Nebraska and Iowa. Capturing your love story with artistry and heart.',
+    path: '/weddings',
+    keywords: [
+      'wedding photographer Omaha',
+      'Nebraska wedding photographer',
+      'Iowa wedding photographer',
+      'luxury wedding photography',
+      'cinematic wedding videography',
+    ],
+  });
+}
 
 const highlightIcons = [Camera, Video, Users, Clock, Heart, MapPin];
 

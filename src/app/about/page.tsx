@@ -6,7 +6,7 @@ import { Container } from '@/components/shared/container';
 import { SanityImage } from '@/components/shared/sanity-image';
 import { CTASection } from '@/components/sections/cta-section';
 import { BreadcrumbSchema } from '@/components/seo/schema-scripts';
-import { generateMetadata as generatePageMetadata } from '@/lib/seo-metadata';
+import { generateMetadataFromSeo } from '@/lib/seo-metadata';
 import { getIcon } from '@/lib/icons';
 import { client } from '../../../sanity/lib/client';
 import { aboutPageQuery } from '../../../sanity/lib/queries';
@@ -24,7 +24,9 @@ async function getAboutData(): Promise<any> {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generatePageMetadata({
+  // The page's own "SEO" section wins; anything left blank falls back to the copy below.
+  const seo = await client.fetch(aboutPageQuery).then((d) => d?.seo).catch(() => null);
+  return generateMetadataFromSeo(seo, {
     title: 'About Us',
     description:
       'Learn the story behind Gerald Photo Video. Passionate wedding and quinceañera photographers serving Nebraska and Iowa since 2015.',
