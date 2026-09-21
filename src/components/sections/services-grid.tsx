@@ -34,9 +34,19 @@ interface GalleryItem {
   }>;
 }
 
+interface ServiceCard {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  image?: any;
+  title?: string;
+  tagline?: string;
+  link?: string;
+  showPlayIcon?: boolean;
+}
+
 interface ServicesGridProps {
   services?: ServiceItem[];
   galleries?: GalleryItem[];
+  cards?: ServiceCard[];
   eyebrow?: string;
   heading?: string;
   linkLabel?: string;
@@ -58,23 +68,38 @@ const serviceFallbacks: Record<(typeof featuredServiceIds)[number], string> = {
   videography:'',
 };
 
-export function ServicesGrid({ services, galleries, eyebrow = 'Explore', heading = 'Every Love Story is Unique', linkLabel = 'View Gallery' }: ServicesGridProps) {
-  const displayServices = featuredServiceIds.map((serviceId) => {
-    const service = SERVICES.find((s) => s.id === serviceId);
-    if (!service) return null;
+export function ServicesGrid({ services, galleries, cards, eyebrow = 'Explore', heading = 'Every Love Story is Unique', linkLabel = 'View Gallery' }: ServicesGridProps) {
+  // Cards edited straight on the Home Page win. With none set, the cards are built
+  // from the Service documents and each Gallery Collection's cover photo, as before.
+  const editedCards = cards?.filter((card) => card?.title || card?.image) ?? [];
 
-    const sanityService = services?.find((ss) => ss.slug === service.id);
-    const sanityGallery = galleries?.find((gallery) => gallery.serviceType === service.id);
-    const galleryImage = sanityGallery?.coverImage || sanityGallery?.images?.[0];
+  const displayServices = editedCards.length > 0
+    ? editedCards.map((card, index) => ({
+        id: `card-${index}`,
+        href: card.link || '/',
+        title: card.title || '',
+        tagline: card.tagline || '',
+        heroImage: card.image,
+        imageAlt: card.image?.alt || card.title || '',
+        showPlayIcon: Boolean(card.showPlayIcon),
+      }))
+    : featuredServiceIds.map((serviceId) => {
+        const service = SERVICES.find((s) => s.id === serviceId);
+        if (!service) return null;
 
-    return {
-      ...service,
-      title: sanityService?.title || service.title,
-      heroImage: galleryImage || sanityService?.heroImage,
-      imageAlt: sanityGallery?.coverImage?.alt || sanityGallery?.images?.[0]?.alt || service.title,
-      tagline: sanityService?.tagline || serviceTaglines[serviceId],
-    };
-  }).filter((service): service is NonNullable<typeof service> => Boolean(service));
+        const sanityService = services?.find((ss) => ss.slug === service.id);
+        const sanityGallery = galleries?.find((gallery) => gallery.serviceType === service.id);
+        const galleryImage = sanityGallery?.coverImage || sanityGallery?.images?.[0];
+
+        return {
+          ...service,
+          title: sanityService?.title || service.title,
+          heroImage: galleryImage || sanityService?.heroImage,
+          imageAlt: sanityGallery?.coverImage?.alt || sanityGallery?.images?.[0]?.alt || service.title,
+          tagline: sanityService?.tagline || serviceTaglines[serviceId],
+          showPlayIcon: serviceId === 'videography',
+        };
+      }).filter((service): service is NonNullable<typeof service> => Boolean(service));
 
   return (
     <SectionWrapper>
@@ -130,7 +155,7 @@ export function ServicesGrid({ services, galleries, eyebrow = 'Explore', heading
                     <div className="absolute inset-0 bg-[#E5E0D8]" />
                   )}
 
-                  {service.id === 'videography' && (
+                  {service.showPlayIcon && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/80 bg-[#0A1F44]/35 text-white shadow-[0_0_24px_rgba(10,31,68,0.24)] backdrop-blur-[2px] transition duration-300 group-hover:scale-110 group-hover:bg-[#0A1F44]/50">
                         <Play className="ml-0.5 h-6 w-6 fill-current" aria-hidden="true" />

@@ -23,7 +23,11 @@ export default defineType({
       'The rotating background photos are in Home Page › Hero Slideshow. The background image here is only used when there are no slides.'
     ),
     section('trust', 'Stats Bar'),
-    section('services', 'Services', 'The cards come from the Service documents, and their photos from each Gallery Collection.'),
+    section(
+      'services',
+      'Services',
+      'The four cards below the stats bar. Add cards here to control the photo, wording and link. Leave the list empty to keep using the Service documents and each Gallery Collection cover photo.'
+    ),
     section('testimonials', 'Client Stories', 'Shows the reviews marked "Featured".'),
     section('seo', 'SEO'),
   ],
@@ -79,6 +83,42 @@ export default defineType({
     eyebrowField('servicesEyebrow', 'services'),
     defineField({ name: 'servicesHeading', title: 'Heading', type: 'string', fieldset: 'services' }),
     defineField({ name: 'servicesLinkLabel', title: '"View Gallery" Link Text', type: 'string', fieldset: 'services' }),
+    defineField({
+      name: 'serviceCards',
+      title: 'Cards',
+      type: 'array',
+      fieldset: 'services',
+      description:
+        'Each card shows a photo, a title and a line of italic text. Four fit across the row. If this list is empty the cards are built from the Service documents instead.',
+      validation: (rule) => rule.max(4),
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'image',
+              type: 'image',
+              title: 'Photo',
+              options: { hotspot: true },
+              fields: [{ name: 'alt', type: 'string', title: 'Alt Text' }],
+            },
+            { name: 'title', type: 'string', title: 'Title', description: 'Shown in small capitals, e.g. "Weddings".' },
+            { name: 'tagline', type: 'string', title: 'Tagline', description: 'The italic line under the title, e.g. "Timeless & Elegant".' },
+            { name: 'link', type: 'string', title: 'Link', description: 'Where the card goes, e.g. /weddings.' },
+            {
+              name: 'showPlayIcon',
+              type: 'boolean',
+              title: 'Show Play Icon',
+              description: 'Puts a play button over the photo, for a card that leads to films.',
+              initialValue: false,
+            },
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'tagline', media: 'image' },
+          },
+        },
+      ],
+    }),
     defineField({
       name: 'featuredFilm',
       title: 'Featured Film',

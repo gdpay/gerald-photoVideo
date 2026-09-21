@@ -110,6 +110,7 @@ export default async function HomePage() {
       <ServicesGrid
         services={services}
         galleries={galleries}
+        cards={homeData?.serviceCards}
         eyebrow={homeData?.servicesEyebrow}
         heading={homeData?.servicesHeading}
         linkLabel={homeData?.servicesLinkLabel}

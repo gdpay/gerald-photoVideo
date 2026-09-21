@@ -205,6 +205,13 @@ export const homePageQuery = `*[_id == "homePage"][0] {
   servicesEyebrow,
   servicesHeading,
   servicesLinkLabel,
+  serviceCards[] {
+    image,
+    title,
+    tagline,
+    link,
+    showPlayIcon
+  },
   featuredFilm {
     eyebrow,
     heading,
