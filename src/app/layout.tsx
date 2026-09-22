@@ -8,6 +8,7 @@ import { LocalBusinessSchema, WebSiteSchema, OrganizationSchema, ProfessionalSer
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
 import { AnalyticsConsentProvider } from '@/components/analytics/meta-pixel-provider';
+import { SiteSettingsProvider } from '@/components/providers/site-settings-provider';
 import { ConsentBanner } from '@/components/analytics/consent-banner';
 import { SITE } from '@/lib/constants';
 import { client } from '../../sanity/lib/client';
@@ -140,6 +141,9 @@ export default async function RootLayout({
       </head>
       <body className="min-h-screen bg-[#FAF7F2] text-[#0A1F44] antialiased">
         <AnalyticsConsentProvider>
+          <SiteSettingsProvider
+            value={{ phone: settings?.phone, ctaPhoneLabel: settings?.ctaPhoneLabel }}
+          >
           <Navigation
             logoUrl={logoUrl}
             navItems={settings?.navItems}
@@ -169,6 +173,7 @@ export default async function RootLayout({
             policyLabel={settings?.cookiePolicyLabel}
             policyLink={settings?.cookiePolicyLink}
           />
+          </SiteSettingsProvider>
         </AnalyticsConsentProvider>
       </body>
     </html>

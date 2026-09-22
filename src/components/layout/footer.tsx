@@ -33,6 +33,12 @@ export function Footer({ settings }: { settings?: any }) {
   const EmailIcon = getIcon(settings?.footerEmailIcon, Mail);
   const PhoneIcon = getIcon(settings?.footerPhoneIcon, Phone);
 
+  // The whole bottom line is editable, with {year} and {name} filled in here so the
+  // year keeps updating on its own. Falls back to the older split-up fields.
+  const copyrightLine = (settings?.copyrightLine || `© {year} {name}. ${settings?.copyrightText || 'All Rights Reserved.'}`)
+    .replace(/\{year\}/g, String(currentYear))
+    .replace(/\{name\}/g, name);
+
   const logoUrl = hasSanityImageAsset(settings?.logo)
     ? urlFor(settings.logo).width(200).url()
     : '/Gerald Photo Video-w.png';
@@ -132,7 +138,7 @@ export function Footer({ settings }: { settings?: any }) {
       <div className="border-t border-[#9C7A35]/45">
         <Container className="flex min-h-5 items-center justify-center py-1">
           <p className="font-body text-[8px] text-[#FAF7F2]/70">
-            &copy; {currentYear} {name}. {settings?.copyrightText || 'All Rights Reserved.'}
+            {copyrightLine}
           </p>
         </Container>
       </div>

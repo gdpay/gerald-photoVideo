@@ -77,6 +77,18 @@ export default async function ReviewsPage() {
   const rating = reviewsData?.ratingValue ?? SITE.reviews.aggregate.rating;
   const ratingCount = reviewsData?.ratingCount ?? SITE.reviews.aggregate.count;
 
+  // Both lines below are editable on the Reviews Page; these are the fallbacks.
+  const ratingCountText = (reviewsData?.ratingCountText || 'Based on {count}+ reviews')
+    .replace(/\{count\}/g, String(ratingCount));
+
+  const editedLabels: Record<string, string> = Object.fromEntries(
+    (reviewsData?.serviceLabels || [])
+      .filter((s: { value?: string; label?: string }) => s?.value && s?.label)
+      .map((s: { value: string; label: string }) => [s.value, s.label])
+  );
+  const labelForService = (serviceType?: string) =>
+    editedLabels[serviceType || ''] || serviceLabels[serviceType || ''] || serviceType || 'Other';
+
   return (
     <>
       <BreadcrumbSchema items={[
@@ -101,7 +113,7 @@ export default async function ReviewsPage() {
             </div>
             <div className="font-heading text-5xl text-[#0A1F44]">{rating}</div>
             <div className="text-[#736D63] mt-1">{reviewsData?.ratingLabel || 'Average Rating'}</div>
-            <div className="text-sm text-[#A39D93] mt-1">Based on {ratingCount}+ reviews</div>
+            <div className="text-sm text-[#A39D93] mt-1">{ratingCountText}</div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -123,7 +135,7 @@ export default async function ReviewsPage() {
                   <div>
                     <div className="font-body font-medium text-[#0A1F44] text-sm">{review.author}</div>
                     <div className="text-xs text-[#A39D93]">
-                      {serviceLabels[review.serviceType || ''] || review.serviceType || 'Other'}{review.location ? ` · ${review.location}` : ''}
+                      {labelForService(review.serviceType)}{review.location ? ` · ${review.location}` : ''}
                     </div>
                   </div>
                 </div>

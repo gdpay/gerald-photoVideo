@@ -31,6 +31,7 @@ export const NAV_ITEMS = [
   { label: 'Weddings', href: '/weddings' },
   { label: 'Quinceañeras', href: '/quinceaneras' },
   { label: 'Engagements', href: '/engagements' },
+  { label: 'Videography', href: '/videography' },
   { label: 'Portfolio', href: '/portfolio' },
   { label: 'Investment', href: '/investment' },
   { label: 'About', href: '/about' },

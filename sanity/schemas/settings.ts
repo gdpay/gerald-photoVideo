@@ -152,6 +152,13 @@ export default defineType({
     }),
     defineField({ name: 'footerConnectHeading', title: '"Connect" Heading', type: 'string', fieldset: 'footer' }),
     defineField({ name: 'footerContactHeading', title: '"Get In Touch" Heading', type: 'string', fieldset: 'footer' }),
+    defineField({
+      name: 'ctaPhoneLabel',
+      title: '"Or call" Text',
+      type: 'string',
+      description: 'Shown before the phone number under the "Check Availability" band on most pages.',
+      fieldset: 'footer',
+    }),
     iconField('footerEmailIcon', 'Email Icon', 'footer'),
     iconField('footerPhoneIcon', 'Phone Icon', 'footer'),
     defineField({
@@ -169,11 +176,20 @@ export default defineType({
       fieldset: 'footer',
     }),
     defineField({
-      name: 'copyrightText',
-      title: 'Copyright Text',
+      name: 'copyrightLine',
+      title: 'Copyright Line',
       type: 'string',
-      description: 'Shown after "© year Site Title.", e.g. "All Rights Reserved."',
+      description:
+        'The whole bottom line. Write {year} for the current year and {name} for the Site Title, e.g. "© {year} {name}. All Rights Reserved."',
       fieldset: 'footer',
+    }),
+    defineField({
+      name: 'copyrightText',
+      title: 'Copyright Text (old)',
+      type: 'string',
+      description: 'Only used when Copyright Line above is empty. Shown after "© year Site Title.".',
+      fieldset: 'footer',
+      hidden: ({ document }) => Boolean(document?.copyrightLine),
     }),
     iconField('cookieIcon', 'Icon', 'cookies'),
     defineField({ name: 'cookieTitle', title: 'Title', type: 'string', fieldset: 'cookies' }),

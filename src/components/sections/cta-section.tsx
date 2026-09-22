@@ -5,7 +5,9 @@ import { Container } from '@/components/shared/container';
 import { SectionWrapper } from '@/components/shared/section-wrapper';
 import { Button } from '@/components/ui/button';
 import { SITE } from '@/lib/constants';
+import { toDialableNumber } from '@/lib/utils';
 import { SanityImage } from '@/components/shared/sanity-image';
+import { useSiteSettings } from '@/components/providers/site-settings-provider';
 
 interface CTASectionProps {
   title?: string;
@@ -23,6 +25,12 @@ export function CTASection({
   secondaryCTA,
   imageSource,
 }: CTASectionProps) {
+  // "Or call" and the number come from Site Settings, which the layout puts in context.
+  const settings = useSiteSettings();
+  const phoneLabel = settings.ctaPhoneLabel || 'Or call';
+  const phoneNumber = settings.phone || SITE.phone;
+  const phoneRaw = settings.phone ? toDialableNumber(settings.phone) : SITE.phoneRaw;
+
   return (
     <SectionWrapper navy>
       {/* Background Image */}
@@ -82,9 +90,9 @@ export function CTASection({
           transition={{ delay: 0.3 }}
           className="mt-4 text-sm text-[#FAF7F2]/40"
         >
-          Or call{' '}
-          <a href={`tel:${SITE.phoneRaw}`} className="text-[#C8A23D] hover:text-[#C8A23D]/80 transition-colors">
-            {SITE.phone}
+          {phoneLabel}{' '}
+          <a href={`tel:${phoneRaw}`} className="text-[#C8A23D] hover:text-[#C8A23D]/80 transition-colors">
+            {phoneNumber}
           </a>
         </motion.p>
       </Container>

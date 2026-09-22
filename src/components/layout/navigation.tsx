@@ -21,7 +21,7 @@ interface NavigationProps {
 }
 
 const defaultNavItems: { label: string; href: string }[] = NAV_ITEMS.filter((item) =>
-  ['/', '/weddings', '/quinceaneras', '/engagements', '/portfolio', '/investment', '/about', '/blog', '/contact'].includes(item.href)
+  ['/', '/weddings', '/quinceaneras', '/engagements', '/videography', '/portfolio', '/investment', '/about', '/blog', '/contact'].includes(item.href)
 );
 
 export function Navigation({ logoUrl, navItems, buttonLabel, buttonLink, callLabel, phone }: NavigationProps) {

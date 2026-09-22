@@ -518,6 +518,11 @@ export const reviewsPageQuery = `*[_id == "reviewsPage"][0] {
   ratingValue,
   ratingCount,
   ratingLabel,
+  ratingCountText,
+  serviceLabels[] {
+    value,
+    label
+  },
   ctaTitle,
   ctaSubtitle,
   ctaButtonLabel,
